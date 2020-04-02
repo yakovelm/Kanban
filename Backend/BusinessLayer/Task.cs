@@ -25,13 +25,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             creation = DateTime.Now;
         }
 
+        public string getTitle()
+        {
+            return title;
+        }
+        public int getID()
+        {
+            return ID;
+        }
+
         public void ToDalObject() { throw new NotImplementedException(); }
 
-        void editTitle(string title)
+        public void editTitle(string title)
         {
             this.title = title;
         }
-        void editDesc(string desc)
+        public void editDesc(string desc)
         {
             this.desc = desc;
         }
