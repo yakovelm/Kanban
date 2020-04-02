@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntroSE.Kanban.Backend.BusinessLayer
+namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
-    class Task : IPersistentObject
+    public class Task : IPersistentObject
     {
         private int ID;
         private string title;
@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         private DateTime creation;
         private string email;
 
-        internal Task(int ID, string title, string desc, DateTime due, string email) 
+        public Task(int ID, string title, string desc, DateTime due, string email)
         {
             this.ID = ID;
             this.title = title;
@@ -25,6 +25,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             creation = DateTime.Now;
         }
 
+        public string toString()
+        {
+            return ("ID: "+ID+"\ntitle: "+title+"\ndesc: "+desc+"\nemail: "+email+"\ndue date: "+due.ToString()+"\ncreation time: "+creation.ToString());
+        }
         public string getTitle()
         {
             return title;
@@ -44,7 +48,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             this.desc = desc;
         }
-        void editDue(DateTime due)
+        public void editDue(DateTime due)
         {
             this.due = due;
         }

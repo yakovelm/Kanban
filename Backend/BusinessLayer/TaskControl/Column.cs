@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntroSE.Kanban.Backend.BusinessLayer
+namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
-    class Column
+    public class Column :IPersistentObject
     {
         private string email;
         private string name;
@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         private int limit;
         private int size;
 
-        internal Column(string email, string name)
+        public Column(string email, string name)
         {
             this.email = email;
             this.name = name;
@@ -23,7 +23,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             limit = -1;
         }
 
-        void addTask(Task task) 
+        public string toString()
+        {
+            string o = "email: " + email + "\nname: " + name + "\nsize: " + size + "\nlimit: " + limit;
+            foreach(Task task in tasks)
+            {
+                o = o + "\n\t" + task.getTitle();
+            }
+            return (o);
+        }
+
+        public void ToDalObject() { throw new NotImplementedException(); }
+        public void addTask(Task task) 
         {
             if (limit!=-1 & limit == size) { throw new ArgumentException() ; }
             tasks.Add(task);

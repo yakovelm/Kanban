@@ -70,8 +70,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLayer\TaskControl\Column.cs" />
     <Compile Include="BusinessLayer\IPersistentObject.cs" />
-    <Compile Include="BusinessLayer\Task.cs" />
+    <Compile Include="BusinessLayer\TaskControl\Task.cs" />
     <Compile Include="ServiceLayer\Response.cs" />
     <Compile Include="ServiceLayer\ResponseT.cs" />
     <Compile Include="ServiceLayer\IService.cs" />
