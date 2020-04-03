@@ -23,6 +23,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             limit = -1;
         }
 
+        public int getSize()
+        {
+            return size;
+        }
+
+        public int getLimit()
+        {
+            return limit;
+        }
+        public string getName()
+        {
+            return name;
+        }
         public string toString()
         {
             string o = "email: " + email + "\nname: " + name + "\nsize: " + size + "\nlimit: " + limit;
