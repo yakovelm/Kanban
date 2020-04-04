@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
-    class Board
+    public class Board
     {
         private Dictionary<string,Column> columns;
         private int ID;
@@ -16,7 +16,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             this.email = email;
             //add the column of this email
-            ID = 1;
+            columns = new Dictionary<string, Column>();
+            ID = 0;
             columnsInt = new Column[3];
             int i= 0;
             foreach (Column a in columns.Values) {
@@ -26,47 +27,75 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             
         }
-        public void LimitColumnTask(int ColumnOrdinal,int limit)
+        public Board(string email,Column column1, Column column2, Column column3)
         {
+            //texter Board
+            this.email = email;
+            //add the column of this email
+            columns = new Dictionary<string, Column>();
+            columns.Add("a", column1);
+            columns.Add("b", column2);
+            columns.Add("c", column3);
+            ID = 0;
+            columnsInt = new Column[4];
+            int i = 1;
+            foreach (Column a in columns.Values)
+            {
+                ID += a.getSize();
+                columnsInt[i] = a;
+                i++;
+            }
+
+        }
+        public void LimitColumnTask(string email,int ColumnOrdinal,int limit)
+        {
+            CheckEmail(email);
+            CheckColumnOrdinal(ColumnOrdinal);
             columnsInt[ColumnOrdinal].setLimit(limit);
         }
-        public bool CheckColumnOrdinal(int num)
+        private void CheckColumnOrdinal(int num)
         {
             if (num < 1 | num > 3)
-            { return false; }
-            return true;
+            { throw new Exception("Invalid column numbe"); }
         }
-        public bool CheckEmail(string email)
+        private void CheckEmail(string email)
         {
-            if (!email.Equals(this.email)) { return false; }
-            return true;
+            if (!email.Equals(this.email)) { throw new Exception("The email you entered does not match the email of the party");}
         }
-        public void AddTask(string title,string desciption, DateTime dueTime)
+        public void AddTask(string email, string title,string desciption, DateTime dueTime)
         {
+            CheckEmail(email);
             ID++;
             Task newTack = new Task(ID, title,desciption,dueTime,this.email);
-            columnsInt[0].addTask(newTack);
+            columnsInt[1].addTask(newTack);
         }
         public void UpdateTaskDueDate(int columnOrdinal, int taskID, DateTime Due)
         {
+            CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
+            CheckTaskID(taskID);
             Task updateTask=columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDue(Due);
         }
         public void UpdateTaskTitle(int columnOrdinal, int taskID,string title)
         {
+            CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
+            CheckTaskID(taskID);
             Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editTitle(title);
         }
         public void UpdateTaskDescription(int columnOrdinal ,int taskID, string description)
         {
+            CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
+            CheckTaskID(taskID);
             Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDesc(description);
         }
         public Task GetTask(int taskID)
         {
+            CheckTaskID(taskID);
             foreach (Column a in columns.Values)
             {
                 Task checktask = a.getTask(taskID);
@@ -75,33 +104,37 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             return null;
         }
-        public bool AdvanceTask(int columnOrdinal ,int taskId)
+        public void AdvanceTask(int columnOrdinal ,int taskId)
         {
+            CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
+            CheckTaskID(taskId);
             Task advTask = columnsInt[columnOrdinal].getTask(taskId);
-            if (advTask == null) { return false; }
+            if (advTask == null)
+            { throw new Exception("task does not exist in this columm"); }
             columnsInt[columnOrdinal].deleteTask(advTask);
             columnsInt[columnOrdinal+1].addTask(advTask);
-            return true;
         }
         public Column GetColumn(string columnName)
         {
+            if (columns[columnName] == null)
+            { throw new Exception("The column name you searched for is invalid"); }
             return columns[columnName];
         }
         public Column GetColumn(int columnOrdinal)
         {
+            CheckColumnOrdinal(columnOrdinal);
             return columnsInt[columnOrdinal];
         }
 
-        public bool CheckTaskID(int taskID)
+        private void CheckTaskID(int taskID)
         {
             if(taskID>this.ID | taskID < 1)
             {
-                return false;
+                throw new Exception("you enterd illlegal ID");
             }
-            return true;
         }
-        void ColumnIsNotDoneColumn(int columnOrdinal)
+        private void ColumnIsNotDoneColumn(int columnOrdinal)
         {
             if (columnOrdinal == 3)
                 throw new Exception("Completed tasks cannot be changed");
