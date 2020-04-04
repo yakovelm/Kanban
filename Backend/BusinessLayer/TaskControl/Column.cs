@@ -53,7 +53,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             tasks.Add(task);
             size++;
         }
-        Task deleteTask(Task task)
+        public Task deleteTask(Task task)
         {
             if (tasks.Remove(task))
             {
@@ -72,7 +72,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             return null;
         }
-        Task getTask(int ID)
+        public Task getTask(int ID)
         {
             foreach (Task task in tasks)
             {
@@ -83,7 +83,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             return null;
         }
-        void setLimit(int limit)
+        public void setLimit(int limit)
         {
             if (limit < size) { throw new ArgumentException(); }
             this.limit = limit;

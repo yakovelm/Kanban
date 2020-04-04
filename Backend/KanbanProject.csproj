@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLayer\TaskControl\Board.cs" />
     <Compile Include="BusinessLayer\TaskControl\Column.cs" />
     <Compile Include="BusinessLayer\IPersistentObject.cs" />
     <Compile Include="BusinessLayer\TaskControl\Task.cs" />
@@ -91,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataAccessLayer\" />
+    <Folder Include="ServiceLayer\SubService\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
