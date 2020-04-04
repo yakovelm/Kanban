@@ -32,6 +32,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             return limit;
         }
+        public List<Task> getListTask()
+        {
+            return tasks;
+        }
         public string getName()
         {
             return name;

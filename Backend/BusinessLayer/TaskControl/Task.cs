@@ -33,6 +33,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             return title;
         }
+        public string getDesc()
+        {
+            return desc;
+        }
+        public DateTime getCreation()
+        {
+            return creation;
+        }
         public int getID()
         {
             return ID;

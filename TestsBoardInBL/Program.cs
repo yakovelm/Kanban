@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             i++;
             //test limit
             board.LimitColumnTask(email, 1, 8);
-            if (board.GetColumn(1).getLimit() == 8)
+            if (board.GetColumn(email,1).getLimit() == 8)
             { Console.WriteLine("set Limit secceesed"); }
             else { Console.WriteLine("set Limit unsecceesed"); }
             i++;
@@ -89,7 +89,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDueDate(9, 5, new DateTime(2020 + i, 6, 10));
+                board.UpdateTaskDueDate(email,9, 5, new DateTime(2020 + i, 6, 10));
             }
             catch (Exception e)
             {
@@ -99,7 +99,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDueDate(2, 0, new DateTime(2020 + i, 6, 10));
+                board.UpdateTaskDueDate(email,2, 0, new DateTime(2020 + i, 6, 10));
             }
             catch (Exception e)
             {
@@ -109,7 +109,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDueDate(0, 5, new DateTime(2020 + i, 6, 10));
+                board.UpdateTaskDueDate(email,0, 5, new DateTime(2020 + i, 6, 10));
                 Console.WriteLine(i+"Unsecceesed");
             }
             catch (Exception e)
@@ -120,7 +120,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDueDate(3, 5, new DateTime(2020 + i, 6, 10));
+                board.UpdateTaskDueDate(email,3, 5, new DateTime(2020 + i, 6, 10));
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -131,7 +131,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDueDate(2, 89, new DateTime(2020 + i, 6, 10));
+                board.UpdateTaskDueDate(email,2, 89, new DateTime(2020 + i, 6, 10));
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -142,7 +142,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDueDate(0, 5, new DateTime(2020 + i, 6, 10));
+                board.UpdateTaskDueDate(email,0, 5, new DateTime(2020 + i, 6, 10));
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -153,7 +153,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDescription(9, 5, "sdf");
+                board.UpdateTaskDescription(email,9, 5, "sdf");
             }
             catch (Exception e)
             {
@@ -163,7 +163,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDescription(2, 0,"ds");
+                board.UpdateTaskDescription(email,2, 0,"ds");
             }
             catch (Exception e)
             {
@@ -173,7 +173,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDescription(0, 5, "sdf");
+                board.UpdateTaskDescription(email,0, 5, "sdf");
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -184,7 +184,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDescription(3, 5,"asf");
+                board.UpdateTaskDescription(email,3, 5,"asf");
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -195,7 +195,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDescription(2, 89, "sdf");
+                board.UpdateTaskDescription(email,2, 89, "sdf");
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -206,7 +206,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskDescription(0, 5,"asd");
+                board.UpdateTaskDescription(email,0, 5,"asd");
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -217,7 +217,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskTitle(9, 5, "sdf");
+                board.UpdateTaskTitle(email,9, 5, "sdf");
             }
             catch (Exception e)
             {
@@ -227,7 +227,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskTitle(2, 0, "ds");
+                board.UpdateTaskTitle(email,2, 0, "ds");
             }
             catch (Exception e)
             {
@@ -237,7 +237,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskTitle(0, 5, "sdf");
+                board.UpdateTaskTitle(email,0, 5, "sdf");
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -248,7 +248,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskTitle(3, 5, "asf");
+                board.UpdateTaskTitle(email,3, 5, "asf");
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -259,7 +259,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskTitle(2, 89, "sdf");
+                board.UpdateTaskTitle(email,2, 89, "sdf");
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -270,7 +270,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.UpdateTaskTitle(0, 5, "asd");
+                board.UpdateTaskTitle(email,0, 5, "asd");
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -309,13 +309,13 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             if (board.GetTask(1) != null) { Console.WriteLine("test " + i + " Succeeded"); }
             else { Console.WriteLine(i + "Unsecceesed"); }
             i++;
-            board.AdvanceTask(1, 1);
-            board.AdvanceTask(1, 3);
-            board.AdvanceTask(1, 4);
+            board.AdvanceTask(email,1, 1);
+            board.AdvanceTask(email,1, 3);
+            board.AdvanceTask(email,1, 4);
             //test 1: add task
             try
             {
-                board.AdvanceTask(3, 1);
+                board.AdvanceTask(email,3, 1);
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -326,7 +326,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.AdvanceTask(7, 1);
+                board.AdvanceTask(email,7, 1);
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -337,7 +337,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.AdvanceTask(2, 2);
+                board.AdvanceTask(email,2, 2);
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -345,22 +345,11 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
                 Console.WriteLine("test " + i + " Succeeded");
             }
             i++;
-            board.AdvanceTask(2, 1);
+            board.AdvanceTask(email,2, 1);
             //test 1: add task
             try
             {
-                board.AdvanceTask(3, 1);
-                Console.WriteLine(i + "Unsecceesed");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("test " + i + " Succeeded");
-            }
-            i++;
-            //test 1: add task
-            try
-            {
-                board.GetColumn("d");
+                board.AdvanceTask(email,3, 1);
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -371,18 +360,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-
-                Console.WriteLine(board.GetColumn("a").getName() + "test " + i + " Succeeded");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(i + "Unsecceesed");
-            }
-            i++;
-            //test 1: add task
-            try
-            {
-                board.GetColumn(89);
+                board.GetColumn(email,"d");
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -394,7 +372,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             try
             {
 
-                Console.WriteLine(board.GetColumn(3).getName() + "test " + i + " Succeeded");
+                Console.WriteLine(board.GetColumn(email,"a").getName() + "test " + i + " Succeeded");
             }
             catch (Exception e)
             {
@@ -404,18 +382,7 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.GetColumn(0);
-                Console.WriteLine(i + "Unsecceesed");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("test " + i + " Succeeded");
-            }
-            i++;
-            //test 1: add task
-            try
-            {
-                board.AdvanceTask(1, 1);
+                board.GetColumn(email,89);
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -426,7 +393,18 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.AdvanceTask(3, 1);
+
+                Console.WriteLine(board.GetColumn(email,3).getName() + "test " + i + " Succeeded");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(i + "Unsecceesed");
+            }
+            i++;
+            //test 1: add task
+            try
+            {
+                board.GetColumn(email,0);
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
@@ -437,7 +415,29 @@ namespace IntroSE.Kanban.Backend.Backend.BusinessLayer.TaskControl
             //test 1: add task
             try
             {
-                board.AdvanceTask(3, 1);
+                board.AdvanceTask(email,1, 1);
+                Console.WriteLine(i + "Unsecceesed");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("test " + i + " Succeeded");
+            }
+            i++;
+            //test 1: add task
+            try
+            {
+                board.AdvanceTask(email,3, 1);
+                Console.WriteLine(i + "Unsecceesed");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("test " + i + " Succeeded");
+            }
+            i++;
+            //test 1: add task
+            try
+            {
+                board.AdvanceTask(email,3, 1);
                 Console.WriteLine(i + "Unsecceesed");
             }
             catch (Exception e)
