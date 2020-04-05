@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using SSL = IntroSE.Kanban.Backend.ServiceLayer.SubService;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -17,7 +18,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Service s = new Service();
                 print(s.Register("yaki@", "123", "yaki"));
                 print(s.Login("yaki@", "123").toString());
-                print(s.GetBoard("yaki@").toString()); // this one has a problem
+                Console.WriteLine(s.GetColumn("yaki@", 1).Value);//problem solved, try me..
+                Console.WriteLine(s.GetBoard("yaki@").Value);
+                print(s.GetColumn("yaki@",2).toString()); 
                 print(s.Logout("yaki@"));
                
 

@@ -15,17 +15,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public Board(string email)
         {
             this.email = email;
-            //add the column of this email
+            //need to check if have a columnws user in data acseses
             columns = new Dictionary<string, Column>();
-            ID = 0;
-            columnsInt = new Column[3];
-            int i= 0;
-            foreach (Column a in columns.Values) {
-                ID += a.getSize();
-                columnsInt[i] = a;
-                i++;
-            }
-            
+            columnsInt = new Column[4];
+            columns.Add("done", new Column(email, "done"));
+            columnsInt[3] = columns["done"];
+            columns.Add("in progress", new Column(email, "in progress"));
+            columnsInt[2] = columns["in progress"];
+            columns.Add("backlog", new Column(email, "backlog"));
+            columnsInt[1] = columns["backlog"];
+            ID =1;
         }
         public Board()
         {
