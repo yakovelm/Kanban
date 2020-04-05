@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BL = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
     public class BoardService
     {
-        private BusinessLayer.TaskControl.Board board;
+        private BL.Board board;
         public BoardService(string email)
         {
-            board = new BusinessLayer.TaskControl.Board(email);
+            board = new BL.Board(email);
         }
         public BoardService()
         {
             //tester constractor
             String email = "yaki@gmail.com";
-            BusinessLayer.TaskControl.Column a = new BusinessLayer.TaskControl.Column(email, "a");
-            BusinessLayer.TaskControl.Column b = new BusinessLayer.TaskControl.Column(email, "b");
-            BusinessLayer.TaskControl.Column c = new BusinessLayer.TaskControl.Column (email, "c");
-            board = new BusinessLayer.TaskControl.Board(email, a, b, c);
+            BL.Column a = new BL.Column(email, "a");
+            BL.Column b = new BL.Column(email, "b");
+            BL.Column c = new BL.Column(email, "c");
+            board = new BL.Board(email, a, b, c);
         }
         public Response LimitColumnTask(string email, int ColumnOrdinal, int limit)
         {
@@ -85,7 +86,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                BusinessLayer.TaskControl.Column columnBL = board.GetColumn(email, columnName);
+                BL.Column columnBL = board.GetColumn(email, columnName);
                 return new Response<Column>(chengeType(columnBL));
             }
             catch (Exception e) { return (new Response<Column>(new Column(), e.Message)); }
@@ -94,26 +95,26 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                BusinessLayer.TaskControl.Column columnBL = board.GetColumn(email, columnOrdinal);
+                BL.Column columnBL = board.GetColumn(email, columnOrdinal);
                 return new Response<Column>(chengeType(columnBL));
             }
             catch (Exception e) { return (new Response<Column>(new Column(), e.Message)); }
         }
         public Response<Board> GetBoard(string email)
         {
-            Dictionary<string, BusinessLayer.TaskControl.Column> listColumnBL = board.getColumns(email);
+            Dictionary<string, BL.Column> listColumnBL = board.getColumns(email);
             List<string> listNames = new List<string>();
-            foreach (BusinessLayer.TaskControl.Column a in listColumnBL.Values) { listNames.Add(a.getName()); }
+            foreach (BL.Column a in listColumnBL.Values) { listNames.Add(a.getName()); }
             return new Response<Board>(new Board(listNames));
         }
-        private Task chengeType(BusinessLayer.TaskControl.Task taskBL)
+        private Task chengeType(BL.Task taskBL)
         {
             return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.getTitle(), taskBL.getDesc());
         }
         private Column chengeType(BusinessLayer.TaskControl.Column columnBL)
         {
             List<Task> TaskListSL = new List<Task>();
-            foreach (BusinessLayer.TaskControl.Task taskBL in columnBL.getListTask())
+            foreach (BL.Task taskBL in columnBL.getListTask())
             { TaskListSL.Add(chengeType(taskBL)); }
             return new Column(TaskListSL, columnBL.getName(), columnBL.getLimit());
         }
