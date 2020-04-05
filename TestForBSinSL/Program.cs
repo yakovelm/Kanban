@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 using IntroSE.Kanban.Backend.ServiceLayer.SubService;
 
-namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
+namespace TestForBSinSLIntroSE.Kanban.Backend.ServiceLayer.SubService
 {
     class Program
     {
         static void Main(string[] args)
         {
-            BoardService a = new BoardService(15);
+                            BoardService a = new BoardService(15);
             String email = "yaki@gmail.com";
             int i = 1;
             //test 1: add task
-            Console.WriteLine(a.AddTask(email, "first task", "asd", new DateTime(2020 + i, 6, 10)).ErrorMessage+" test " +i);
+            Console.WriteLine(a.AddTask(email, "first task", "asd", new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to seccess");
             i++;
             //test 1: add task
@@ -34,7 +34,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             i++;
             //test limit
             a.LimitColumnTask(email, 1, 8);
-            if (a.GetColumn(email,1).Value.Limit == 8)
+            if (a.GetColumn(email, 1).Value.Limit == 8)
             { Console.WriteLine("set Limit secceesed"); }
             else { Console.WriteLine("set Limit unsecceesed"); }
             i++;
@@ -54,120 +54,121 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
-                Console.WriteLine(a.UpdateTaskDueDate(email,9, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
-                Console.WriteLine(" test " + i + " need to unseccess");
+            Console.WriteLine(a.UpdateTaskDueDate(email, 9, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             Console.WriteLine(a.UpdateTaskDueDate("asdasd", 9, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
-                Console.WriteLine(a.UpdateTaskDueDate(email,2, 0, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
-                Console.WriteLine(" test " + i + " need to unseccess");
+            Console.WriteLine(a.UpdateTaskDueDate(email, 2, 0, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
-             Console.WriteLine(a.UpdateTaskDueDate(email,0, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
-             Console.WriteLine(" test " + i + " need to unseccess");
+            Console.WriteLine(a.UpdateTaskDueDate(email, 0, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
-             Console.WriteLine(a.UpdateTaskDueDate("asd", 0, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
-             Console.WriteLine(" test " + i + " need to unseccess");
+            Console.WriteLine(a.UpdateTaskDueDate("asd", 0, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
 
-             Console.WriteLine(a.UpdateTaskDueDate(email,3, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
-             Console.WriteLine(" test " + i + " need to unseccess");
+            Console.WriteLine(a.UpdateTaskDueDate(email, 3, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
-             Console.WriteLine(a.UpdateTaskDueDate("asdasdasd", 3, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
-             Console.WriteLine(" test " + i + " need to unseccess");
-             i++;
+            Console.WriteLine(a.UpdateTaskDueDate("asdasdasd", 3, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
             //test 1: add task
-              Console.WriteLine(a.UpdateTaskDueDate(email,2, 89, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
-              Console.WriteLine(" test " + i + " need to unseccess");
+            Console.WriteLine(a.UpdateTaskDueDate(email, 2, 89, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
-               Console.WriteLine(a.UpdateTaskDueDate("asdasdasd", 2, 89, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
-               Console.WriteLine(" test " + i + " need to unseccess");
-               i++;
-             //test 1: add task
+            Console.WriteLine(a.UpdateTaskDueDate("asdasdasd", 2, 89, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
+            //test 1: add task
 
-               Console.WriteLine(a.UpdateTaskDueDate(email,0, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
-              Console.WriteLine(" test " + i + " need to unseccess");
+            Console.WriteLine(a.UpdateTaskDueDate(email, 0, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             Console.WriteLine(a.UpdateTaskDueDate("asfasf", 0, 5, new DateTime(2020 + i, 6, 10)).ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
-             //test 1: add task
-             Console.WriteLine(a.UpdateTaskDescription(email,9, 5, "sdf").ErrorMessage + " test " + i);
-             Console.WriteLine(" test " + i + " need to unseccess");
+            //test 1: add task
+            Console.WriteLine(a.UpdateTaskDescription(email, 9, 5, "sdf").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             Console.WriteLine(a.UpdateTaskDescription("asdas", 9, 5, "sdf").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
-             //test 1: add task
-            Console.WriteLine(a.UpdateTaskDescription(email,2, 0, "ds").ErrorMessage + " test " + i);
+            //test 1: add task
+            Console.WriteLine(a.UpdateTaskDescription(email, 2, 0, "ds").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
-        Console.WriteLine(a.UpdateTaskDescription("asass", 2, 0, "ds").ErrorMessage + " test " + i);
-           Console.WriteLine(" test " + i + " need to unseccess");
-          i++;
-            Console.WriteLine(a.UpdateTaskDescription(email,0, 5, "sdf").ErrorMessage + " test " + i);
+            Console.WriteLine(a.UpdateTaskDescription("asass", 2, 0, "ds").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
-          i++;
-          Console.WriteLine(a.UpdateTaskDescription("asdas", 0, 5, "sdf").ErrorMessage + " test " + i);
-          Console.WriteLine(" test " + i + " need to unseccess");
-             i++;
-        //test 1: add task
-           Console.WriteLine(a.UpdateTaskDescription(email,3, 5, "asf").ErrorMessage + " test " + i);
-          Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
+            Console.WriteLine(a.UpdateTaskDescription(email, 0, 5, "sdf").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
+            Console.WriteLine(a.UpdateTaskDescription("asdas", 0, 5, "sdf").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
+            //test 1: add task
+            Console.WriteLine(a.UpdateTaskDescription(email, 3, 5, "asf").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             Console.WriteLine(a.UpdateTaskDescription("asd@as", 3, 5, "asf").ErrorMessage + " test " + i);
-          Console.WriteLine(" test " + i + " need to unseccess");
-                i++;
-               //test 1: add task
-           Console.WriteLine(a.UpdateTaskDescription(email,2, 89, "sdf").ErrorMessage + " test " + i);
-                Console.WriteLine(" test " + i + " need to unseccess");
-            i++;
-          Console.WriteLine(a.UpdateTaskDescription("asdas", 2, 89, "sdf").ErrorMessage + " test " + i);
-             Console.WriteLine(" test " + i + " need to unseccess");
-           i++;
-                        //test 1: add task
-         Console.WriteLine(a.UpdateTaskDescription(email,0, 5, "asd").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
-          Console.WriteLine(a.UpdateTaskDescription("asdasdas", 0, 5, "asd").ErrorMessage + " test " + i);
-          Console.WriteLine(" test " + i + " need to unseccess");
-          i++;
-           //test 1: add task
-            Console.WriteLine(a.UpdateTaskTitle(email,9, 5, "sdf").ErrorMessage + " test " + i);
-          Console.WriteLine(" test " + i + " need to unseccess");
+            //test 1: add task
+            Console.WriteLine(a.UpdateTaskDescription(email, 2, 89, "sdf").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
+            Console.WriteLine(a.UpdateTaskDescription("asdas", 2, 89, "sdf").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
+            //test 1: add task
+            Console.WriteLine(a.UpdateTaskDescription(email, 0, 5, "asd").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
+            Console.WriteLine(a.UpdateTaskDescription("asdasdas", 0, 5, "asd").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
+            //test 1: add task
+            Console.WriteLine(a.UpdateTaskTitle(email, 9, 5, "sdf").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             Console.WriteLine(a.UpdateTaskTitle("asd", 9, 5, "sdf").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
-            Console.WriteLine(a.UpdateTaskTitle(email,2, 0, "ds").ErrorMessage + " test " + i);
+            Console.WriteLine(a.UpdateTaskTitle(email, 2, 0, "ds").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             Console.WriteLine(a.UpdateTaskTitle("asdasd", 2, 0, "ds").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
-            Console.WriteLine(a.UpdateTaskTitle(email,0, 5, "sdf").ErrorMessage + " test " + i);
+            Console.WriteLine(a.UpdateTaskTitle(email, 0, 5, "sdf").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             //test 1: add task
-            Console.WriteLine(a.UpdateTaskTitle(email,3, 5, "asf").ErrorMessage + " test " + i);
-            Console.WriteLine(" test " + i + " need to unseccess");
-            i++;
-            //test 1: add task
-            Console.WriteLine(a.UpdateTaskTitle(email,2, 89, "sdf").ErrorMessage + " test " + i);
+            Console.WriteLine(a.UpdateTaskTitle(email, 3, 5, "asf").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
-            Console.WriteLine(a.UpdateTaskTitle(email,0, 5, "asd").ErrorMessage + " test " + i);
+            Console.WriteLine(a.UpdateTaskTitle(email, 2, 89, "sdf").ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
-            if(a.GetTask(55).ErrorMessage==null)
+            Console.WriteLine(a.UpdateTaskTitle(email, 0, 5, "asd").ErrorMessage + " test " + i);
+            Console.WriteLine(" test " + i + " need to unseccess");
+            i++;
+            //test 1: add task
+            if (a.GetTask(55).ErrorMessage == null)
             { Console.WriteLine("test " + i + " fall"); }
-            else {
+            else
+            {
                 Console.WriteLine("test " + i + " seccess");
             }
             i++;
@@ -200,11 +201,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 Console.WriteLine(a.GetTask(5).Value);
             }
             i++;
-            a.AdvanceTask(email,1, 1);
-            a.AdvanceTask(email,1, 3);
-            a.AdvanceTask(email,1, 4);
+            a.AdvanceTask(email, 1, 1);
+            a.AdvanceTask(email, 1, 3);
+            a.AdvanceTask(email, 1, 4);
             //test 1: add task
-            Console.WriteLine(a.AdvanceTask(email,3, 1).ErrorMessage + " test " + i);
+            Console.WriteLine(a.AdvanceTask(email, 3, 1).ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             Console.WriteLine(a.AdvanceTask(email, 7, 1).ErrorMessage + " test " + i);
@@ -218,16 +219,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             Console.WriteLine(a.AdvanceTask(email, 2, 2).ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
-            a.AdvanceTask(email,2, 1);
+            a.AdvanceTask(email, 2, 1);
             //test 1: add task
             Console.WriteLine(a.AdvanceTask(email, 3, 1).ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
-            if (!a.GetColumn(email,"d").ErrorOccured)
-            { Console.WriteLine("test " + i + " fall");
+            if (!a.GetColumn(email, "d").ErrorOccured)
+            {
+                Console.WriteLine("test " + i + " fall");
                 Console.WriteLine(a.GetColumn(email, "d").ErrorMessage);
-                Console.WriteLine(a.GetColumn(email, "d").ErrorOccured);
             }
             else
             {
@@ -236,16 +237,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             Console.WriteLine(i);
             i++;
-            if (a.GetColumn(email,"a").ErrorMessage != null)
+            if (a.GetColumn(email, "a").ErrorMessage != null)
             { Console.WriteLine("test " + i + " fall"); }
             else
             {
                 Console.WriteLine("test " + i + " seccess");
-                Console.WriteLine(a.GetColumn(email,"a").Value);
+                Console.WriteLine(a.GetColumn(email, "a").Value);
             }
             i++;
             //test 1: add task
-            if (a.GetColumn(email,89).ErrorMessage == null)
+            if (a.GetColumn(email, 89).ErrorMessage == null)
             { Console.WriteLine("test " + i + " fall"); }
             else
             {
@@ -254,7 +255,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             i++;
             //test 1: add task
-            if (a.GetColumn(email,3).ErrorMessage != null)
+            if (a.GetColumn(email, 3).ErrorMessage != null)
             { Console.WriteLine("test " + i + " fall"); }
             else
             {
@@ -271,7 +272,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             i++;
             //test 1: add task
-            Console.WriteLine(a.AdvanceTask(email,1, 1).ErrorMessage + " test " + i);
+            Console.WriteLine(a.AdvanceTask(email, 1, 1).ErrorMessage + " test " + i);
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             Console.WriteLine(a.AdvanceTask(email, 3, 1).ErrorMessage + " test " + i);

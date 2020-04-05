@@ -27,6 +27,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             
         }
+        public Board()
+        {
+            email = null;
+        }
         public Board(string email,Column column1, Column column2, Column column3)
         {
             //texter Board
@@ -60,6 +64,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         private void CheckEmail(string email)
         {
+            if (this.email == null ) { throw new Exception("you need to login to system"); }
             if (!email.Equals(this.email)) { throw new Exception("The email you entered does not match the email of the party");}
         }
         public void AddTask(string email, string title,string desciption, DateTime dueTime)
@@ -98,6 +103,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public Task GetTask(int taskID)
         {
+            if (this.email == null) { throw new Exception("you need to login to system"); }
             CheckTaskID(taskID);
             foreach (Column a in columns.Values)
             {
@@ -151,7 +157,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         private void CheckColumnName(string name)
         {
-            if(name!="a" & name!="b" & name!="c")
+            if(!name.Equals(columnsInt[1].getName()) & !name.Equals(columnsInt[2].getName()) & !name.Equals(columnsInt[3].getName()))
             { throw new Exception("The column name you searched for is invalid"); }
         }
     }
