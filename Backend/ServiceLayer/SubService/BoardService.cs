@@ -36,14 +36,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        public Response AddTask(string email, string title, string desciption, DateTime dueTime)
+        public Response<Task> AddTask(string email, string title, string desciption, DateTime dueTime)
         {
             try
             {
-                board.AddTask(email, title, desciption, dueTime);
-                return new Response();
+                BL.Task task=board.AddTask(email, title, desciption, dueTime);
+                return new Response<Task>(new Task(task.getID(),task.getCreation(),title, desciption));
             }
-            catch (Exception e) { return (new Response(e.Message)); }
+            catch (Exception e) { return (new Response<Task>(e.Message)); }
         }
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskID, DateTime Due)
         {

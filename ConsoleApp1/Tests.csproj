@@ -50,6 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Backend\KanbanProject.csproj">
       <Project>{54d4ca44-f049-47de-bf74-81fc80f867fd}</Project>
       <Name>KanbanProject</Name>

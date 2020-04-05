@@ -67,12 +67,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             if (this.email == null ) { throw new Exception("you need to login to system"); }
             if (!email.Equals(this.email)) { throw new Exception("The email you entered does not match the email of the party");}
         }
-        public void AddTask(string email, string title,string desciption, DateTime dueTime)
+        public Task AddTask(string email, string title,string desciption, DateTime dueTime)
         {
             CheckEmail(email);
             ID++;
             Task newTack = new Task(ID, title,desciption,dueTime,this.email);
             columnsInt[1].addTask(newTack);
+            return newTack;
         }
         public void UpdateTaskDueDate(string email,int columnOrdinal, int taskID, DateTime Due)
         {

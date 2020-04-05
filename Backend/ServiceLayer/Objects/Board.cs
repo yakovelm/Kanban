@@ -14,5 +14,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.ColumnsNames = columnsNames;
         }
         // You can add code here
+        public override string ToString()
+        {
+            string ret= "";
+            foreach (string c in ColumnsNames) { ret=ret+c+"\n"; }
+            return ret;
+        }
     }
 }

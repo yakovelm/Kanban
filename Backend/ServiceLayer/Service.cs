@@ -1,4 +1,7 @@
 ﻿using System;
+using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
+using UC = IntroSE.Kanban.Backend.BusinessLayer.UserControl;
+using SS = IntroSE.Kanban.Backend.ServiceLayer.SubService;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -13,13 +16,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
+        private SS.BoardService BS = null;
+        private SS.UserService US;
+        private string email = null;
+
 
         /// <summary>
         /// Simple public constructor.
         /// </summary>
         public Service()
         {
-            throw new NotImplementedException();
+            US = new SS.UserService();
         }
                
         /// <summary>        
@@ -41,7 +48,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string email, string password, string nickname)
         {
-            throw new NotImplementedException();
+            return US.register(email, password, nickname);
         }
 
         /// <summary>
@@ -52,7 +59,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-            throw new NotImplementedException();
+            if (this.email != null) { return new Response<User>(new User(), "a user is already logged in"); }
+            Response<User> res = US.login(email, password);
+            if (res.ErrorOccured) { return new Response<User>(new User(), res.ErrorMessage); }
+            this.email = email;
+            BS = new SS.BoardService(email);
+            return res;
+            
         }
 
         /// <summary>        
@@ -62,7 +75,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
-            throw new NotImplementedException();
+            if(this.email!=email | this.email == null) { return new Response("this user is not logged in."); }
+            return US.logout();
         }
 
         /// <summary>
@@ -72,7 +86,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
         public Response<Board> GetBoard(string email)
         {
-            throw new NotImplementedException();
+            if (this.email != email | this.email == null) { return new Response<Board>("this user is not logged in."); }
+            return BS.GetBoard(email);
         }
 
         /// <summary>
@@ -84,7 +99,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
-            throw new NotImplementedException();
+            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
+            return BS.LimitColumnTask(email, columnOrdinal, limit);
         }
 
         /// <summary>
@@ -97,7 +113,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            if (this.email != email | this.email == null) { return new Response<Task>("this user is not logged in."); }
+            return BS.AddTask(email, title, description, dueDate);
         }
 
         /// <summary>
@@ -110,7 +127,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
+            return BS.UpdateTaskDueDate(email,columnOrdinal,taskId,dueDate);
+
         }
 
         /// <summary>
@@ -123,7 +142,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {
-            throw new NotImplementedException();
+            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
+            return BS.UpdateTaskTitle(email, columnOrdinal, taskId, title);
         }
 
         /// <summary>
@@ -136,7 +156,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
         {
-            throw new NotImplementedException();
+            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
+            return BS.UpdateTaskDescription(email, columnOrdinal, taskId, description);
         }
 
         /// <summary>
@@ -148,7 +169,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
-            throw new NotImplementedException();
+            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
+            return BS.AdvanceTask(email, columnOrdinal, taskId);
         }
 
 
@@ -160,7 +182,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<Column> GetColumn(string email, string columnName)
         {
-            throw new NotImplementedException();
+            if (this.email != email | this.email == null) { return new Response<Column>("this user is not logged in."); }
+            return BS.GetColumn(email, columnName);
         }
 
         /// <summary>
@@ -173,7 +196,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            if (this.email != email | this.email == null) { return new Response<Column>("this user is not logged in."); }
+            return BS.GetColumn(email, columnOrdinal);
         }
     }
 }

@@ -3,29 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UC = IntroSE.Kanban.Backend.BusinessLayer.UserControl;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
     class UserService
     {
         private BusinessLayer.UserControl.UserController uc;
-        private string useremail;
+        private UC.User active;
         
         public UserService()
         {
             uc = new BusinessLayer.UserControl.UserController();
         }
-        public Response login(string email,string password)
+        public Response<User> login(string email,string password)
         {
             try
             {
                 uc.login(email, password);
-                useremail = email;
-                return new Response();
+                active = uc.get_active();
+                return new Response<User>(new User(active.getemail(),active.getnickname()));
             }
             catch (Exception e)
             {
-                return new Response(e.Message);
+                return new Response<User>(e.Message);
             }
         }
         public Response register(string email,string password,string nickname)

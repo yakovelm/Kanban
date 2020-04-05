@@ -18,5 +18,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Limit = limit;
         }
         // You can add code here
+
+        public override string ToString()
+        {
+            string ret = "";
+            ret+="-COLUMN-\n";
+            ret+="name: " + Name+"\n";
+            ret += "limit: " + Limit+"\n";
+            foreach (Task t in Tasks) { ret +=t.ToString(); }
+            return ret;
+        }
     }
 }

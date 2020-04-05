@@ -15,5 +15,12 @@
         {
             this.Value = value;
         }
+
+        public string toString()
+        {
+            if (ErrorOccured) { return ErrorMessage; }
+            else { return "no error:\n"+Value.ToString(); }
+            
+        }
     }
 }

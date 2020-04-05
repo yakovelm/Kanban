@@ -16,5 +16,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Nickname = nickname;
         }
         // You can add code here
+
+        public override string ToString()
+        {
+            string ret = "";
+            ret += Email+"\n";
+            ret += Nickname+"\n";
+            return ret;
+        }
     }
 }

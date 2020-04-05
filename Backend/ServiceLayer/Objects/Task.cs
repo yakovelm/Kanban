@@ -16,5 +16,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Description = description;
         }
         // You can add code here
+        public override string ToString()
+        {
+            string ret = "";
+            ret += "-TASK-"+"\n";
+            ret += "id: " + Id+"\n";
+            ret += "title: " + Title+"\n";
+            ret += "description: " + Description+"\n";
+            ret += "creation time: " + CreationTime+"\n";
+            return ret;
+        }
     }
 }

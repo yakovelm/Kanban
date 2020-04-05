@@ -85,11 +85,8 @@
     <Compile Include="ServiceLayer\Objects\Task.cs" />
     <Compile Include="ServiceLayer\Objects\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-<<<<<<< HEAD
     <Compile Include="ServiceLayer\SubService\BoardService.cs" />
-=======
     <Compile Include="ServiceLayer\SubService\UserService.cs" />
->>>>>>> user
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
