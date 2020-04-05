@@ -37,6 +37,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             return ID;
         }
+        public string getDesc()
+        {
+            return desc;
+        }
+        public DateTime getCreation()
+        {
+            return creation;
+        }
 
         public void ToDalObject() { throw new NotImplementedException(); }
 

@@ -83,6 +83,9 @@
     <Compile Include="ServiceLayer\Objects\Task.cs" />
     <Compile Include="ServiceLayer\Objects\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\..\BoardService.cs">
+      <Link>ServiceLayer\SubService\BoardService.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -92,7 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataAccessLayer\" />
-    <Folder Include="ServiceLayer\SubService\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

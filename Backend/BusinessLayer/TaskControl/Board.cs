@@ -47,6 +47,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
 
         }
+        public Board()
+        {
+            email = null;
+        }
         public void LimitColumnTask(string email,int ColumnOrdinal,int limit)
         {
             CheckEmail(email);
@@ -60,6 +64,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         private void CheckEmail(string email)
         {
+            if(this.email == null) { throw new Exception("You are not connected to the system so the operation was not performed"); }
+
             if (!email.Equals(this.email)) { throw new Exception("The email you entered does not match the email of the party");}
         }
         public void AddTask(string email, string title,string desciption, DateTime dueTime)
@@ -69,24 +75,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             Task newTack = new Task(ID, title,desciption,dueTime,this.email);
             columnsInt[1].addTask(newTack);
         }
-        public void UpdateTaskDueDate(int columnOrdinal, int taskID, DateTime Due)
+        public void UpdateTaskDueDate(string email,int columnOrdinal, int taskID, DateTime Due)
         {
+            CheckEmail(email);
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
             Task updateTask=columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDue(Due);
         }
-        public void UpdateTaskTitle(int columnOrdinal, int taskID,string title)
+        public void UpdateTaskTitle(string email,int columnOrdinal, int taskID,string title)
         {
+            CheckEmail(email);
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
             Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editTitle(title);
         }
-        public void UpdateTaskDescription(int columnOrdinal ,int taskID, string description)
+        public void UpdateTaskDescription(string email,int columnOrdinal ,int taskID, string description)
         {
+            CheckEmail(email);
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
@@ -95,6 +104,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public Task GetTask(int taskID)
         {
+            if (this.email == null) { throw new Exception("You are not connected to the system so the operation was not performed"); }
             CheckTaskID(taskID);
             foreach (Column a in columns.Values)
             {
@@ -104,8 +114,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             return null;
         }
-        public void AdvanceTask(int columnOrdinal ,int taskId)
+        public void AdvanceTask(string email,int columnOrdinal ,int taskId)
         {
+            CheckEmail(email);
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskId);
@@ -115,16 +126,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             columnsInt[columnOrdinal].deleteTask(advTask);
             columnsInt[columnOrdinal+1].addTask(advTask);
         }
-        public Column GetColumn(string columnName)
+        public Column GetColumn(string email,string columnName)
         {
-            if (columns[columnName] == null)
-            { throw new Exception("The column name you searched for is invalid"); }
+            CheckEmail(email);
+            checkNameColumn(columnName);
             return columns[columnName];
         }
-        public Column GetColumn(int columnOrdinal)
+        public Column GetColumn(string email,int columnOrdinal)
         {
+            CheckEmail(email);
             CheckColumnOrdinal(columnOrdinal);
             return columnsInt[columnOrdinal];
+        }
+        public Dictionary<string, Column> getColumnList(string email)
+        {
+            CheckEmail(email);
+            return columns;
         }
 
         private void CheckTaskID(int taskID)
@@ -138,6 +155,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             if (columnOrdinal == 3)
                 throw new Exception("Completed tasks cannot be changed");
+        }
+        private void checkNameColumn(string name)
+        {
+            if(name!="a" & name !="b"& name!="c")
+            { throw new Exception("The column name you searched for is invalid"); }
         }
     }
 }

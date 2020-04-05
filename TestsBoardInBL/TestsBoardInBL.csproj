@@ -7,7 +7,7 @@
     <ProjectGuid>{174D4BC0-4DED-4F65-81E9-1D9CDB91E53E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>TestsBoardInBL</RootNamespace>
-    <AssemblyName>TestsBoardInBL</AssemblyName>
+    <AssemblyName>``</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
