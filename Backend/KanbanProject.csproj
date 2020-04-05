@@ -74,6 +74,8 @@
     <Compile Include="BusinessLayer\TaskControl\Column.cs" />
     <Compile Include="BusinessLayer\IPersistentObject.cs" />
     <Compile Include="BusinessLayer\TaskControl\Task.cs" />
+    <Compile Include="BusinessLayer\UserControl\User.cs" />
+    <Compile Include="BusinessLayer\UserControl\UserController.cs" />
     <Compile Include="ServiceLayer\Response.cs" />
     <Compile Include="ServiceLayer\ResponseT.cs" />
     <Compile Include="ServiceLayer\IService.cs" />
@@ -83,7 +85,11 @@
     <Compile Include="ServiceLayer\Objects\Task.cs" />
     <Compile Include="ServiceLayer\Objects\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
     <Compile Include="ServiceLayer\SubService\BoardService.cs" />
+=======
+    <Compile Include="ServiceLayer\SubService\UserService.cs" />
+>>>>>>> user
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

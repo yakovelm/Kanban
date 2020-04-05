@@ -1,18 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29905.134
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1062
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanProject", "Backend\KanbanProject.csproj", "{54D4CA44-F049-47DE-BF74-81FC80F867FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testProj", "testProj\testProj.csproj", "{5F83DBE9-ACC8-4282-A7D3-8949850089EA}"
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsBoardInBL", "TestsBoardInBL\TestsBoardInBL.csproj", "{174D4BC0-4DED-4F65-81E9-1D9CDB91E53E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{54D4CA44-F049-47DE-BF74-81FC80F867FD} = {54D4CA44-F049-47DE-BF74-81FC80F867FD}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsServiceBoardInSL", "TestsServiceBoardInSL\TestsServiceBoardInSL.csproj", "{72007E10-9589-4465-8A49-3102603F75BF}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "ConsoleApp1\Tests.csproj", "{C130ED01-44E7-4D96-BEA6-F3AEE92EEF6D}"
+>>>>>>> user
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +32,7 @@ Global
 		{5F83DBE9-ACC8-4282-A7D3-8949850089EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F83DBE9-ACC8-4282-A7D3-8949850089EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F83DBE9-ACC8-4282-A7D3-8949850089EA}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{174D4BC0-4DED-4F65-81E9-1D9CDB91E53E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{174D4BC0-4DED-4F65-81E9-1D9CDB91E53E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{174D4BC0-4DED-4F65-81E9-1D9CDB91E53E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,6 +41,12 @@ Global
 		{72007E10-9589-4465-8A49-3102603F75BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72007E10-9589-4465-8A49-3102603F75BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72007E10-9589-4465-8A49-3102603F75BF}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{C130ED01-44E7-4D96-BEA6-F3AEE92EEF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C130ED01-44E7-4D96-BEA6-F3AEE92EEF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C130ED01-44E7-4D96-BEA6-F3AEE92EEF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C130ED01-44E7-4D96-BEA6-F3AEE92EEF6D}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> user
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
