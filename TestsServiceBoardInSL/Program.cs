@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
     {
         static void Main(string[] args)
         {
-            BoardService a = new BoardService();
+            BoardService a = new BoardService(15);
             String email = "yaki@gmail.com";
             int i = 1;
             //test 1: add task
@@ -224,9 +224,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             Console.WriteLine(" test " + i + " need to unseccess");
             i++;
             //test 1: add task
-            if (a.GetColumn(email,"d").ErrorMessage == null)
+            if (!a.GetColumn(email,"d").ErrorOccured)
             { Console.WriteLine("test " + i + " fall");
-                Console.WriteLine(a.GetColumn(email, 3).ErrorMessage);
+                Console.WriteLine(a.GetColumn(email, "d").ErrorMessage);
+                Console.WriteLine(a.GetColumn(email, "d").ErrorOccured);
             }
             else
             {
