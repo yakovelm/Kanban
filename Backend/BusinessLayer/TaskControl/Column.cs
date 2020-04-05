@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
-    public class Column :IPersistentObject
+    class Column :IPersistentObject
     {
         private string email;
         private string name;

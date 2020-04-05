@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
-    public class Task : IPersistentObject
+    class Task : IPersistentObject
     {
         private int ID;
         private string title;

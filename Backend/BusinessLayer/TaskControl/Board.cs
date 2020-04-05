@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
-    public class Board
+    class Board
     {
         private Dictionary<string,Column> columns;
         private int ID;

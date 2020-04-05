@@ -7,7 +7,7 @@ using BL = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
-    public class BoardService
+    class BoardService
     {
         private BL.Board board;
         public BoardService(string email)
