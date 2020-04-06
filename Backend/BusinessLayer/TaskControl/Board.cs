@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             columnsInt[2] = columns["in progress"];
             columns.Add("backlog", new Column(email, "backlog"));
             columnsInt[1] = columns["backlog"];
-            ID =1;
+            ID =0;
         }
         public Board()
         {
@@ -59,7 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private void CheckColumnOrdinal(int num)
         {
             if (num < 1 | num > 3)
-            { throw new Exception("Invalid column numbe"); }
+            { throw new Exception("Invalid column number"); }
         }
         private void CheckEmail(string email)
         {
@@ -147,7 +147,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             if(taskID>this.ID | taskID < 1)
             {
-                throw new Exception("you enterd illlegal ID");
+                throw new Exception("you entered an illegal ID");
             }
         }
         private void ColumnIsNotDoneColumn(int columnOrdinal)
