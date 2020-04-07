@@ -62,7 +62,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         DAL.Task IPersistentObject<DAL.Task>.ToDalObject()
         {
-            throw new NotImplementedException();
+            DAL.Task ret = new DAL.Task();
+            return ret;
         }
 
         public void Save()
