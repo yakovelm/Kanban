@@ -76,6 +76,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response Logout(string email)
         {
             if(this.email!=email | this.email == null) { return new Response("this user is not logged in."); }
+            this.email = null;
             return US.logout();
         }
 

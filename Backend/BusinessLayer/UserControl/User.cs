@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
-    public class User : IPersistentObject
+    class User : IPersistentObject<DAL.User>
     {
         private String email;
         private String password;
@@ -23,10 +24,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             this.password = password;
             this.nickname = nickname;
         }
-        void IPersistentObject.ToDalObject()
-        {
-            throw new NotImplementedException();
-        }
         public string getemail()
         {
             return this.email;
@@ -38,6 +35,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public string getnickname()
         {
             return this.nickname;
+        }
+
+        public DAL.User ToDalObject()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }

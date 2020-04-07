@@ -122,8 +122,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             Task advTask = columnsInt[columnOrdinal].getTask(taskId);
             if (advTask == null)
             { throw new Exception("task does not exist in this columm"); }
+            columnsInt[columnOrdinal + 1].addTask(advTask);
             columnsInt[columnOrdinal].deleteTask(advTask);
-            columnsInt[columnOrdinal+1].addTask(advTask);
         }
         public Column GetColumn(string email,string columnName)
         {

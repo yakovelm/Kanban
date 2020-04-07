@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
-    class Column :IPersistentObject
+    class Column :IPersistentObject<DAL.Column>
     {
         private string email;
         private string name;
@@ -50,7 +51,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             return (o);
         }
 
-        public void ToDalObject() { throw new NotImplementedException(); }
         public void addTask(Task task) 
         {
             if (limit!=-1 & limit == size) { throw new ArgumentException() ; }
@@ -93,5 +93,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             this.limit = limit;
         }
 
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        DAL.Column IPersistentObject<DAL.Column>.ToDalObject()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             this.ActiveUser = null;
             List = new List<User>();
         }
-        public User get_active() { return ActiveUser; }
+        User get_active() { return ActiveUser; }
         public void register(string email, string password, string nickname)
         {
             if (email == null || password == null || nickname == null) { throw new Exception("must register with non null values."); }

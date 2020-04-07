@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
-    class Task : IPersistentObject
+    class Task : IPersistentObject<DAL.Task>
     {
         private int ID;
         private string title;
@@ -46,8 +47,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             return ID;
         }
 
-        public void ToDalObject() { throw new NotImplementedException(); }
-
         public void editTitle(string title)
         {
             this.title = title;
@@ -61,5 +60,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             this.due = due;
         }
 
+        DAL.Task IPersistentObject<DAL.Task>.ToDalObject()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

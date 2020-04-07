@@ -11,7 +11,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     class test
     {
         static int count = 0;
-        static void Main(string[] args)
+        static void Main(string[] args) 
+            //when using this tester make sure to run everything under the print function to keep counter in sync
         {
             try
             {
@@ -20,9 +21,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string tp = "123";
                 string tn = "yaki";
 
+                print(s.Logout(te));
+                print(s.Login(te, tp).toString());
+
                 print(s.Register(te, tp, tn));
                 print(s.Login(te, tp).toString());
-                Console.WriteLine(s.GetBoard(te).Value);
+                print(s.GetBoard(te).Value.ToString());
                 print(s.GetColumn(te, 1).Value.ToString());
                 print(s.AddTask(te, "T0", "this is 0 test task", DateTime.Now));
                 print(s.GetColumn(te, 1).Value.ToString());
@@ -40,7 +44,30 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
                 print(s.GetColumn(te, 1).Value.ToString());
                 print(s.GetColumn(te, 2).Value.ToString());
+                print(s.LimitColumnTasks(te, 3, 1));
+                for (int i = 1; i < 10; i++)
+                {
+                    print(s.AdvanceTask(te, 2, i));
+                }
+                print(s.GetColumn(te, 2).Value.ToString());
+                print(s.GetColumn(te, 3).Value.ToString());
+                print(s.LimitColumnTasks(te, 4, 1));
+                for (int i = 1; i < 10; i++)
+                {
+                    print(s.AdvanceTask(te, 3, i));
+                }
+                print(s.GetColumn(te, 3).Value.ToString());
+                
+                try { print(s.GetColumn(te, 4).Value.ToString()); }
+                catch (Exception e) { print(e.Message); }
+
                 print(s.Logout(te));
+                try { print(s.GetBoard(te).Value.ToString()); }
+                catch(Exception e) { print(e.Message); }
+
+
+
+
 
             }
             catch(Exception e) { Console.WriteLine(e.Message); }
