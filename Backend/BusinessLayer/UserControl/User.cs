@@ -46,5 +46,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             throw new NotImplementedException();
         }
+
+        void IPersistentObject<DAL.User>.FromDalObject()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Load()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

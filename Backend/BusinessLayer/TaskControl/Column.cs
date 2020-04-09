@@ -93,12 +93,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             this.limit = limit;
         }
 
+        public DAL.Column ToDalObject()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FromDalObject()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Save()
         {
             throw new NotImplementedException();
         }
 
-        DAL.Column IPersistentObject<DAL.Column>.ToDalObject()
+        public void Load()
         {
             throw new NotImplementedException();
         }

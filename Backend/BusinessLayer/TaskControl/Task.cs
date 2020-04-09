@@ -60,13 +60,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             this.due = due;
         }
 
-        DAL.Task IPersistentObject<DAL.Task>.ToDalObject()
+        public DAL.Task ToDalObject()
         {
-            DAL.Task ret = new DAL.Task();
-            return ret;
+            throw new NotImplementedException();
+        }
+
+        public void FromDalObject()
+        {
+            throw new NotImplementedException();
         }
 
         public void Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Load()
         {
             throw new NotImplementedException();
         }
