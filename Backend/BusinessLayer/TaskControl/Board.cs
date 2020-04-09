@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
     class Board
     {
         private Dictionary<string,Column> columns;
-        private int ID;
+        private int ID=0;
         private string email;
         private Column[] columnsInt;
         public Board(string email)
@@ -24,32 +24,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             columnsInt[2] = columns["in progress"];
             columns.Add("backlog", new Column(email, "backlog"));
             columnsInt[1] = columns["backlog"];
-            ID =0;
+            LoadData();
         }
         public Board()
         {
             email = null;
         }
-        public Board(string email,Column column1, Column column2, Column column3)
-        {
-            //texter Board
-            this.email = email;
-            //add the column of this email
-            columns = new Dictionary<string, Column>();
-            columns.Add("a", column1);
-            columns.Add("b", column2);
-            columns.Add("c", column3);
-            ID = 0;
-            columnsInt = new Column[4];
-            int i = 1;
-            foreach (Column a in columns.Values)
-            {
-                ID += a.getSize();
-                columnsInt[i] = a;
-                i++;
-            }
 
-        }
         public void LimitColumnTask(string email,int ColumnOrdinal,int limit)
         {
             CheckEmail(email);
@@ -82,6 +63,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckTaskID(taskID);
             Task updateTask=columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDue(Due);
+            columnsInt[columnOrdinal].Save();
         }
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskID,string title)
         {
@@ -91,6 +73,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckTaskID(taskID);
             Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editTitle(title);
+            columnsInt[columnOrdinal].Save();
         }
         public void UpdateTaskDescription(string email, int columnOrdinal ,int taskID, string description)
         {
@@ -100,6 +83,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckTaskID(taskID);
             Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDesc(description);
+            columnsInt[columnOrdinal].Save();
         }
         public Task GetTask(int taskID)
         {
@@ -159,6 +143,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             if(!name.Equals(columnsInt[1].getName()) & !name.Equals(columnsInt[2].getName()) & !name.Equals(columnsInt[3].getName()))
             { throw new Exception("The column name you searched for is invalid"); }
+        }
+        private void LoadData()
+        {
+            foreach(Column column in columns.Values)
+            {
+                column.Load();
+                ID += column.getSize();
+            }
         }
     }
 }

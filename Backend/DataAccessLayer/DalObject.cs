@@ -20,6 +20,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             FileStream file = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
             StreamWriter sw = new StreamWriter(file);
             sw.Write(toJson);
+            sw.Close();
             file.Close();
 
         }

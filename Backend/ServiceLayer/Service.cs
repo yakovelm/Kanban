@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
 
