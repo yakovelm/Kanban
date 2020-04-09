@@ -95,21 +95,34 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public DAL.Column ToDalObject()
         {
-            throw new NotImplementedException();
+            List<DAL.Task> Dtasks = new List<DAL.Task>();
+            foreach (Task t in tasks) { Dtasks.Add(t.ToDalObject()); }
+            return new DAL.Column(email, name, limit, Dtasks); ;
         }
 
         public void FromDalObject(DAL.Column DalObj)
         {
+            email = DalObj.getEmail();
+            name = DalObj.getName();
+            limit = getLimit();
+            foreach(DAL.Task t in DalObj.getTasks()) 
+            {
+                Task BT = new Task();
+                BT.FromDalObject(t);
+                tasks.Add(BT);
+            }
+            size = tasks.Count();
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            DAL.Column DC=ToDalObject();
+            DC.Write("JSON\\" + email + "\\" + name + ".json",DC.toJson());
         }
-
+        
         public void Load()
         {
-            DAL.Column DC = new DAL.Column();
+            DAL.Column DC = new DAL.Column(email, name);
             DC.fromJson("JSON\\" + email + "\\" + name + ".json");
             FromDalObject(DC);
         }

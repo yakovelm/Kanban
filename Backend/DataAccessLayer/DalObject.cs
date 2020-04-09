@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public abstract string toJson();
         public abstract T fromJson(string filename);
 
-        protected void Write(string filename, string toJson)
+        public void Write(string filename, string toJson)
         {
             string path= Directory.GetCurrentDirectory();
             path = path + "\\" + filename;
@@ -25,7 +25,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
-        protected string read(string filename)
+        public string read(string filename)
         {
             string path = Directory.GetCurrentDirectory();
             path = path + "\\" + filename;

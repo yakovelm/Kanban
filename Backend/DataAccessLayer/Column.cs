@@ -44,8 +44,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             return limit;
         }
+        public string getEmail() { return email; }
+        public string getName() { return name; }
 
-        private List<Task> getTasks()
+        public List<Task> getTasks()
         {
             List<Task> output = new List<Task>();
             foreach (string str in tasks)

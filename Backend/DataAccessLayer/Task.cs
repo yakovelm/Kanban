@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class Task
+    class Task : DalObject<Task>
     {
         private string Email;
         private string Title;
@@ -25,10 +25,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             Due = due;
             Creation = creation;
         }
-        
-        public  string toJson()
+        public string getEmail() { return Email; }
+        public string getTitle() { return Title; }
+        public int getID() { return ID; }
+        public string getDesc() { return Desc; }
+        public DateTime getDue() { return Due; }
+        public DateTime getCreation() { return Creation; }
+
+        public override string toJson()
         {
             return JsonSerializer.Serialize(this, this.GetType());
+        }
+
+        public override Task fromJson(string filename)
+        {
         }
     }
 }

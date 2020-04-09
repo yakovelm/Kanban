@@ -9,6 +9,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
     class Task : IPersistentObject<DAL.Task>
     {
+        private int Tmax = 50;
+        private int Dmax = 300;
         private int ID;
         private string title;
         private string desc;
@@ -16,8 +18,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private DateTime creation;
         private string email;
 
+        public Task() { }
         public Task(int ID, string title, string desc, DateTime due, string email)
         {
+            if (title.Length > Tmax) { throw new Exception("Title too long."); }
+            if (desc.Length > Dmax) { throw new Exception("Description too long."); }
             this.ID = ID;
             this.title = title;
             this.desc = desc;
@@ -49,10 +54,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void editTitle(string title)
         {
+            if (title.Length > Tmax) { throw new Exception("Title too long."); }
             this.title = title;
         }
         public void editDesc(string desc)
         {
+            if (desc.Length > Dmax) { throw new Exception("Description too long."); }
             this.desc = desc;
         }
         public void editDue(DateTime due)
@@ -62,22 +69,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public DAL.Task ToDalObject()
         {
-            throw new NotImplementedException();
+            return new DAL.Task(email,title,desc,ID,due,creation);
         }
 
         public void FromDalObject(DAL.Task DalObj)
         {
-            throw new NotImplementedException();
+            email = DalObj.getEmail();
+            title = DalObj.getTitle();
+            ID = DalObj.getID();
+            desc = DalObj.getDesc();
+            due = DalObj.getDue();
+            creation = DalObj.getCreation();
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
         }
 
         public void Load()
         {
-            throw new NotImplementedException();
         }
     }
 }
