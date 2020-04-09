@@ -8,12 +8,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Task : DalObject<Task>
     {
-        protected override Task fromJson(string filename)
+        public override Task fromJson(string filename)
         {
             throw new NotImplementedException();
         }
 
-        protected override string toJson()
+        public override string toJson()
         {
             throw new NotImplementedException();
         }

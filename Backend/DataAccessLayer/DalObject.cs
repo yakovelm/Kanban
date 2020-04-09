@@ -10,8 +10,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     abstract class DalObject<T> where T:DalObject<T>
     {
 
-        protected abstract string toJson();
-        protected abstract T fromJson(string filename);
+        public abstract string toJson();
+        public abstract T fromJson(string filename);
 
         protected void Write(string filename, string toJson)
         {

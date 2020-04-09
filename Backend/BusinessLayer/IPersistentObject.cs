@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     interface IPersistentObject<T> where T : DAL.DalObject<T>
     {
         T ToDalObject();
-        void FromDalObject();
+        void FromDalObject(T DalObj);
         void Save();
 
         void Load();

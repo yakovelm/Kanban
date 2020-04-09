@@ -98,9 +98,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             throw new NotImplementedException();
         }
 
-        public void FromDalObject()
+        public void FromDalObject(DAL.Column DalObj)
         {
-            throw new NotImplementedException();
         }
 
         public void Save()
@@ -110,7 +109,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void Load()
         {
-            throw new NotImplementedException();
+            DAL.Column DC = new DAL.Column();
+            DC.fromJson("JSON\\" + email + "\\" + name + ".json");
+            FromDalObject(DC);
         }
     }
 }

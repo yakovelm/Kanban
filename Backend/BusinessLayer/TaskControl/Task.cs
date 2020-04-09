@@ -65,7 +65,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             throw new NotImplementedException();
         }
 
-        public void FromDalObject()
+        public void FromDalObject(DAL.Task DalObj)
         {
             throw new NotImplementedException();
         }
