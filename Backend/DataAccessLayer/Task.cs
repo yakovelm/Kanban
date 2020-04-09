@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             ID = id;
             Desc = desc;
             Due = due;
-            Creation=creation
+            Creation = creation;
         }
         
         public  string toJson()
