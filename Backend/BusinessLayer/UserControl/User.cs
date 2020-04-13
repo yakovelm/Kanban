@@ -19,6 +19,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             password = null;
             nickname = null;
         }
+        public User(string email) { this.email = email; }
         public User(string email, string password, string nickname) {
             this.email = email;
             this.password = password;
@@ -39,22 +40,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 
         public DAL.User ToDalObject()
         {
-            throw new NotImplementedException();
+            return new DAL.User(email, password, nickname);
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            DAL.User DU = ToDalObject();
+            DU.Write("JSON\\" + email + ".json", DU.toJson());
         }
 
-        void IPersistentObject<DAL.User>.FromDalObject(DAL.User DalObj)
+        public void FromDalObject(DAL.User DalObj)
         {
-            throw new NotImplementedException();
+            email = DalObj.getEmail();
+            password = DalObj.getPassword();
+            nickname = DalObj.getNickname();
         }
 
         public void Load()
         {
-            throw new NotImplementedException();
+            DAL.User DU = new DAL.User(email);
+            DU.fromJson("JSON\\" + email + ".json");
+            FromDalObject(DU);
         }
     }
 }

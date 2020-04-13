@@ -33,7 +33,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-
                 uc.register(email, password, nickname);
                 return new Response();
             }

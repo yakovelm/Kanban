@@ -64,6 +64,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void editDue(DateTime due)
         {
+            if (due.CompareTo(this.creation) < 0) { throw new Exception("new due is earlier then creation"); }
             this.due = due;
         }
 
