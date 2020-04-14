@@ -7,7 +7,7 @@ using System.IO;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    abstract class DalObject<T> where T:DalObject<T>
+    public abstract class DalObject<T> where T:DalObject<T>
     {
 
         public abstract string toJson();

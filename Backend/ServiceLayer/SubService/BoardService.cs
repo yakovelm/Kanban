@@ -14,15 +14,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             board = new BL.Board(email);
         }
-        public BoardService(int y)
-        {
-            //tester constractor
-            String email = "yaki@gmail.com";
-            BL.Column a = new BL.Column(email, "a");
-            BL.Column b = new BL.Column(email, "b");
-            BL.Column c = new BL.Column(email, "c");
-            board = new BL.Board(email, a, b, c);
-        }
         public BoardService()
         {
             board = new BL.Board();

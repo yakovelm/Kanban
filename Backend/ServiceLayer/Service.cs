@@ -16,9 +16,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
-        private SS.BoardService BS = null;
+        private SS.BoardService BS;
         private SS.UserService US;
-        private string email = null;
 
 
         /// <summary>
@@ -27,6 +26,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Service()
         {
             US = new SS.UserService();
+            BS = new SS.BoardService();
+            LoadData();
         }
                
         /// <summary>        
@@ -35,7 +36,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
-            return null;
+            return new Response();
         }
 
 
@@ -59,10 +60,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-            if (this.email != null) { return new Response<User>(new User(), "a user is already logged in"); }
             Response<User> res = US.login(email, password);
-            if (res.ErrorOccured) { return new Response<User>(new User(), res.ErrorMessage); }
-            this.email = email;
+            if (res.ErrorOccured) { return res; }
             BS = new SS.BoardService(email);
             return res;
             
@@ -75,9 +74,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
-            if(this.email!=email | this.email == null) { return new Response("this user is not logged in."); }
-            this.email = null;
-            return US.logout();
+            Response res = US.logout(email);
+            if (res.ErrorOccured) { return res; }
+            BS = new SS.BoardService();
+            return res;
         }
 
         /// <summary>
@@ -87,7 +87,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
         public Response<Board> GetBoard(string email)
         {
-            if (this.email != email | this.email == null) { return new Response<Board>("this user is not logged in."); }
             return BS.GetBoard(email);
         }
 
@@ -100,7 +99,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumnTasks(string email, int columnOrdinal, int limit)
         {
-            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
             return BS.LimitColumnTask(email, columnOrdinal, limit);
         }
 
@@ -114,7 +112,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string title, string description, DateTime dueDate)
         {
-            if (this.email != email | this.email == null) { return new Response<Task>("this user is not logged in."); }
             return BS.AddTask(email, title, description, dueDate);
         }
 
@@ -128,9 +125,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
             return BS.UpdateTaskDueDate(email,columnOrdinal,taskId,dueDate);
-
         }
 
         /// <summary>
@@ -143,7 +138,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskId, string title)
         {
-            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
             return BS.UpdateTaskTitle(email, columnOrdinal, taskId, title);
         }
 
@@ -157,7 +151,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskId, string description)
         {
-            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
             return BS.UpdateTaskDescription(email, columnOrdinal, taskId, description);
         }
 
@@ -170,7 +163,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
-            if (this.email != email | this.email == null) { return new Response("this user is not logged in."); }
             return BS.AdvanceTask(email, columnOrdinal, taskId);
         }
 
@@ -183,7 +175,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<Column> GetColumn(string email, string columnName)
         {
-            if (this.email != email | this.email == null) { return new Response<Column>("this user is not logged in."); }
             return BS.GetColumn(email, columnName);
         }
 
@@ -197,7 +188,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
-            if (this.email != email | this.email == null) { return new Response<Column>("this user is not logged in."); }
             return BS.GetColumn(email, columnOrdinal);
         }
     }

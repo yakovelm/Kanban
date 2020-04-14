@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
-    class User : IPersistentObject<DAL.User>
+    public class User : IPersistentObject<DAL.User>
     {
         private String email;
         private String password;

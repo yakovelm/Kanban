@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             return output;
         }
-        public List<string> getTaskString()
+        private List<string> getTaskString()
         {
             return tasks;
         }

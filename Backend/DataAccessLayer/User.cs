@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class User : DalObject<User>
+    public class User : DalObject<User>
     {
         private string email;
         private string password;

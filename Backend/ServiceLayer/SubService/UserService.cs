@@ -41,7 +41,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
-        public Response logout()
+        public Response logout(string email)
         {
             try
             {
