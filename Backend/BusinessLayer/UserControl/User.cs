@@ -47,7 +47,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public void Save()
         {
             DAL.User DU = ToDalObject();
-            DU.Write("JSON\\" + email + ".json", DU.toJson());
+            DU.Write("JSON\\" + email+"\\" + email+ ".json", DU.toJson());
         }
 
         public void FromDalObject(DAL.User DalObj)

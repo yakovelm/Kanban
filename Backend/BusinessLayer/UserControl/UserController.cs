@@ -30,9 +30,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | !hasMiniMaxChars.IsMatch(password) | !hasLowerChar.IsMatch(password)) 
             { throw new Exception("must include at least one uppercase letter, one small character and a number."); }
             string path = Directory.GetCurrentDirectory();
-            string pathString = System.IO.Path.Combine(path, email);
+            string pathString = System.IO.Path.Combine(path,"JSON", email);
             System.IO.Directory.CreateDirectory(pathString);
-                        User NU = new User(email, password, nickname);
+            User NU = new User(email, password, nickname);
             NU.Save();
         }
         public void login(string email,string password)

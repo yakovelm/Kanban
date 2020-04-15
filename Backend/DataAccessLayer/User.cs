@@ -36,6 +36,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public override string toJson()
         {
+            Console.WriteLine(email + " " + password + " " + nickname);
             return JsonSerializer.Serialize(this, this.GetType());
         }
     }

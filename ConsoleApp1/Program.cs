@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 Service s = new Service();
                 string te = "yaki@";
-                string tp = "123";
+                string tp = "123zsaZSA1212";
                 string tn = "yaki";
 
                 print(s.Logout(te));
@@ -26,8 +27,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
                 print(s.Register(te, tp, tn));
                 print(s.Login(te, tp).toString());
-                print(s.GetBoard(te).Value.ToString());
-                print(s.GetColumn(te, 1).Value.ToString());
+                print(s.GetBoard(te).ToString());
+                print(s.GetColumn(te, 1).ToString());
                 print(s.AddTask(te, "T0", "this is 0 test task", DateTime.Now));
                 print(s.GetColumn(te, 1).Value.ToString());
                 print(s.LimitColumnTasks(te, 1, 7));
@@ -85,4 +86,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Console.WriteLine(count + ":\n" + prt); 
         }
     }
+    
 }

@@ -39,6 +39,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public override Task fromJson(string filename)
         {
+            return null;
         }
     }
 }
