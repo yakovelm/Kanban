@@ -31,7 +31,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             string objectAsJson = File.ReadAllText(filename);
             User temp = JsonSerializer.Deserialize<User>(objectAsJson);
-            return this;
+            return temp;
         }
 
         public override string toJson()

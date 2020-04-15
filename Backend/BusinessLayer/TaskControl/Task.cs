@@ -75,12 +75,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void FromDalObject(DAL.Task DalObj)
         {
-            email = DalObj.getEmail();
-            title = DalObj.getTitle();
-            ID = DalObj.getID();
-            desc = DalObj.getDesc();
-            due = DalObj.getDue();
-            creation = DalObj.getCreation();
+            email = DalObj.Email;
+            title = DalObj.Title;
+            ID = DalObj.ID;
+            desc = DalObj.Desc;
+            due = DalObj.Due;
+            creation = DalObj.Creation;
         }
 
         public void Save()

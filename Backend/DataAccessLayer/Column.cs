@@ -10,11 +10,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Column : DalObject<Column>
     {
-        private string email;
-        private string name;
-        private int limit;
-        private int size;
-        private List<string> tasks;
+        public string email { get; }
+        public string name { get; }
+        public int limit { get; set; }
+        public int size { get; set; }
+        public List<string> tasks { get; set; }
 
         public Column(string email, string name, int limit, List<Task> tasks)
         {
@@ -40,13 +40,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return output;
         }
 
-        public int GetLimit()
-        {
-            return limit;
-        }
-        public string getEmail() { return email; }
-        public string getName() { return name; }
-
         public List<Task> getTasks()
         {
             List<Task> output = new List<Task>();
@@ -56,17 +49,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
             return output;
         }
-        private List<string> getTaskString()
-        {
-            return tasks;
-        }
 
         public override Column fromJson(string filename)
         {
             string objetAsJson = File.ReadAllText(filename);
             Column temp = JsonSerializer.Deserialize<Column>(objetAsJson);
-            this.limit = temp.GetLimit();
-            this.tasks = temp.getTaskString();
+            this.limit = temp.limit;
+            this.tasks = temp.tasks;
             size = tasks.Count();
             return this;
         }

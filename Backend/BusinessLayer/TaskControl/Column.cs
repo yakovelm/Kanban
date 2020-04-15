@@ -102,10 +102,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void FromDalObject(DAL.Column DalObj)
         {
-            email = DalObj.getEmail();
-            name = DalObj.getName();
-            limit = getLimit();
-            foreach(DAL.Task t in DalObj.getTasks()) 
+            email = DalObj.email;
+            name = DalObj.name;
+            limit = DalObj.limit;
+            foreach (DAL.Task t in DalObj.getTasks()) 
             {
                 Task BT = new Task();
                 BT.FromDalObject(t);
