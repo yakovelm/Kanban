@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                uc.logout();
+                uc.logout(email);
                 return new Response();
             }
             catch(Exception e)

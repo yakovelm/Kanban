@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.IO;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
@@ -22,21 +23,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             if (email == null || password == null || nickname == null) { throw new Exception("must register with non null values."); }
             if (email.Equals("") || password.Equals("") || nickname.Equals("")) { throw new Exception("must register with non empty values"); }
             if (checkUser(email)) { throw new Exception("this email is already taken."); }
-            if (password.Length > 20 | password.Length < 4) { throw new Exception(" A ​user password must be in length of 4 to 20 characters"); }
-            int a=0, b=0, c = 0;
-            for(int i = 0; i < password.Length; i++)
-            {
-                if (password[i] >= 'a' & password[i] <= 'z')
-                    a++;
-                if (password[i] >= 'A' & password[i] <= 'Z')
-                    b++;
-                if (password[i] >= '0' & password[i] <= '9')
-                    c++;
-                if (a > 0 & b > 0 & c > 0)
-                    break;
-            }
-            if (a == 0 | b == 0 | c == 0)
-                throw new Exception("must include at least one uppercase letter, one small character and a number.");
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasMiniMaxChars = new Regex(@".{4,20}");
+            var hasLowerChar = new Regex(@"[a-z]+");
+            if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | !hasMiniMaxChars.IsMatch(password) | !hasLowerChar.IsMatch(password)) 
+            { throw new Exception("must include at least one uppercase letter, one small character and a number."); }
             string path = Directory.GetCurrentDirectory();
             string pathString = System.IO.Path.Combine(path, email);
             System.IO.Directory.CreateDirectory(pathString);
@@ -55,14 +47,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             }
             
         }
-        public void logout()
+        public void logout(string email)
         {
-            ActiveUser = null;
+            if (!email.Equals(ActiveUser.getemail())) throw new Exception("given email is invalid");
+            else ActiveUser = null;
         }
         private Boolean checkUser(string email) 
         { 
             string path = Directory.GetCurrentDirectory();
-            if (!System.IO.Directory.Exists(path + email))
+            if(!System.IO.Directory.Exists(path + email))
                 return false;
             return true;
         }
