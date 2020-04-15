@@ -44,7 +44,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 u.Load();
                 if (u.getpassword().Equals(password))
                     this.ActiveUser = u;
+                else throw new Exception("Invalid password");
             }
+            else throw new Exception("The user does not exist");
             
         }
         public void logout(string email)

@@ -10,9 +10,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
     public class User : IPersistentObject<DAL.User>
     {
-        private String email;
-        private String password;
-        private String nickname;
+        public String email { get; set; }
+        public String password { get; set; }
+        public String nickname { get; set; }
 
         public User()
         {
@@ -38,7 +38,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             return this.nickname;
         }
-
         public DAL.User ToDalObject()
         {
             return new DAL.User(email, password, nickname);
@@ -52,9 +51,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 
         public void FromDalObject(DAL.User DalObj)
         {
-            email = DalObj.getEmail();
-            password = DalObj.getPassword();
-            nickname = DalObj.getNickname();
+            this.email = DalObj.getEmail();
+            this.password = DalObj.getPassword();
+            this.nickname = DalObj.getNickname();
         }
 
         public void Load()

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IntroSE.Kanban.Backend.ServiceLayer;
+using IntroSE.Kanban.Backend.BusinessLayer.UserControl;
 using SSL = IntroSE.Kanban.Backend.ServiceLayer.SubService;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -15,6 +16,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         static void Main(string[] args) 
             //when using this tester make sure to run everything under the print function to keep counter in sync
         {
+            Console.WriteLine("13");
+            UserController uc = new UserController();
+            uc.register("nitay@", "NYNBGU987", "nit");
             try
             {
                 Service s = new Service();
