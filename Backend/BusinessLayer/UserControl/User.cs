@@ -10,9 +10,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
     public class User : IPersistentObject<DAL.User>
     {
-        public String email { get; set; }
-        public String password { get; set; }
-        public String nickname { get; set; }
+        private String email;
+        private String password;
+        private String nickname;
 
         public User()
         {

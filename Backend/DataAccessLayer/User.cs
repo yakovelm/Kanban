@@ -10,9 +10,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class User : DalObject<User>
     {
-        private string email;
-        private string password;
-        private string nickname;
+        public string email { get; }
+        public string password { get; }
+        public string nickname { get; }
 
         public User(string email) 
         {
@@ -36,7 +36,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public override string toJson()
         {
-            Console.WriteLine(email + " " + password + " " + nickname);
             return JsonSerializer.Serialize(this, this.GetType());
         }
     }
