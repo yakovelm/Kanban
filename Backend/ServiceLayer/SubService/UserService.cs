@@ -53,5 +53,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
+        public void LoadData()
+        {
+            uc.LoadData();
+        }
     }
 }

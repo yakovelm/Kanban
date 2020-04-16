@@ -12,6 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
     public class UserController
     {
         private User ActiveUser;
+        private List<User> list;
 
         public UserController()
         {
@@ -34,19 +35,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             System.IO.Directory.CreateDirectory(pathString);
             User NU = new User(email, password, nickname);
             NU.Save();
+            list.Add(NU);
         }
         public void login(string email,string password)
         {
             if (email == null || password == null) { throw new Exception("must login with non null values"); }
-            if (checkUser(email))
+            foreach(User u in list)
             {
-                User u = new User(email);
-                u.Load();
-                if (u.getpassword().Equals(password))
-                    this.ActiveUser = u;
-                else throw new Exception("Invalid password");
+                if (u.getemail().Equals(email))
+                {
+                    if (u.getpassword().Equals(password))
+                    {
+                        ActiveUser = u;
+                    }
+                    else throw new Exception("invaild password");
+                }
             }
-            else throw new Exception("The user does not exist");
+            if (ActiveUser == null)
+            {
+                throw new Exception("The user does not exist");
+            }
             
         }
         public void logout(string email)
@@ -61,6 +69,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             if(!System.IO.Directory.Exists(path+"\\JSON\\" + email))
                 return false;
             return true;
+        }
+        public void LoadData()
+        {
+            list = new List<User>();
+            string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
+            foreach (string email in users)
+            {
+                User u = new User(email);
+                u.Load();
+                list.Add(u);
+            }
         }
     }
 }
