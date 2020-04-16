@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UU=IntroSE.Kanban.Backend.ServiceLayer;
 using IntroSE.Kanban.Backend.BusinessLayer.UserControl;
+using CCC = IntroSE.Kanban.Backend.DataAccessLayer.User;
 using SSL = IntroSE.Kanban.Backend.ServiceLayer.SubService;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -16,9 +17,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         static void Main(string[] args) 
             //when using this tester make sure to run everything under the print function to keep counter in sync
         {
+
+            CCC user = new CCC("nitay", "132", "nit");
+            Console.WriteLine(user.toJson());
             //test for nitay
             //start
-            Service s = new UU.Service();
+            /*Service s = new UU.Service();
             string legalPass = "123Aa";
             string illegalPass = "asd";
             string legalEmail = "asd@asd.ac.uil";
@@ -53,12 +57,49 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             catch (Exception e) { Console.WriteLine("dont work"); }
             //end 
+            */
+
+
+            //test for yaki
+            //start
+            Service se = new UU.Service();
+            string title = "123Aa";
+            string desc = "nitayc";
+            string Email = "asd@asd.ac.uil";
+            Console.WriteLine("start!!!!!!!!!!!!!!!!!!");
+            try
+            {
+                //print(se.Register(Email, legalPass, "asdasd"));
+                print(se.AddTask(Email,title,desc,new DateTime(2020,4,20)));
+                print(se.AdvanceTask(Email+"1", 1, 0));
+                print(se.AdvanceTask(Email,1,0));
+                print(se.GetColumn(Email + "1", 1));
+                print(se.GetColumn(Email, 1).Value.ToString());
+                print(se.GetColumn(Email,2).Value.ToString());
+                print(se.UpdateTaskDescription(Email, 2, 0, "newASW"));
+                print(se.GetColumn(Email, 2).Value.ToString());
+                print(se.UpdateTaskDescription(Email+"1", 2, 0, "newASW"));
+                print(se.UpdateTaskDescription(Email, 1, 0, desc));
+                print(se.UpdateTaskDescription(Email, 1, 0, "newASW"));
+                print(se.AdvanceTask(Email, 2, 0));
+                print(se.AdvanceTask(Email, 3, 0));
+                print(se.AddTask(Email, title, desc, new DateTime(2000, 4, 20)));
+                print(se.AddTask(Email, title, desc, new DateTime(2020, 4, 30)));
+                print(se.GetColumn(Email, 1));
+                print(se.UpdateTaskDueDate(Email, 1, 1, new DateTime(2000, 4, 20)));
+                print(se.UpdateTaskDueDate(Email, 1, 1, new DateTime(2200, 4, 20)));
+                print(se.LimitColumnTasks(Email, 4, 90));
+
+            }
+            catch (Exception e) { Console.WriteLine("dont work"); }
+            //end 
 
             Console.WriteLine("13");
             UserController uc = new UserController();
             uc.register("nitay@", "NYNBGU987", "nit");
             try
             {
+                /*
                 string te = "yaki@";
                 string tp = "123zsaZSA1212";
                 string tn = "yaki";
@@ -108,7 +149,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 catch(Exception e) { print(e.Message); }
 
 
-
+    */
 
 
             }
