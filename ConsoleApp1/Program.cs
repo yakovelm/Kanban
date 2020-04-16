@@ -18,97 +18,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             //when using this tester make sure to run everything under the print function to keep counter in sync
         {
 
-            CCC user = new CCC("nitay", "132", "nit");
-            Console.WriteLine(user.toJson());
-            //test for nitay
-            //start
-            /*Service s = new UU.Service();
-            string legalPass = "123Aa";
-            string illegalPass = "asd";
-            string legalEmail = "asd@asd.ac.uil";
-            string illegalEmail = "asdads.asd.asd";
-            Console.WriteLine("start");
             try
             {
-                print(s.Register(legalEmail, legalPass, "asdasd"));
-                print(s.Register(legalEmail + "asd", legalPass + "%", "asdasd"));
-                print(s.Register(legalEmail, legalPass, "asdasd"));
-                print(s.Register(legalEmail, illegalPass + "%", "asdasd"));
-                print(s.Register(illegalEmail, illegalPass + "%", "asdasd"));
-                print(s.Register("asdas@", legalPass + "%" + "asdasdkmkee42344324AAAAsdf", "asdasd"));
-                print(s.Register(legalEmail + illegalPass, illegalPass + "%", "asdasd"));
-                print(s.Register("asasd@@@", legalPass + "%", "ss"));
-                print(s.Login(legalEmail, legalPass));
-                print(s.Register("asdasdasd@", "asdadsAAA123", "asdddd"));
-                print(s.Login(legalEmail + "asd", legalPass + "%"));
-                print(s.Logout(illegalEmail));
-                print(s.Logout(legalEmail));
-                print(s.Logout(legalEmail));
-                print(s.Login(illegalEmail, illegalPass + "%"));
-                print(s.Logout(illegalEmail));
-                print(s.Register("sdfsdfשדגדשג@", "1111sdfAAA", "sdfs"));
-                print(s.Register("sdfsf@", "sdfs!!@@asdQ1", null));
-                print(s.Register("@", "sdfaAAA", "sdffd"));
-                print(s.Login("@", "sdfaAAA"));
-                print(s.Logout(legalEmail));
-                print(s.Logout("@"));
-                print(s.Register(illegalEmail, legalPass, "sdfsdf"));
-                print(s.Register(legalEmail + "sdfsf", legalPass, ""));
-            }
-            catch (Exception e) { Console.WriteLine("dont work"); }
-            //end 
-            */
-
-
-            //test for yaki
-            //start
-            Service se = new UU.Service();
-            string title = "123Aa";
-            string desc = "nitayc";
-            string Email = "asd@asd.ac.uil";
-            Console.WriteLine("start!!!!!!!!!!!!!!!!!!");
-            try
-            {
-                //print(se.Register(Email, legalPass, "asdasd"));
-                print(se.AddTask(Email,title,desc,new DateTime(2020,4,20)));
-                print(se.AdvanceTask(Email+"1", 1, 0));
-                print(se.AdvanceTask(Email,1,0));
-                print(se.GetColumn(Email + "1", 1));
-                print(se.GetColumn(Email, 1).Value.ToString());
-                print(se.GetColumn(Email,2).Value.ToString());
-                print(se.UpdateTaskDescription(Email, 2, 0, "newASW"));
-                print(se.GetColumn(Email, 2).Value.ToString());
-                print(se.UpdateTaskDescription(Email+"1", 2, 0, "newASW"));
-                print(se.UpdateTaskDescription(Email, 1, 0, desc));
-                print(se.UpdateTaskDescription(Email, 1, 0, "newASW"));
-                print(se.AdvanceTask(Email, 2, 0));
-                print(se.AdvanceTask(Email, 3, 0));
-                print(se.AddTask(Email, title, desc, new DateTime(2000, 4, 20)));
-                print(se.AddTask(Email, title, desc, new DateTime(2020, 4, 30)));
-                print(se.GetColumn(Email, 1));
-                print(se.UpdateTaskDueDate(Email, 1, 1, new DateTime(2000, 4, 20)));
-                print(se.UpdateTaskDueDate(Email, 1, 1, new DateTime(2200, 4, 20)));
-                print(se.LimitColumnTasks(Email, 4, 90));
-
-            }
-            catch (Exception e) { Console.WriteLine("dont work"); }
-            //end 
-
-            Console.WriteLine("13");
-            UserController uc = new UserController();
-            uc.register("nitay@", "NYNBGU987", "nit");
-            try
-            {
-                /*
+                UU.Service s = new UU.Service();
                 string te = "yaki@";
                 string tp = "123zsaZSA1212";
                 string tn = "yaki";
 
-                print(s.Logout(te));
-                print(s.Login(te, tp).toString());
-
                 print(s.Register(te, tp, tn));
                 print(s.Login(te, tp).toString());
+                Console.Read();
                 print(s.GetBoard(te).ToString());
                 print(s.GetColumn(te, 1).ToString());
                 print(s.AddTask(te, "T0", "this is 0 test task", DateTime.Now));
@@ -147,9 +66,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.Logout(te));
                 try { print(s.GetBoard(te).Value.ToString()); }
                 catch(Exception e) { print(e.Message); }
-
-
-    */
 
 
             }

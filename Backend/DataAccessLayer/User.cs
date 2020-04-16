@@ -30,11 +30,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string getPassword() { return password; }
         public override User fromJson(string filename)
         {
-            if (File.Exists("JSON\\" + email + "\\" + email + ".json"))
+            Console.WriteLine(filename);
+            if (File.Exists(Directory.GetCurrentDirectory()+"\\"+filename))
             {
-                string objectAsJson = File.ReadAllText(filename);
+                string objectAsJson = read(filename);
+                Console.WriteLine(objectAsJson);
                 User temp = JsonSerializer.Deserialize<User>(objectAsJson);
-                return temp;
+                this.email = temp.email;
+                this.password = temp.password;
+                this.nickname = temp.nickname;
+                return this;
             }
             else throw new Exception("Json file not exists");
         }

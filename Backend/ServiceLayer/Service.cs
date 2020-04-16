@@ -62,7 +62,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response<User> res = US.login(email, password);
             if (res.ErrorOccured) { return res; }
-            BS = new SS.BoardService(email);
+            BS = new SS.BoardService();
+            Console.WriteLine("made board");
             return res;
             
         }

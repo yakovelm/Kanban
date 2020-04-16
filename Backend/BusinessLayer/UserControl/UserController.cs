@@ -58,7 +58,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private Boolean checkUser(string email) 
         { 
             string path = Directory.GetCurrentDirectory();
-            if(!System.IO.Directory.Exists(path+"JSON\\" + email))
+            if(!System.IO.Directory.Exists(path+"\\JSON\\" + email))
                 return false;
             return true;
         }
