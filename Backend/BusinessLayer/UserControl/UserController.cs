@@ -74,9 +74,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             list = new List<User>();
             string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
-            foreach (string email in users)
+            foreach (string path in users)
             {
-                User u = new User(email);
+                var dir = new DirectoryInfo(path);
+                User u = new User(dir.Name);
                 u.Load();
                 list.Add(u);
             }

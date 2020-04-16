@@ -19,22 +19,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public void LoadData()
         {
             string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory()+"\\JSON");
-            foreach(string email in users)
+            foreach(string path in users)
             {
-                BC.Add(email, new Board(email));
+                var dir = new DirectoryInfo(path);
+                BC.Add(dir.Name,new Board(dir.Name));
             }
         }
 
         public void Login(string email) {
-            Cur = BC[email];
-            if (Cur == null)
+            try
+            {
+                Cur = BC[email];
+            }
+            catch(Exception e)
             {
                 BC.Add(email,new Board(email));
                 Cur = BC[email];
             }
         }
-        public void Logout()
+        public void Logout(string email)
         {
+            CheckEmail(email);
             Cur = new Board();
         }
 

@@ -24,13 +24,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string te = "yaki@";
                 string tp = "123zsaZSA1212";
                 string tn = "yaki";
-
+                
                 print(s.Login(te, tp).toString());
                 print(s.GetBoard(te).toString());
                 print(s.GetColumn(te, 1).toString());
                 print(s.GetColumn(te, 2).toString());
                 print(s.GetColumn(te, 3).toString());
-
+                
                 /*
                 print(s.Register(te, tp, tn));
                 print(s.Login(te, tp).toString());

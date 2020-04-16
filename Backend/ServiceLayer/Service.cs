@@ -36,6 +36,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
+            Response Ures=US.LoadData();
+            if (Ures.ErrorOccured) return Ures;
+            Response Bres = BS.LoadData();
+            if (Bres.ErrorOccured) return Bres;
             return new Response();
         }
 
@@ -60,11 +64,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-            Response<User> res = US.login(email, password);
-            if (res.ErrorOccured) { return res; }
-            BS = new SS.BoardService(email);
-            return res;
-            
+            Response<User> Ures = US.login(email, password);
+            if (Ures.ErrorOccured) { return Ures; }
+            Response Bres = BS.Login(email);
+            if (Bres.ErrorOccured) return new Response<User>(Bres.ErrorMessage);
+            return Ures;
         }
 
         /// <summary>        
@@ -74,10 +78,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
-            Response res = US.logout(email);
-            if (res.ErrorOccured) { return res; }
-            BS = new SS.BoardService();
-            return res;
+            Response Ures = US.logout(email);
+            if (Ures.ErrorOccured) { return Ures; }
+            Response Bres=BS.Logout(email);
+            if (Bres.ErrorOccured) return Bres;
+            return Ures;
         }
 
         /// <summary>

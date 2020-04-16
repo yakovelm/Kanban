@@ -15,11 +15,33 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             BC = new BL.BoardController();
         }
 
-        public void LoadData()
+        public Response LoadData()
         {
-            BC.LoadData();
+            try
+            {
+                BC.LoadData();
+                return new Response();
+            }
+            catch(Exception e) { return new Response(e.Message); }
         }
-
+        public Response Login(string email)
+        {
+            try
+            {
+                BC.Login(email);
+                return new Response();
+            }
+            catch (Exception e) { return (new Response(e.Message)); }
+        }
+        public Response Logout(string email)
+        {
+            try
+            {
+                BC.Logout(email);
+                return new Response();
+            }
+            catch (Exception e) { return (new Response(e.Message)); }
+        }
         public Response LimitColumnTask(string email, int ColumnOrdinal, int limit)
         {
             try
