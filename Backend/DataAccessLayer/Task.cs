@@ -9,12 +9,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Task : DalObject<Task>
     {
-        public string Email { get; }
-        public string Title { get; }
-        public string Desc { get; }
-        public int ID { get; }
-        public DateTime Due { get; }
-        public DateTime Creation { get; }
+        public string Email { get; set; }
+        public string Title { get; set; }
+        public string Desc { get; set; }
+        public int ID { get; set; }
+        public DateTime Due { get; set; }
+        public DateTime Creation { get; set; }
 
         public Task(string email, string title, string desc, int id, DateTime due, DateTime creation)
         {
@@ -25,6 +25,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             Due = due;
             Creation = creation;
         }
+        public Task() { }
 
         public override string toJson()
         {

@@ -25,11 +25,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string tp = "123zsaZSA1212";
                 string tn = "yaki";
 
+                print(s.Login(te, tp).toString());
+                print(s.GetBoard(te).toString());
+                print(s.GetColumn(te, 1).toString());
+
+
+
+                /*
                 print(s.Register(te, tp, tn));
                 print(s.Login(te, tp).toString());
-                Console.Read();
-                print(s.GetBoard(te).ToString());
-                print(s.GetColumn(te, 1).ToString());
+                print(s.GetBoard(te).toString());
+                print(s.GetColumn(te, 1).toString());
                 print(s.AddTask(te, "T0", "this is 0 test task", DateTime.Now));
                 print(s.GetColumn(te, 1).Value.ToString());
                 print(s.LimitColumnTasks(te, 1, 7));
@@ -60,14 +66,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
                 print(s.GetColumn(te, 3).Value.ToString());
                 
-                try { print(s.GetColumn(te, 4).Value.ToString()); }
+                try { print(s.GetColumn(te, 4).toString()); }
                 catch (Exception e) { print(e.Message); }
 
                 print(s.Logout(te));
                 try { print(s.GetBoard(te).Value.ToString()); }
                 catch(Exception e) { print(e.Message); }
-
-
+                */
             }
             catch(Exception e) { Console.WriteLine(e.Message); }
             Console.Read();
@@ -77,17 +82,23 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             count++;
             if (res.ErrorOccured) { Console.WriteLine(count+":\n"+res.ErrorMessage); }
             else { Console.WriteLine(count + ":\n" + "no error."); }
+            Console.Read();
+            Console.Read();
         }
         static void print(Response<UU.User> res) //i miss python T_T
         {
             count++;
             if (res.ErrorOccured) { Console.WriteLine(count + ":\n" + res.ErrorMessage); }
             else { Console.WriteLine(count + ":\n" + "no error."); }
+            Console.Read();
+            Console.Read();
         }
         static void print(string prt) 
         {
             count++;
-            Console.WriteLine(count + ":\n" + prt); 
+            Console.WriteLine(count + ":\n" + prt);
+            Console.Read();
+            Console.Read();
         }
     }
     

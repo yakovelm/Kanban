@@ -30,11 +30,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string getPassword() { return password; }
         public override User fromJson(string filename)
         {
-            Console.WriteLine(filename);
             if (File.Exists(Directory.GetCurrentDirectory()+"\\"+filename))
             {
                 string objectAsJson = read(filename);
-                Console.WriteLine(objectAsJson);
                 User temp = JsonSerializer.Deserialize<User>(objectAsJson);
                 this.email = temp.email;
                 this.password = temp.password;

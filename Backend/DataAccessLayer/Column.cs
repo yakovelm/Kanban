@@ -10,8 +10,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Column : DalObject<Column>
     {
-        public string email { get; }
-        public string name { get; }
+        public string email { get; set; }
+        public string name { get; set; }
         public int limit { get; set; }
         public int size { get; set; }
         public List<string> tasks { get; set; }
@@ -29,6 +29,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.email = email;
             this.name = name;
         }
+
+        public Column() { }
         
         private List<string> ChengeToString(List<Task> tasks)
         {
@@ -52,7 +54,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public override Column fromJson(string filename)
         {
-            string objetAsJson = File.ReadAllText(filename);
+            Console.WriteLine(filename);
+            string objetAsJson = read(filename);
             Column temp = JsonSerializer.Deserialize<Column>(objetAsJson);
             this.limit = temp.limit;
             this.tasks = temp.tasks;

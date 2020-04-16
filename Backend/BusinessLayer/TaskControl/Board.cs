@@ -148,6 +148,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             foreach(Column column in columns.Values)
             {
+                Console.WriteLine("before load");
                 column.Load();
                 ID += column.getSize();
             }

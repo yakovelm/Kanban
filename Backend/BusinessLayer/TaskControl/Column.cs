@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
@@ -23,7 +24,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             size = 0;
             limit = -1;
         }
-
         public int getSize()
         {
             return size;
@@ -53,14 +53,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void addTask(Task task) 
         {
-            if (limit!=-1 & limit == size) { throw new ArgumentException() ; }
+            if (limit!=-1 & limit == size) { throw new Exception("task limit reached, task not added.") ; }
             tasks.Add(task);
+            Save();
             size++;
         }
         public Task deleteTask(Task task)
         {
             if (tasks.Remove(task))
             {
+                Save();
                 return task;
             }
             return null;
@@ -89,7 +91,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void setLimit(int limit)
         {
-            if (limit < size) { throw new ArgumentException(); }
+            if (limit < size) { throw new Exception("limit cannot be lower than current amount of tasks."); }
             this.limit = limit;
         }
 
@@ -123,6 +125,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public void Load()
         {
             DAL.Column DC = new DAL.Column(email, name);
+            if(!File.Exists(Directory.GetCurrentDirectory()+ "\\JSON\\" + email + "\\" + name + ".json")) { Save(); }
+            
             DC.fromJson("JSON\\" + email + "\\" + name + ".json");
             FromDalObject(DC);
         }
