@@ -51,13 +51,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void logout(string email)
         {
+            if(ActiveUser==null) { throw new Exception("user not login"); }
             if (!email.Equals(ActiveUser.getemail())) throw new Exception("given email is invalid");
             else ActiveUser = null;
         }
         private Boolean checkUser(string email) 
         { 
             string path = Directory.GetCurrentDirectory();
-            if(!System.IO.Directory.Exists(path + email))
+            if(!System.IO.Directory.Exists(path+"JSON\\" + email))
                 return false;
             return true;
         }

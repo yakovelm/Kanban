@@ -10,14 +10,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class User : DalObject<User>
     {
-        public string email { get; }
-        public string password { get; }
-        public string nickname { get; }
+        public string email { get; set; }
+        public string password { get; set; }
+        public string nickname { get; set; }
 
         public User(string email) 
         {
             this.email = email;
         }
+        public User() { }
         public User(string email,string password,string nickname)
         {
             this.email = email;
@@ -29,9 +30,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string getPassword() { return password; }
         public override User fromJson(string filename)
         {
-            string objectAsJson = File.ReadAllText(filename);
-            User temp = JsonSerializer.Deserialize<User>(objectAsJson);
-            return temp;
+            if (File.Exists("JSON\\" + email + "\\" + email + ".json"))
+            {
+                string objectAsJson = File.ReadAllText(filename);
+                User temp = JsonSerializer.Deserialize<User>(objectAsJson);
+                return temp;
+            }
+            else throw new Exception("Json file not exists");
         }
 
         public override string toJson()

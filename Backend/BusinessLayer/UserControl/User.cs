@@ -59,7 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public void Load()
         {
             DAL.User DU = new DAL.User(email);
-            DU.fromJson("JSON\\" + email + ".json");
+            DU.fromJson("JSON\\" + email + "\\" + email + ".json");
             FromDalObject(DU);
         }
     }
