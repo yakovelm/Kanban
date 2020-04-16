@@ -17,6 +17,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             string path= Directory.GetCurrentDirectory();
             path = path + "\\" + filename;
+            File.Delete(path);
             FileStream file = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
             StreamWriter sw = new StreamWriter(file);
             sw.Write(toJson);

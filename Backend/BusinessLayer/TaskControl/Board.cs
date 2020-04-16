@@ -15,7 +15,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public Board(string email)
         {
             this.email = email;
-            //need to check if have a columnws user in data acseses
             columns = new Dictionary<string, Column>();
             columnsInt = new Column[4];
             columns.Add("done", new Column(email, "done"));
@@ -146,11 +145,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         private void LoadData()
         {
-            foreach(Column column in columns.Values)
+            for(int i=1;i<4;i++)
             {
-                Console.WriteLine("before load");
-                column.Load();
-                ID += column.getSize();
+                columnsInt[i].Load();
+                ID += columnsInt[i].getSize();
             }
         }
     }

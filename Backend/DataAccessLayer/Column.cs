@@ -54,7 +54,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public override Column fromJson(string filename)
         {
-            Console.WriteLine(filename);
             string objetAsJson = read(filename);
             Column temp = JsonSerializer.Deserialize<Column>(objetAsJson);
             this.limit = temp.limit;
