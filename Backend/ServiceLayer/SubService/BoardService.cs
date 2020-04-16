@@ -9,20 +9,22 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
     public class BoardService
     {
-        private BL.Board board;
-        public BoardService(string email)
-        {
-            board = new BL.Board(email);
-        }
+        private BL.BoardController BC;
         public BoardService()
         {
-            board = new BL.Board();
+            BC = new BL.BoardController();
         }
+
+        public void LoadData()
+        {
+            BC.LoadData();
+        }
+
         public Response LimitColumnTask(string email, int ColumnOrdinal, int limit)
         {
             try
             {
-                board.LimitColumnTask(email, ColumnOrdinal, limit);
+                BC.LimitColumnTask(email, ColumnOrdinal, limit);
                 return new Response();
             }
             catch (Exception e) { return (new Response(e.Message)); }
@@ -31,7 +33,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                BL.Task task=board.AddTask(email, title, desciption, dueTime);
+                BL.Task task=BC.AddTask(email, title, desciption, dueTime);
                 return new Response<Task>(new Task(task.getID(),task.getCreation(),title, desciption));
             }
             catch (Exception e) { return (new Response<Task>(e.Message)); }
@@ -40,7 +42,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                board.UpdateTaskDueDate(email, columnOrdinal, taskID, Due);
+                BC.UpdateTaskDueDate(email, columnOrdinal, taskID, Due);
                 return new Response();
             }
             catch (Exception e) { return (new Response(e.Message)); }
@@ -49,7 +51,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                board.UpdateTaskTitle(email, columnOrdinal, taskID, title);
+                BC.UpdateTaskTitle(email, columnOrdinal, taskID, title);
                 return new Response();
             }
             catch (Exception e) { return (new Response(e.Message)); }
@@ -58,21 +60,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                board.UpdateTaskDescription(email, columnOrdinal, taskID, Desc);
+                BC.UpdateTaskDescription(email, columnOrdinal, taskID, Desc);
                 return new Response();
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
         public Response<Task> GetTask(int ID)
         {
-            try { return new Response<Task>(chengeType(board.GetTask(ID))); }
+            try { return new Response<Task>(chengeType(BC.GetTask(ID))); }
             catch (Exception e) { return (new Response<Task>(new Task(), e.Message)); }
         }
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
             try
             {
-                board.AdvanceTask(email, columnOrdinal, taskId);
+                BC.AdvanceTask(email, columnOrdinal, taskId);
                 return new Response();
             }
             catch (Exception e) { return (new Response(e.Message)); }
@@ -81,7 +83,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                BL.Column columnBL = board.GetColumn(email, columnName);
+                BL.Column columnBL = BC.GetColumn(email, columnName);
                 return new Response<Column>(chengeType(columnBL));
             }
             catch (Exception e) { return (new Response<Column>(new Column(), e.Message)); }
@@ -90,23 +92,23 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                BL.Column columnBL = board.GetColumn(email, columnOrdinal);
+                BL.Column columnBL = BC.GetColumn(email, columnOrdinal);
                 return new Response<Column>(chengeType(columnBL));
             }
             catch (Exception e) { return (new Response<Column>(new Column(), e.Message)); }
         }
         public Response<Board> GetBoard(string email)
         {
-            Dictionary<string, BL.Column> listColumnBL = board.getColumns(email);
+            Dictionary<string, BL.Column> listColumnBL = BC.getColumns(email);
             List<string> listNames = new List<string>();
             foreach (BL.Column a in listColumnBL.Values) { listNames.Add(a.getName()); }
             return new Response<Board>(new Board(listNames));
         }
-        private Task chengeType(BusinessLayer.TaskControl.Task taskBL)
+        private Task chengeType(BL.Task taskBL)
         {
             return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.getTitle(), taskBL.getDesc());
         }
-        private Column chengeType(BusinessLayer.TaskControl.Column columnBL)
+        private Column chengeType(BL.Column columnBL)
         {
             List<Task> TaskListSL = new List<Task>();
             foreach (BL.Task taskBL in columnBL.getListTask())

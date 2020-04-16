@@ -30,9 +30,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             email = null;
         }
 
-        public void LimitColumnTask(string email,int ColumnOrdinal,int limit)
+        public void LimitColumnTask(int ColumnOrdinal,int limit)
         {
-            CheckEmail(email);
             CheckColumnOrdinal(ColumnOrdinal);
             columnsInt[ColumnOrdinal].setLimit(limit);
         }
@@ -41,22 +40,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             if (num < 1 | num > 3)
             { throw new Exception("Invalid column number"); }
         }
-        private void CheckEmail(string email)
+        public string GetEmail() { return email; }
+
+
+        public Task AddTask(string title,string desciption, DateTime dueTime)
         {
-            if (this.email == null ) { throw new Exception("you need to login to system"); }
-            if (!email.Equals(this.email)) { throw new Exception("The email you entered does not match the email of the party");}
-        }
-        public Task AddTask(string email, string title,string desciption, DateTime dueTime)
-        {
-            CheckEmail(email);
             ID++;
             Task newTack = new Task(ID, title,desciption,dueTime,this.email);
             columnsInt[1].addTask(newTack);
             return newTack;
         }
-        public void UpdateTaskDueDate(string email,int columnOrdinal, int taskID, DateTime Due)
+        public void UpdateTaskDueDate(int columnOrdinal, int taskID, DateTime Due)
         {
-            CheckEmail(email);
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
@@ -64,9 +59,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             updateTask.editDue(Due);
             columnsInt[columnOrdinal].Save();
         }
-        public void UpdateTaskTitle(string email, int columnOrdinal, int taskID,string title)
+        public void UpdateTaskTitle(int columnOrdinal, int taskID,string title)
         {
-            CheckEmail(email);
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
@@ -74,9 +68,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             updateTask.editTitle(title);
             columnsInt[columnOrdinal].Save();
         }
-        public void UpdateTaskDescription(string email, int columnOrdinal ,int taskID, string description)
+        public void UpdateTaskDescription( int columnOrdinal ,int taskID, string description)
         {
-            CheckEmail(email);
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
@@ -96,9 +89,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             return null;
         }
-        public void AdvanceTask(string email,int columnOrdinal ,int taskId)
+        public void AdvanceTask(int columnOrdinal ,int taskId)
         {
-            CheckEmail(email);
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskId);
@@ -108,21 +100,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             columnsInt[columnOrdinal + 1].addTask(advTask);
             columnsInt[columnOrdinal].deleteTask(advTask);
         }
-        public Column GetColumn(string email,string columnName)
+        public Column GetColumn(string columnName)
         {
-            CheckEmail(email);
+
             CheckColumnName(columnName);
             return columns[columnName];
         }
-        public Column GetColumn(string email,int columnOrdinal)
-        {
-            CheckEmail(email);
+        public Column GetColumn(int columnOrdinal)
+        { 
             CheckColumnOrdinal(columnOrdinal);
             return columnsInt[columnOrdinal];
         }
-        public Dictionary<string,Column> getColumns(string email)
+        public Dictionary<string,Column> getColumns()
         {
-            CheckEmail(email);
             return columns;
         }
 

@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLayer\TaskControl\Board.cs" />
+    <Compile Include="BusinessLayer\TaskControl\BoardController.cs" />
     <Compile Include="BusinessLayer\TaskControl\Column.cs" />
     <Compile Include="BusinessLayer\IPersistentObject.cs" />
     <Compile Include="BusinessLayer\TaskControl\Task.cs" />
