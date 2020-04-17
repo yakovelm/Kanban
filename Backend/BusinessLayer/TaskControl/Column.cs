@@ -10,6 +10,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
     class Column :IPersistentObject<DAL.Column>
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string email;
         private string name;
         private List<Task> tasks;
@@ -18,6 +19,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public Column(string email, string name)
         {
+            log.Debug("creating new "+name+" column for "+email);
             this.email = email;
             this.name = name;
             tasks = new List<Task>();
@@ -53,22 +55,29 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void addTask(Task task) 
         {
-            if (limit!=-1 & limit == size) { throw new Exception("task limit reached, task not added.") ; }
+            log.Debug("adding task: #"+task.getID()+" title: "+task.getTitle()+" to column: "+name+" in "+email);
+            if (limit!=-1 & limit == size) {
+                log.Warn("task limit reached, task not added.");
+                throw new Exception("task limit reached, task not added.") ;
+            }
             tasks.Add(task);
             Save();
             size++;
         }
         public Task deleteTask(Task task)
         {
+            log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + email);
             if (tasks.Remove(task))
             {
                 Save();
                 return task;
             }
+            log.Info("task does not exist in "+name+" column");
             return null;
         }
         Task getTask(string title)
         {
+            log.Debug("retrieving task with title: " + title + " from column: " + name + " in " + email);
             foreach (Task task in tasks)
             {
                 if (task.getTitle() == title)
@@ -76,10 +85,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                     return task;
                 }
             }
+            log.Info("task does not exist in " + name + " column");
             return null;
         }
         public Task getTask(int ID)
         {
+            log.Debug("retrieving task with ID: " + ID + " from column: " + name + " in " + email);
             foreach (Task task in tasks)
             {
                 if (task.getID() == ID)
@@ -87,16 +98,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                     return task;
                 }
             }
+            log.Info("task does not exist in " + name + " column");
             return null;
         }
         public void setLimit(int limit)
         {
-            if (limit < size) { throw new Exception("limit cannot be lower than current amount of tasks."); }
+            log.Debug("changing task limit for column: " + name + " in " + email+" from: "+this.limit+" to: "+limit);
+            if (limit < size) {
+                log.Warn("limit cannot be lower than current amount of tasks. limit not changed");
+                throw new Exception("limit cannot be lower than current amount of tasks. limit not changed"); 
+            }
             this.limit = limit;
         }
 
         public DAL.Column ToDalObject()
         {
+            log.Debug("column "+name + "converting to DAL obj in " + email);
             List<DAL.Task> Dtasks = new List<DAL.Task>();
             foreach (Task t in tasks) { Dtasks.Add(t.ToDalObject()); }
             return new DAL.Column(email, name, limit, Dtasks); ;
@@ -104,6 +121,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void FromDalObject(DAL.Column DalObj)
         {
+            log.Debug("column " + name + "converting from DAL obj in " + email);
             email = DalObj.email;
             name = DalObj.name;
             limit = DalObj.limit;
@@ -118,14 +136,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void Save()
         {
+            log.Debug("column " + name + "saving to hard drive for " + email);
             DAL.Column DC=ToDalObject();
             DC.Write("JSON\\" + email + "\\" + name + ".json",DC.toJson());
         }
         
         public void Load()
         {
+            log.Debug("column " + name + "loading from hard drive for " + email);
             DAL.Column DC = new DAL.Column(email, name);
-            if(!File.Exists(Directory.GetCurrentDirectory()+ "\\JSON\\" + email + "\\" + name + ".json")) { Save(); }
+            if(!File.Exists(Directory.GetCurrentDirectory()+ "\\JSON\\" + email + "\\" + name + ".json")) {
+                log.Info("no preexisting "+name+"column file for "+email+" initializing new empty file");
+                Save();
+            }
             
             DC.fromJson("JSON\\" + email + "\\" + name + ".json");
             FromDalObject(DC);

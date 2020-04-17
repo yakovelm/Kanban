@@ -9,6 +9,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
     class Task : IPersistentObject<DAL.Task>
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private int Tmax = 50;
         private int Dmax = 300;
         private int ID;
@@ -18,11 +19,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private DateTime creation;
         private string email;
 
-        public Task() { }
+        public Task() { log.Debug("new empty task obj created for "+email); }
         public Task(int ID, string title, string desc, DateTime due, string email)
         {
-            if (title.Length > Tmax) { throw new Exception("Title too long."); }
-            if (desc.Length > Dmax) { throw new Exception("Description too long."); }
+            log.Debug("creating new task: #"+ID+" title: "+title+" for "+email);
+            if (title.Length > Tmax) {
+                log.Warn("Title too long");
+                throw new Exception("Title too long."); 
+            }
+            if (desc.Length > Dmax) {
+                log.Warn("Description too long");
+                throw new Exception("Description too long."); 
+            }
             this.ID = ID;
             this.title = title;
             this.desc = desc;
@@ -54,27 +62,41 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void editTitle(string title)
         {
-            if (title.Length > Tmax) { throw new Exception("Title too long."); }
+            log.Debug("task #"+ID+ "title changing from " + this.title+" to "+title + " for " + email);
+            if (title.Length > Tmax) {
+                log.Warn("Title too long");
+                throw new Exception("Title too long."); 
+            }
             this.title = title;
         }
         public void editDesc(string desc)
         {
-            if (desc.Length > Dmax) { throw new Exception("Description too long."); }
+            log.Debug("task #" + ID + "description changing from " + this.desc + " to " + desc + " for " + email);
+            if (desc.Length > Dmax) {
+                log.Warn("Description too long");
+                throw new Exception("Description too long.");
+            }
             this.desc = desc;
         }
         public void editDue(DateTime due)
         {
-            if (due.CompareTo(this.creation) < 0) { throw new Exception("new due is earlier then creation"); }
+            log.Debug("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email);
+            if (due.CompareTo(this.creation) < 0) {
+                log.Warn("new due is earlier then creation");
+                throw new Exception("new due is earlier then creation"); 
+            }
             this.due = due;
         }
 
         public DAL.Task ToDalObject()
         {
+            log.Debug("task #" + ID + "converting to DAL obj in " + email);
             return new DAL.Task(email,title,desc,ID,due,creation);
         }
 
         public void FromDalObject(DAL.Task DalObj)
         {
+            log.Debug("task #" + ID + "converting from DAL obj");
             email = DalObj.Email;
             title = DalObj.Title;
             ID = DalObj.ID;
