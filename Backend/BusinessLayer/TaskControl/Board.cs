@@ -8,6 +8,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
     class Board
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private Dictionary<string,Column> columns;
         private int ID=0;
         private string email;
@@ -32,6 +33,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void LimitColumnTask(int ColumnOrdinal,int limit)
         {
+            
             CheckColumnOrdinal(ColumnOrdinal);
             columnsInt[ColumnOrdinal].setLimit(limit);
         }

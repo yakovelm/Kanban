@@ -10,7 +10,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
     class UserService
     {
         private BusinessLayer.UserControl.UserController uc;
-        private UC.User active;
         
         public UserService()
         {
@@ -21,8 +20,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 uc.login(email, password);
-                active = uc.get_active();
-                return new Response<User>(new User(active.getemail(),active.getnickname()));
+                return new Response<User>(new User(uc.get_active().getemail(), uc.get_active().getnickname()));
             }
             catch (Exception e)
             {
