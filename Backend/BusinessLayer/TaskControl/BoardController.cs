@@ -58,7 +58,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 throw new Exception("you need to login to system"); }
             if (!email.Equals(Cur.GetEmail()))
             {
-                log.Warn("The email does not match the email connected to the system");
+                log.Warn(email+" does not match the email connected to the system");
                 throw new Exception("The email you entered does not match the email of the party"); }
         }
         public Task AddTask(string email, string title, string desciption, DateTime dueTime)
