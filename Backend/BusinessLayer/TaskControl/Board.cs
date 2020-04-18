@@ -37,11 +37,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckColumnOrdinal(ColumnOrdinal);
             columnsInt[ColumnOrdinal].setLimit(limit);
         }
-        private void CheckColumnOrdinal(int num)
-        {
-            if (num < 1 | num > 3)
-            { throw new Exception("Invalid column number"); }
-        }
+
         public string GetEmail() { return email; }
 
 
@@ -89,7 +85,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 if (checktask != null)
                     return checktask;
             }
-            return null;
+            return null;//we must to return something (defult).
         }
         public void AdvanceTask(int columnOrdinal ,int taskId)
         {
@@ -98,7 +94,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckTaskID(taskId);
             Task advTask = columnsInt[columnOrdinal].getTask(taskId);
             if (advTask == null)
-            { throw new Exception("task does not exist in this columm"); }
+            {
+                log.Warn(email + "  tried to advande the task "+taskId+" that does not exist in "+ columnOrdinal+" column." );
+                throw new Exception("task does not exist in this columm"); }
             columnsInt[columnOrdinal + 1].addTask(advTask);
             columnsInt[columnOrdinal].deleteTask(advTask);
         }
@@ -122,18 +120,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             if(taskID>this.ID | taskID < 1)
             {
+                log.Warn(email + "  entered an invalid identity number");
                 throw new Exception("you entered an illegal ID");
             }
         }
         private void ColumnIsNotDoneColumn(int columnOrdinal)
         {
             if (columnOrdinal == 3)
+            {
+                log.Warn(email+" Attempt has attempted to try status / details in the task found in column DONE");
                 throw new Exception("Completed tasks cannot be changed");
+            }
         }
         private void CheckColumnName(string name)
         {
             if(!name.Equals(columnsInt[1].getName()) & !name.Equals(columnsInt[2].getName()) & !name.Equals(columnsInt[3].getName()))
-            { throw new Exception("The column name you searched for is invalid"); }
+            {
+                log.Warn(email + "  enter an incorrect column name.");
+                throw new Exception("The column name you searched for is invalid"); }
         }
         private void LoadData()
         {
@@ -141,6 +145,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             {
                 columnsInt[i].Load();
                 ID += columnsInt[i].getSize();
+            }
+        }
+        private void CheckColumnOrdinal(int num)
+        {
+            if (num < 1 | num > 3)
+            {
+                log.Warn(email + "  enter an incorrect column number.");
+                throw new Exception("Invalid column number");
             }
         }
     }

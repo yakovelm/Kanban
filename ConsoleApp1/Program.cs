@@ -24,24 +24,24 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string te = "yaki@";
                 string tp = "123zsaZSA1212";
                 string tn = "yaki";
-                
-                print(s.Login(te, tp).toString());
-                print(s.GetBoard(te).toString());
-                print(s.GetColumn(te, 1).toString());
-                print(s.GetColumn(te, 2).toString());
-                print(s.GetColumn(te, 3).toString());
-                
-                /*
-                print(s.Register(te, tp, tn));
-                print(s.Login(te, tp).toString());
-                print(s.AddTask(te, "T1", "this is 1 test task", DateTime.Now));
-                print(s.AddTask(te, "T2", "this is 2 test task", DateTime.Now));
-                print(s.AdvanceTask(te, 1, 1));
-                print(s.GetColumn(te, 1).toString());
-                print(s.GetColumn(te, 2).toString());
-                */
 
-                /*
+                //print(s.Login(te, tp).toString());
+                //print(s.GetBoard(te).toString());
+                //print(s.GetColumn(te, 1).toString());
+                //print(s.GetColumn(te, 2).toString());
+                //print(s.GetColumn(te, 3).toString());
+
+
+                //print(s.Register(te + "asd", tp, tn));
+                //print(s.Login(te, tp).toString());
+                //print(s.AddTask(te, "T1", "this is 1 test task", DateTime.Now));
+                //print(s.AddTask(te, "T2", "this is 2 test task", DateTime.Now));
+                //print(s.AdvanceTask(te, 1, 1));
+                //print(s.GetColumn(te, 1).toString());
+                //print(s.GetColumn(te, 2).toString());
+
+
+                
                 print(s.Register(te, tp, tn));
                 print(s.Login(te, tp).toString());
 
@@ -83,9 +83,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.Logout(te));
                 try { print(s.GetBoard(te).Value.ToString()); }
                 catch(Exception e) { print(e.Message); }
-               */
+               
+
             }
-            catch(Exception e) { Console.WriteLine(e.Message); }
+            catch (Exception e) { Console.WriteLine(e.Message); }
             Console.Read();
         }
         static void print(Response res) //i miss python T_T

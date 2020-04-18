@@ -9,6 +9,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 {
     class BoardController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private Dictionary<string,Board> BC;
         private Board Cur;
 
@@ -51,8 +52,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         private void CheckEmail(string email)
         {
-            if (Cur.GetEmail() == null) { throw new Exception("you need to login to system"); }
-            if (!email.Equals(Cur.GetEmail())) { throw new Exception("The email you entered does not match the email of the party"); }
+            if (Cur.GetEmail() == null)
+            {
+                log.Warn("An offline user tried to take action.");
+                throw new Exception("you need to login to system"); }
+            if (!email.Equals(Cur.GetEmail()))
+            {
+                log.Warn("The email does not match the email connected to the system");
+                throw new Exception("The email you entered does not match the email of the party"); }
         }
         public Task AddTask(string email, string title, string desciption, DateTime dueTime)
         {
