@@ -11,6 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
     public class UserController
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private User ActiveUser;
         private List<User> list;
 
@@ -23,23 +24,34 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             if (email == null || password == null || nickname == null) { throw new Exception("must register with non null values."); }
             if (email.Equals("") || password.Equals("") || nickname.Equals("")) { throw new Exception("must register with non empty values"); }
-            if (checkUser(email)) { throw new Exception("this email is already taken."); }
+            if (checkUser(email)) 
+            {
+                log.Warn("attempt to sign up with a registered email");
+                throw new Exception("this email is already taken.");
+            }
             var hasNumber = new Regex(@"[0-9]+");
             var hasUpperChar = new Regex(@"[A-Z]+");
             var hasMiniMaxChars = new Regex(@".{4,20}");
             var hasLowerChar = new Regex(@"[a-z]+");
             if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | !hasMiniMaxChars.IsMatch(password) | !hasLowerChar.IsMatch(password)) 
-            { throw new Exception("must include at least one uppercase letter, one small character and a number."); }
+            {
+                log.Warn("attempt to register with a weak password");
+                throw new Exception("must include at least one uppercase letter, one small character and a number."); 
+            }
             string path = Directory.GetCurrentDirectory();
             string pathString = System.IO.Path.Combine(path,"JSON", email);
             System.IO.Directory.CreateDirectory(pathString);
             User NU = new User(email, password, nickname);
             NU.Save();
+            log.Info(NU.getnickname() + " user created");
             list.Add(NU);
         }
         public void login(string email,string password)
         {
-            if (email == null || password == null) { throw new Exception("must login with non null values"); }
+            if (email == null || password == null) 
+            {
+                log.Warn("user tried to login without the required values");
+                throw new Exception("must login with non null values"); }
             foreach(User u in list)
             {
                 if (u.getemail().Equals(email))
@@ -47,21 +59,39 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                     if (u.getpassword().Equals(password))
                     {
                         ActiveUser = u;
+                        log.Info(ActiveUser.getnickname() + " login");
                     }
-                    else throw new Exception("invaild password");
+                    else
+                    {
+                        log.Warn(u.getnickname()+" tried to login with incorrect password");
+                        throw new Exception("invaild password");
+                    }
                 }
             }
             if (ActiveUser == null)
             {
+                log.Warn("user tried to login with an unregistered email");
                 throw new Exception("The user does not exist");
             }
             
         }
         public void logout(string email)
         {
-            if(ActiveUser==null) { throw new Exception("user not login"); }
-            if (!email.Equals(ActiveUser.getemail())) throw new Exception("given email is invalid");
-            else ActiveUser = null;
+            if(ActiveUser==null) 
+            {
+                log.Warn("unlogin user tried to logout");
+                throw new Exception("user not login"); 
+            }
+            if (!email.Equals(ActiveUser.getemail()))
+            {
+                log.Warn("attempt to logout, given email is not equals to the login user's email");
+                throw new Exception("given email is invalid");
+            }
+            else
+            {
+                log.Info(ActiveUser.getnickname() + " logout");
+                ActiveUser = null;
+            }
         }
         private Boolean checkUser(string email) 
         { 
