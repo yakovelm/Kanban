@@ -22,7 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public Task() { log.Debug("new empty task obj created for "+email); }
         public Task(int ID, string title, string desc, DateTime due, string email)
         {
-            log.Debug("creating new task: #"+ID+" title: "+title+" for "+email);
+            log.Info("creating new task: #"+ID+" title: "+title+" for "+email);
             if (title.Length > Tmax) {
                 log.Warn("Title too long");
                 throw new Exception("Title too long."); 
@@ -39,10 +39,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             creation = DateTime.Now;
         }
 
-        public string toString()
-        {
-            return ("ID: "+ID+"\ntitle: "+title+"\ndesc: "+desc+"\nemail: "+email+"\ndue date: "+due.ToString()+"\ncreation time: "+creation.ToString());
-        }
         public string getTitle()
         {
             return title;
@@ -62,7 +58,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void editTitle(string title)
         {
-            log.Debug("task #"+ID+ "title changing from " + this.title+" to "+title + " for " + email);
+            log.Info("task #"+ID+ "title changing from " + this.title+" to "+title + " for " + email);
             if (title.Length > Tmax) {
                 log.Warn("Title too long");
                 throw new Exception("Title too long."); 
@@ -71,7 +67,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void editDesc(string desc)
         {
-            log.Debug("task #" + ID + "description changing from " + this.desc + " to " + desc + " for " + email);
+            log.Info("task #" + ID + "description changing from " + this.desc + " to " + desc + " for " + email);
             if (desc.Length > Dmax) {
                 log.Warn("Description too long");
                 throw new Exception("Description too long.");
@@ -80,7 +76,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void editDue(DateTime due)
         {
-            log.Debug("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email);
+            log.Info("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email);
             if (due.CompareTo(this.creation) < 0) {
                 log.Warn("new due is earlier then creation");
                 throw new Exception("new due is earlier then creation"); 

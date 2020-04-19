@@ -15,7 +15,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public BoardController() { 
             BC = new Dictionary<string, Board>();
-            Cur = new Board(); }
+            Cur = new Board();
+            log.Debug("create BoardController.");
+        }
 
         public void LoadData()
         {
@@ -24,6 +26,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             {
                 var dir = new DirectoryInfo(path);
                 BC.Add(dir.Name,new Board(dir.Name));
+                log.Debug("board of " + dir.Name + "loaded.");
             }
         }
 
@@ -31,9 +34,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             try
             {
                 Cur = BC[email];
+                log.Debug("the board of this email" + email + " ready.");
             }
             catch(Exception e)
             {
+                log.Warn(email + " this email is invalid");
                 BC.Add(email,new Board(email));
                 Cur = BC[email];
             }
@@ -42,6 +47,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             CheckEmail(email);
             Cur = new Board();
+            log.Debug(email + " is logged out.");
         }
 
         public void LimitColumnTask(string email, int ColumnOrdinal, int limit)

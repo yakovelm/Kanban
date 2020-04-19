@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public Column(string email, string name)
         {
-            log.Debug("creating new "+name+" column for "+email);
+            log.Info("creating new "+name+" column for "+email);
             this.email = email;
             this.name = name;
             tasks = new List<Task>();
@@ -43,19 +43,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             return name;
         }
-        public string toString()
-        {
-            string o = "email: " + email + "\nname: " + name + "\nsize: " + size + "\nlimit: " + limit;
-            foreach(Task task in tasks)
-            {
-                o = o + "\n\t" + task.getTitle();
-            }
-            return (o);
-        }
 
         public void addTask(Task task) 
         {
-            log.Debug("adding task: #"+task.getID()+" title: "+task.getTitle()+" to column: "+name+" in "+email);
+            log.Info("adding task: #"+task.getID()+" title: "+task.getTitle()+" to column: "+name+" in "+email);
             if (limit!=-1 & limit == size) {
                 log.Warn("task limit reached, task not added.");
                 throw new Exception("task limit reached, task not added.") ;
@@ -66,7 +57,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public Task deleteTask(Task task)
         {
-            log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + email);
+            log.Info("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + email);
             if (tasks.Remove(task))
             {
                 Save();
@@ -103,7 +94,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void setLimit(int limit)
         {
-            log.Debug("changing task limit for column: " + name + " in " + email+" from: "+this.limit+" to: "+limit);
+            log.Info("changing task limit for column: " + name + " in " + email+" from: "+this.limit+" to: "+limit);
             if (limit < size) {
                 log.Warn("limit cannot be lower than current amount of tasks. limit not changed");
                 throw new Exception("limit cannot be lower than current amount of tasks. limit not changed"); 
@@ -149,7 +140,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Info("no preexisting "+name+"column file for "+email+" initializing new empty file");
                 Save();
             }
-            
             DC.fromJson("JSON\\" + email + "\\" + name + ".json");
             FromDalObject(DC);
         }

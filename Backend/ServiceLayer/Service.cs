@@ -16,6 +16,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private SS.BoardService BS;
         private SS.UserService US;
 
@@ -25,6 +26,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         public Service()
         {
+            log.Info("create service.");
             US = new SS.UserService();
             BS = new SS.BoardService();
             LoadData();

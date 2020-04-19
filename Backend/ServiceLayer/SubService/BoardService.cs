@@ -99,7 +99,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response<Task> GetTask(int ID)
         {
-            log.Info("ask to get the task " + ID);
+            log.Debug("ask to get the task " + ID);
             try { return new Response<Task>(chengeType(BC.GetTask(ID))); }
             catch (Exception e) { return (new Response<Task>(new Task(), e.Message)); }
         }
@@ -115,7 +115,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response<Column> GetColumn(string email, string columnName)
         {
-            log.Info(email + " ask to get the column " + columnName);
+            log.Debug(email + " ask to get the column " + columnName);
             try
             {
                 BL.Column columnBL = BC.GetColumn(email, columnName);
@@ -125,7 +125,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
-            log.Info(email + " ask to get the column " + columnOrdinal);
+            log.Debug(email + " ask to get the column " + columnOrdinal);
             try
             {
                 BL.Column columnBL = BC.GetColumn(email, columnOrdinal);
@@ -135,7 +135,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response<Board> GetBoard(string email)
         {
-            log.Info(email + " ask to get the board." );
+            log.Debug(email + " ask to get the board." );
             Dictionary<string, BL.Column> listColumnBL = BC.getColumns(email);
             List<string> listNames = new List<string>();
             foreach (BL.Column a in listColumnBL.Values) { listNames.Add(a.getName()); }
