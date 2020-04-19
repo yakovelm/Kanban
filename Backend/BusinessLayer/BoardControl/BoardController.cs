@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 
-namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
+namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 {
     class BoardController
     {
@@ -67,7 +68,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Warn(email+" does not match the email connected to the system");
                 throw new Exception("The email you entered does not match the email of the party"); }
         }
-        public Task AddTask(string email, string title, string desciption, DateTime dueTime)
+        public TC.Task AddTask(string email, string title, string desciption, DateTime dueTime)
         {
             CheckEmail(email);
             return Cur.AddTask(title, desciption, dueTime);
@@ -87,7 +88,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckEmail(email);
             Cur.UpdateTaskDescription(columnOrdinal, taskID, description);
         }
-        public Task GetTask(int taskID)
+        public TC.Task GetTask(int taskID)
         {
             return Cur.GetTask(taskID);
         }
@@ -96,17 +97,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckEmail(email);
             Cur.AdvanceTask(columnOrdinal, taskId);
         }
-        public Column GetColumn(string email, string columnName)
+        public TC.Column GetColumn(string email, string columnName)
         {
             CheckEmail(email);
             return Cur.GetColumn(columnName);
         }
-        public Column GetColumn(string email, int columnOrdinal)
+        public TC.Column GetColumn(string email, int columnOrdinal)
         {
             CheckEmail(email);
             return Cur.GetColumn(columnOrdinal);
         }
-        public Dictionary<string, Column> getColumns(string email)
+        public Dictionary<string, TC.Column> getColumns(string email)
         {
             CheckEmail(email);
             return Cur.getColumns();

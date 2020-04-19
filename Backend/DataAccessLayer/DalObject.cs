@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public abstract class DalObject<T> where T:DalObject<T>
     {
-
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public abstract string toJson();
         public abstract T fromJson(string filename);
 
@@ -18,9 +18,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             string path= Directory.GetCurrentDirectory();
             path = path + "\\" + filename;
             File.Delete(path);
+            log.Debug("JSON file deleted at "+path);
             FileStream file = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
             StreamWriter sw = new StreamWriter(file);
             sw.Write(toJson);
+            log.Debug("JSON file written at " + path);
             sw.Close();
             file.Close();
 
@@ -30,6 +32,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             string path = Directory.GetCurrentDirectory();
             path = path + "\\" + filename;
+            log.Debug("reading file at " + path);
             FileStream file = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
             StreamReader sr = new StreamReader(file);
             string ret=sr.ReadToEnd();

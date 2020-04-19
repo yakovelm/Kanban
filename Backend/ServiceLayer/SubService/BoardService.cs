@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BL = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
+using BL = IntroSE.Kanban.Backend.BusinessLayer.BoardControl;
+using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
@@ -62,7 +63,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             log.Info(email + " ask to add task.");
             try
             {
-                BL.Task task=BC.AddTask(email, title, desciption, dueTime);
+                TC.Task task=BC.AddTask(email, title, desciption, dueTime);
                 return new Response<Task>(new Task(task.getID(),task.getCreation(),title, desciption));
             }
             catch (Exception e) { return (new Response<Task>(e.Message)); }
@@ -118,7 +119,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             log.Debug(email + " ask to get the column " + columnName);
             try
             {
-                BL.Column columnBL = BC.GetColumn(email, columnName);
+                TC.Column columnBL = BC.GetColumn(email, columnName);
                 return new Response<Column>(chengeType(columnBL));
             }
             catch (Exception e) { return (new Response<Column>(new Column(), e.Message)); }
@@ -128,7 +129,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             log.Debug(email + " ask to get the column " + columnOrdinal);
             try
             {
-                BL.Column columnBL = BC.GetColumn(email, columnOrdinal);
+                TC.Column columnBL = BC.GetColumn(email, columnOrdinal);
                 return new Response<Column>(chengeType(columnBL));
             }
             catch (Exception e) { return (new Response<Column>(new Column(), e.Message)); }
@@ -136,19 +137,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         public Response<Board> GetBoard(string email)
         {
             log.Debug(email + " ask to get the board." );
-            Dictionary<string, BL.Column> listColumnBL = BC.getColumns(email);
+            Dictionary<string, TC.Column> listColumnBL = BC.getColumns(email);
             List<string> listNames = new List<string>();
-            foreach (BL.Column a in listColumnBL.Values) { listNames.Add(a.getName()); }
+            foreach (TC.Column a in listColumnBL.Values) { listNames.Add(a.getName()); }
             return new Response<Board>(new Board(listNames));
         }
-        private Task chengeType(BL.Task taskBL)
+        private Task chengeType(TC.Task taskBL)
         {
             return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.getTitle(), taskBL.getDesc());
         }
-        private Column chengeType(BL.Column columnBL)
+        private Column chengeType(TC.Column columnBL)
         {
             List<Task> TaskListSL = new List<Task>();
-            foreach (BL.Task taskBL in columnBL.getListTask())
+            foreach (TC.Task taskBL in columnBL.getListTask())
             { TaskListSL.Add(chengeType(taskBL)); }
             return new Column(TaskListSL, columnBL.getName(), columnBL.getLimit());
         }

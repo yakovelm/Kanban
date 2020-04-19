@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 
-namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
+namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 {
     class Board
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private Dictionary<string,Column> columns;
+        private Dictionary<string,TC.Column> columns;
         private int ID=0;
         private string email;
-        private Column[] columnsInt;
+        private TC.Column[] columnsInt;
         public Board(string email)
         {
             this.email = email;
-            columns = new Dictionary<string, Column>();
-            columnsInt = new Column[4];
-            columns.Add("done", new Column(email, "done"));
+            columns = new Dictionary<string, TC.Column>();
+            columnsInt = new TC.Column[4];
+            columns.Add("done", new TC.Column(email, "done"));
             columnsInt[3] = columns["done"];
-            columns.Add("in progress", new Column(email, "in progress"));
+            columns.Add("in progress", new TC.Column(email, "in progress"));
             columnsInt[2] = columns["in progress"];
-            columns.Add("backlog", new Column(email, "backlog"));
+            columns.Add("backlog", new TC.Column(email, "backlog"));
             columnsInt[1] = columns["backlog"];
             LoadData();
             log.Debug("Board of " + email + " is ready.");
@@ -43,10 +44,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public string GetEmail() { return email; }
 
 
-        public Task AddTask(string title,string desciption, DateTime dueTime)
+        public TC.Task AddTask(string title,string desciption, DateTime dueTime)
         {
             ID++;
-            Task newTack = new Task(ID, title,desciption,dueTime,this.email);
+            TC.Task newTack = new TC.Task(ID, title,desciption,dueTime,this.email);
             columnsInt[1].addTask(newTack);
             return newTack;
         }
@@ -55,7 +56,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            Task updateTask=columnsInt[columnOrdinal].getTask(taskID);
+            TC.Task updateTask=columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDue(Due);
             log.Debug("the task " + taskID + " updated.");
             columnsInt[columnOrdinal].Save();
@@ -65,7 +66,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
+            TC.Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editTitle(title);
             log.Debug("the task " + taskID + " updated.");
             columnsInt[columnOrdinal].Save();
@@ -75,20 +76,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
+            TC.Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDesc(description);
             log.Debug("the task " + taskID + " updated.");
             columnsInt[columnOrdinal].Save();
         }
-        public Task GetTask(int taskID)
+        public TC.Task GetTask(int taskID)
         {
             if (this.email == null) {
                 log.Warn("user have to login to system before.");
                 throw new Exception("you need to login to system"); }
             CheckTaskID(taskID);
-            foreach (Column a in columns.Values)
+            foreach (TC.Column a in columns.Values)
             {
-                Task checktask = a.getTask(taskID);
+                TC.Task checktask = a.getTask(taskID);
                 if (checktask != null)
                     return checktask;
             }
@@ -99,7 +100,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskId);
-            Task advTask = columnsInt[columnOrdinal].getTask(taskId);
+            TC.Task advTask = columnsInt[columnOrdinal].getTask(taskId);
             if (advTask == null)
             {
                 log.Warn(email + "  tried to advande the task "+taskId+" that does not exist in "+ columnsInt[columnOrdinal].getName()+" column");
@@ -108,18 +109,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             columnsInt[columnOrdinal].deleteTask(advTask);
             log.Debug("task " + taskId + " advance successfully.");
         }
-        public Column GetColumn(string columnName)
+        public TC.Column GetColumn(string columnName)
         {
 
             CheckColumnName(columnName);
             return columns[columnName];
         }
-        public Column GetColumn(int columnOrdinal)
+        public TC.Column GetColumn(int columnOrdinal)
         { 
             CheckColumnOrdinal(columnOrdinal);
             return columnsInt[columnOrdinal];
         }
-        public Dictionary<string,Column> getColumns()
+        public Dictionary<string, TC.Column> getColumns()
         {
             return columns;
         }

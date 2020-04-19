@@ -127,9 +127,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void Save()
         {
-            log.Debug("column " + name + "saving to hard drive for " + email);
+            log.Debug("column " + name + " saving to hard drive for " + email);
             DAL.Column DC=ToDalObject();
-            DC.Write("JSON\\" + email + "\\" + name + ".json",DC.toJson());
+            try
+            {
+                DC.Write("JSON\\" + email + "\\" + name + ".json", DC.toJson());
+            }
+            catch(Exception e) { log.Error("failed to write to file due to " + e.Message);
+                throw e;
+            }
         }
         
         public void Load()
