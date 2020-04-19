@@ -10,6 +10,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
     public class User : IPersistentObject<DAL.User>
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private String email;
         private String password;
         private String nickname;
@@ -30,9 +32,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             return this.email;
         }
-        public string getpassword()
+        public Boolean isMatchPassword(string password)
         {
-            return this.password;
+            return this.password.Equals(password);
+        }
+        public Boolean isMatchEmail(string email)
+        {
+            return this.email.Equals(email);
         }
         public string getnickname()
         {
@@ -40,17 +46,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public DAL.User ToDalObject()
         {
+            log.Debug("user " + nickname + "converting to DAL obj in " + email);
             return new DAL.User(email, password, nickname);
         }
 
         public void Save()
         {
+            log.Debug("user " + nickname + "saving to hard drive for " + email);
             DAL.User DU = ToDalObject();
             DU.Write("JSON\\" + email+"\\" + email+ ".json", DU.toJson());
         }
 
         public void FromDalObject(DAL.User DalObj)
         {
+            log.Debug("user " + DalObj.getNickname() + "converting from DAL obj in " + email);
             this.email = DalObj.getEmail();
             this.password = DalObj.getPassword();
             this.nickname = DalObj.getNickname();
@@ -59,6 +68,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public void Load()
         {
             DAL.User DU = new DAL.User(email);
+            log.Debug("user " + DU.getNickname() + "loading from hard drive for " + email);
             DU.fromJson("JSON\\" + email + "\\" + email + ".json");
             FromDalObject(DU);
         }
