@@ -17,13 +17,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 
         public UserController()
         {
+            log.Debug("create usercontroller");
             this.ActiveUser = null;
         }
         public User get_active() { return ActiveUser; }
         public void register(string email, string password, string nickname)
         {
-            if (email == null || password == null || nickname == null) { throw new Exception("must register with non null values."); }
-            if (email.Equals("") || password.Equals("") || nickname.Equals("")) { throw new Exception("must register with non empty values"); }
+            if (email == null || password == null || nickname == null) 
+            {
+                log.Warn("attempt to register with non null values.");
+                throw new Exception("must register with non null values."); 
+            }
+            if (email.Equals("") || password.Equals("") || nickname.Equals("")) 
+            {
+                log.Warn("attempt to register with non empty values");
+                throw new Exception("must register with non empty values");
+            }
             if (checkUser(email)) 
             {
                 log.Warn("attempt to sign up with a registered email");
@@ -48,16 +57,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void login(string email,string password)
         {
+            if (ActiveUser != null)
+            {
+                log.Warn("login user attemt to login: "+ActiveUser.getnickname());
+                throw new Exception("user already login");
+            }
             if (email == null || password == null) 
             {
                 log.Warn("user tried to login without the required values");
                 throw new Exception("must login with non null values"); }
             foreach(User u in list)
             {
-                if (u.getemail().Equals(email))
+                if (u.isMatchEmail(email))
                 {
-                    if (u.getpassword().Equals(password))
+                    log.Debug("email" + email + "exist in the sysmtem");
+                    if (u.isMatchPassword(password))
                     {
+                        log.Debug("given password match");
                         ActiveUser = u;
                         log.Info(ActiveUser.getnickname() + " login");
                     }
@@ -89,7 +105,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             }
             else
             {
-                log.Info(ActiveUser.getnickname() + " logout");
+                log.Debug(ActiveUser.getnickname() + " logout");
                 ActiveUser = null;
             }
         }
@@ -109,6 +125,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 var dir = new DirectoryInfo(path);
                 User u = new User(dir.Name);
                 u.Load();
+                log.Debug("user list loaded");
                 list.Add(u);
             }
         }
