@@ -54,7 +54,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             log.Debug("user " + nickname + "saving to hard drive for " + email);
             DAL.User DU = ToDalObject();
-            DU.Write("JSON\\" + email+"\\" + email+ ".json", DU.toJson());
+            try
+            {
+                DU.Write("JSON\\" + email + "\\" + email + ".json", DU.toJson());
+            }
+            catch(Exception e) 
+            {
+                log.Error("faild to write to file due to "+e.Message);
+                throw new Exception("faild to write to file due to "+e.Message);
+            }
         }
 
         public void FromDalObject(DAL.User DalObj)
