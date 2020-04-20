@@ -46,13 +46,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public DAL.User ToDalObject()
         {
-            log.Debug("user " + nickname + "converting to DAL obj in " + email);
+            log.Debug("converting user to DAL obj for " + email+".");
             return new DAL.User(email, password, nickname);
         }
 
         public void Save()
         {
-            log.Debug("user " + nickname + "saving to hard drive for " + email);
+            log.Debug("saving user to hard drive for " + email + ".");
             DAL.User DU = ToDalObject();
             try
             {
@@ -61,23 +61,39 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             catch(Exception e) 
             {
                 log.Error("faild to write to file due to "+e.Message);
-                throw new Exception("faild to write to file due to "+e.Message);
+                throw e;
             }
         }
 
         public void FromDalObject(DAL.User DalObj)
         {
-            log.Debug("user " + DalObj.getNickname() + "converting from DAL obj in " + email);
-            this.email = DalObj.getEmail();
-            this.password = DalObj.getPassword();
-            this.nickname = DalObj.getNickname();
+            log.Debug("converting user from DAL obj for " + email + ".");
+            try
+            {
+                this.email = DalObj.getEmail();
+                this.password = DalObj.getPassword();
+                this.nickname = DalObj.getNickname();
+            }
+            catch(Exception e)
+            {
+                log.Error("issue converting user DAL object to user BL object due to " + e.Message);
+                throw e;
+            }
         }
 
         public void Load()
         {
             DAL.User DU = new DAL.User(email);
             log.Debug("user " + DU.getNickname() + "loading from hard drive for " + email);
-            DU.fromJson("JSON\\" + email + "\\" + email + ".json");
+            try
+            {
+                DU.fromJson("JSON\\" + email + "\\" + email + ".json");
+            }
+            catch (Exception e)
+            {
+                log.Error("failed to load user from file due to " + e.Message);
+                throw e;
+            }
             FromDalObject(DU);
         }
     }

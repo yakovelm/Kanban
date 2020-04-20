@@ -15,12 +15,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         public BoardService()
         {
             BC = new BL.BoardController();
-            log.Debug("create BoardService");
+            log.Debug("BoardService created.");
         }
 
         public Response LoadData()
         {
-            log.Info("Load Data in the BoardController and Boards.");
+            log.Info("Loading BoardController and list of boards.");
             try
             {
                 BC.LoadData();
@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response Login(string email)
         {
-            log.Info("Login to board of " +email);
+            log.Info(email+"Logging in to the board.");
             try
             {
                 BC.Login(email);
@@ -40,7 +40,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response Logout(string email)
         {
-            log.Info("LogOut to board of " + email);
+            log.Info(email+"Logging out from the board.");
             try
             {
                 BC.Logout(email);
@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response LimitColumnTask(string email, int ColumnOrdinal, int limit)
         {
-            log.Info(email + " ask to chenge the limit of column " +ColumnOrdinal+ " to limit "+limit);
+            log.Info(email + " attempting to chenge the limit of column " +ColumnOrdinal+ " to limit "+limit+".");
             try
             {
                 BC.LimitColumnTask(email, ColumnOrdinal, limit);
@@ -60,7 +60,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response<Task> AddTask(string email, string title, string desciption, DateTime dueTime)
         {
-            log.Info(email + " ask to add task.");
+            log.Info(email + " attempting to add new task.");
             try
             {
                 TC.Task task=BC.AddTask(email, title, desciption, dueTime);
@@ -70,7 +70,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskID, DateTime Due)
         {
-            log.Info(email + " ask to Update the DueDate of task " + taskID);
+            log.Info(email + " attempting to Update the DueDate of task #" + taskID+".");
             try
             {
                 BC.UpdateTaskDueDate(email, columnOrdinal, taskID, Due);
@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response UpdateTaskTitle(string email, int columnOrdinal, int taskID, string title)
         {
-            log.Info(email + " ask to Update the title of task " + taskID);
+            log.Info(email + " attempting to Update the title of task #" + taskID+".");
             try
             {
                 BC.UpdateTaskTitle(email, columnOrdinal, taskID, title);
@@ -90,7 +90,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response UpdateTaskDescription(string email, int columnOrdinal, int taskID, string Desc)
         {
-            log.Info(email + " ask to Update the description of task " + taskID);
+            log.Info(email + " attempting to Update the description of task #" + taskID+".");
             try
             {
                 BC.UpdateTaskDescription(email, columnOrdinal, taskID, Desc);
@@ -98,15 +98,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        public Response<Task> GetTask(int ID)
+        public Response<Task> GetTask(int ID) // no references. we should consider removing this.
         {
-            log.Debug("ask to get the task " + ID);
+            log.Debug("attempting to get the task #" + ID+".");
             try { return new Response<Task>(chengeType(BC.GetTask(ID))); }
             catch (Exception e) { return (new Response<Task>(new Task(), e.Message)); }
         }
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
-            log.Info(email + " ask to advanve the task " + taskId);
+            log.Info(email + " attempting to advance task #" + taskId+".");
             try
             {
                 BC.AdvanceTask(email, columnOrdinal, taskId);
@@ -116,7 +116,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response<Column> GetColumn(string email, string columnName)
         {
-            log.Debug(email + " ask to get the column " + columnName);
+            log.Debug(email + " attempting to get the column " + columnName+".");
             try
             {
                 TC.Column columnBL = BC.GetColumn(email, columnName);
@@ -126,7 +126,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
-            log.Debug(email + " ask to get the column " + columnOrdinal);
+            log.Debug(email + " attempting to get column #" + columnOrdinal+".");
             try
             {
                 TC.Column columnBL = BC.GetColumn(email, columnOrdinal);
@@ -136,7 +136,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response<Board> GetBoard(string email)
         {
-            log.Debug(email + " ask to get the board." );
+            log.Debug(email + " attempting to get the board.");
             Dictionary<string, TC.Column> listColumnBL = BC.getColumns(email);
             List<string> listNames = new List<string>();
             foreach (TC.Column a in listColumnBL.Values) { listNames.Add(a.getName()); }

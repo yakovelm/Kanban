@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         public BoardController() { 
             BC = new Dictionary<string, Board>();
             Cur = new Board();
-            log.Debug("create BoardController.");
+            log.Debug("BoardController created.");
         }
 
         public void LoadData()
@@ -27,19 +27,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             {
                 var dir = new DirectoryInfo(path);
                 BC.Add(dir.Name,new Board(dir.Name));
-                log.Debug("board of " + dir.Name + "loaded.");
             }
+            log.Debug(" board list has been loaded.");
         }
 
         public void Login(string email) {
-            try
+            if (BC.ContainsKey(email))
             {
                 Cur = BC[email];
-                log.Debug("the board of this email" + email + " ready.");
+                log.Debug("successfully opened board for " + email + ".");
             }
-            catch(Exception e)
+            else
             {
-                log.Warn(email + " this email is invalid");
+                log.Info(email + " does not have a board yet, creating new empty board." );
                 BC.Add(email,new Board(email));
                 Cur = BC[email];
             }
@@ -48,7 +48,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             CheckEmail(email);
             Cur = new Board();
-            log.Debug(email + " is logged out.");
+            log.Debug(email + " has logged out.");
         }
 
         public void LimitColumnTask(string email, int ColumnOrdinal, int limit)

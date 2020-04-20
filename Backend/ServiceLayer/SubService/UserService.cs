@@ -20,7 +20,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                log.Info("Login to user of " + email);
+                log.Info("logging in to user " + email+".");
                 uc.login(email, password);
                 return new Response<User>(new User(uc.get_active().getemail(), uc.get_active().getnickname()));
             }
@@ -33,12 +33,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                log.Info("register of " + email);
+                log.Info("registering user " + email+".");
                 uc.register(email, password, nickname);
                 return new Response();
             }
             catch (Exception e)
             {
+                log.Info("register failed."); // can fail due to many reasons, added catch all.
                 return new Response(e.Message);
             }
         }
@@ -46,12 +47,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                log.Info("Logout to user of " + email);
+                log.Info("logging out user " + email);
                 uc.logout(email);
                 return new Response();
             }
             catch(Exception e)
             {
+                log.Info("login failed."); // can fail due to many reasons, added catch all.
                 return new Response(e.Message);
             }
         }
@@ -59,7 +61,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                log.Info("attempt to load users list");
+                log.Info("attempting to load user list");
                 uc.LoadData();
                 return new Response();
             }

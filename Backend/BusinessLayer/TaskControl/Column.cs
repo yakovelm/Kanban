@@ -105,24 +105,40 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public DAL.Column ToDalObject()
         {
             log.Debug("column "+name + "converting to DAL obj in " + email);
-            List<DAL.Task> Dtasks = new List<DAL.Task>();
-            foreach (Task t in tasks) { Dtasks.Add(t.ToDalObject()); }
-            return new DAL.Column(email, name, limit, Dtasks); ;
+            try
+            {
+                List<DAL.Task> Dtasks = new List<DAL.Task>();
+                foreach (Task t in tasks) { Dtasks.Add(t.ToDalObject()); }
+                return new DAL.Column(email, name, limit, Dtasks); ;
+            }
+            catch (Exception e)
+            {
+                log.Error("issue converting column BL object to column DAL object due to " + e.Message);
+                throw e;
+            }
         }
 
         public void FromDalObject(DAL.Column DalObj)
         {
             log.Debug("column " + name + "converting from DAL obj in " + email);
-            email = DalObj.email;
-            name = DalObj.name;
-            limit = DalObj.limit;
-            foreach (DAL.Task t in DalObj.getTasks()) 
+            try
             {
-                Task BT = new Task();
-                BT.FromDalObject(t);
-                tasks.Add(BT);
+                email = DalObj.email;
+                name = DalObj.name;
+                limit = DalObj.limit;
+                foreach (DAL.Task t in DalObj.getTasks())
+                {
+                    Task BT = new Task();
+                    BT.FromDalObject(t);
+                    tasks.Add(BT);
+                }
+                size = tasks.Count();
             }
-            size = tasks.Count();
+            catch(Exception e) 
+            { 
+                log.Error("issue converting column DAL object to column BL object due to " + e.Message);
+                throw e;
+            }
         }
 
         public void Save()
@@ -133,7 +149,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             {
                 DC.Write("JSON\\" + email + "\\" + name + ".json", DC.toJson());
             }
-            catch(Exception e) { log.Error("failed to write to file due to " + e.Message);
+            catch(Exception e) { 
+                log.Error("failed to write to file due to " + e.Message);
                 throw e;
             }
         }
@@ -146,7 +163,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Info("no preexisting "+name+"column file for "+email+" initializing new empty file");
                 Save();
             }
-            DC.fromJson("JSON\\" + email + "\\" + name + ".json");
+            try
+            {
+                DC.fromJson("JSON\\" + email + "\\" + name + ".json");
+            }
+            catch (Exception e)
+            {
+                log.Error("failed to load column from file due to " + e.Message);
+                throw e;
+            }
             FromDalObject(DC);
         }
     }

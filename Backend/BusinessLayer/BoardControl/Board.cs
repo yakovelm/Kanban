@@ -26,12 +26,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             columns.Add("backlog", new TC.Column(email, "backlog"));
             columnsInt[1] = columns["backlog"];
             LoadData();
-            log.Debug("Board of " + email + " is ready.");
+            log.Debug("a board for " + email + " has been made.");
         }
         public Board()
         {
             email = null;
-            log.Debug("create empty Board.");
+            log.Debug("empty board created.");
         }
 
         public void LimitColumnTask(int ColumnOrdinal,int limit)
@@ -58,7 +58,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckTaskID(taskID);
             TC.Task updateTask=columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDue(Due);
-            log.Debug("the task " + taskID + " updated.");
+            log.Debug("due date of task #" + taskID + "has been updated.");
             columnsInt[columnOrdinal].Save();
         }
         public void UpdateTaskTitle(int columnOrdinal, int taskID,string title)
@@ -68,7 +68,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckTaskID(taskID);
             TC.Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editTitle(title);
-            log.Debug("the task " + taskID + " updated.");
+            log.Debug("title of task #" + taskID + "has been updated.");
             columnsInt[columnOrdinal].Save();
         }
         public void UpdateTaskDescription( int columnOrdinal ,int taskID, string description)
@@ -78,13 +78,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckTaskID(taskID);
             TC.Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDesc(description);
-            log.Debug("the task " + taskID + " updated.");
+            log.Debug("description of task #" + taskID + "has been updated.");
             columnsInt[columnOrdinal].Save();
         }
         public TC.Task GetTask(int taskID)
         {
             if (this.email == null) {
-                log.Warn("user have to login to system before.");
+                log.Warn("user not logged into system.");
                 throw new Exception("you need to login to system"); }
             CheckTaskID(taskID);
             foreach (TC.Column a in columns.Values)
@@ -103,11 +103,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             TC.Task advTask = columnsInt[columnOrdinal].getTask(taskId);
             if (advTask == null)
             {
-                log.Warn(email + "  tried to advande the task "+taskId+" that does not exist in "+ columnsInt[columnOrdinal].getName()+" column");
+                log.Warn(email + "  tried to advance task #"+taskId+" that does not exist in "+ columnsInt[columnOrdinal].getName()+" column.");
                 throw new Exception("task does not exist in this columm"); }
             columnsInt[columnOrdinal + 1].addTask(advTask);
             columnsInt[columnOrdinal].deleteTask(advTask);
-            log.Debug("task " + taskId + " advance successfully.");
+            log.Debug("task " + taskId + " advanced successfully.");
         }
         public TC.Column GetColumn(string columnName)
         {
@@ -129,15 +129,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             if(taskID>this.ID | taskID < 1)
             {
-                log.Warn(email + "  entered an invalid identity number");
-                throw new Exception("you entered an illegal ID");
+                log.Warn(email+" has entered an invalid task ID.");
+                throw new Exception("you entered an invalid ID");
             }
         }
         private void ColumnIsNotDoneColumn(int columnOrdinal)
         {
             if (columnOrdinal == 3)
             {
-                log.Warn(email+" Attempt has attempted to try status / details in the task found in column DONE");
+                log.Warn(email+" has attempted to change a completed task. no tasks were changed.");
                 throw new Exception("Completed tasks cannot be changed");
             }
         }
@@ -145,7 +145,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             if(!name.Equals(columnsInt[1].getName()) & !name.Equals(columnsInt[2].getName()) & !name.Equals(columnsInt[3].getName()))
             {
-                log.Warn(email + "  enter an incorrect column name.");
+                log.Warn(email + " has entered an invalid column name.");
                 throw new Exception("The column name you searched for is invalid"); }
         }
         private void LoadData()
@@ -161,7 +161,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             if (num < 1 | num > 3)
             {
-                log.Warn(email + " enter an incorrect column number.");
+                log.Warn(email + " has entered an invalid column number.");
                 throw new Exception("Invalid column number");
             }
         }

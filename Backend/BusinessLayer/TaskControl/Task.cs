@@ -93,12 +93,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public void FromDalObject(DAL.Task DalObj)
         {
             log.Debug("task #" + ID + "converting from DAL obj");
-            email = DalObj.Email;
-            title = DalObj.Title;
-            ID = DalObj.ID;
-            desc = DalObj.Desc;
-            due = DalObj.Due;
-            creation = DalObj.Creation;
+            try
+            {
+                email = DalObj.Email;
+                title = DalObj.Title;
+                ID = DalObj.ID;
+                desc = DalObj.Desc;
+                due = DalObj.Due;
+                creation = DalObj.Creation;
+            }
+            catch(Exception e)
+            {
+                log.Error("issue converting task Dal object to task BL object due to " + e.Message);
+                throw e;
+            }
         }
 
         public void Save()
