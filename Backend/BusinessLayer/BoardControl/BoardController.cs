@@ -61,7 +61,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             if (Cur.GetEmail() == null)
             {
-                log.Warn("An offline user tried to take action.");
+                log.Error("An offline user tried to take action.");
                 throw new Exception("you need to login to system"); }
             if (!email.Equals(Cur.GetEmail()))
             {
