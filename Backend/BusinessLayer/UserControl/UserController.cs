@@ -23,17 +23,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public User get_active() { return ActiveUser; }
         public void register(string email, string password, string nickname)
         {
-            if (email == null || password == null || nickname == null) 
+            if (email == null || password == null || nickname == null)
             {
                 log.Warn("attempted to register with at least one null value.");
-                throw new Exception("must register with non null values."); 
+                throw new Exception("must register with non null values.");
             }
-            if (email.Equals("") || password.Equals("") || nickname.Equals("")) 
+            if (email.Equals("") || password.Equals("") || nickname.Equals(""))
             {
                 log.Warn("attempted to register with at least one empty value.");
                 throw new Exception("must register with non empty values.");
             }
-            if (checkUser(email)) 
+            email = email.ToLower();
+            checkEmail(email);
+            if (!checkUser(email, nickname))
             {
                 log.Warn("attempted to register with a taken email.");
                 throw new Exception("this email is already taken.");
@@ -42,31 +44,34 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             var hasUpperChar = new Regex(@"[A-Z]+");
             var hasMiniMaxChars = new Regex(@".{4,20}");
             var hasLowerChar = new Regex(@"[a-z]+");
-            if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | !hasMiniMaxChars.IsMatch(password) | !hasLowerChar.IsMatch(password)) 
+            if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | !hasMiniMaxChars.IsMatch(password) | !hasLowerChar.IsMatch(password))
             {
                 log.Warn("password too weak. must include at least one uppercase letter, one lowercase letter and a number.");
-                throw new Exception("must include at least one uppercase letter, one lowercase letter and a number."); 
+                throw new Exception("must include at least one uppercase letter, one lowercase letter and a number.");
             }
             string path = Directory.GetCurrentDirectory();
-            string pathString = System.IO.Path.Combine(path,"JSON", email);
+            string pathString = System.IO.Path.Combine(path, "JSON", email);
             System.IO.Directory.CreateDirectory(pathString);
             User NU = new User(email, password, nickname);
             NU.Save();
             log.Info(NU.getnickname() + " user created");
             list.Add(NU);
         }
-        public void login(string email,string password)
+        public void login(string email, string password)
         {
             if (ActiveUser != null)
             {
                 log.Warn("a login was attempted while a user is already logged in.");
                 throw new Exception("user already login");
             }
-            if (email == null || password == null) 
+            if (email == null || password == null)
             {
                 log.Warn("user tried to login with at least one null value.");
-                throw new Exception("must login with non null values"); }
-            foreach(User u in list)
+                throw new Exception("must login with non null values");
+            }
+            email = email.ToLower();
+            checkEmail(email);
+            foreach (User u in list)
             {
                 if (u.isMatchEmail(email))
                 {
@@ -76,10 +81,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                         log.Debug("given password matches.");
                         ActiveUser = u;
                         log.Info(ActiveUser.getemail() + " has successfully logged in.");
+                        ActiveUser.Login();
                     }
                     else
                     {
-                        log.Warn(u.getemail()+" tried to login with incorrect password.");
+                        log.Warn(u.getemail() + " tried to login with incorrect password.");
                         throw new Exception("invaild password");
                     }
                 }
@@ -87,17 +93,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             if (ActiveUser == null)
             {
                 log.Warn("user not yet registered.");
-                throw new Exception("The user does not exist");
+                throw new Exception(email + "," + password);
             }
-            
+
         }
         public void logout(string email)
         {
-            if(ActiveUser==null) 
+            if (ActiveUser == null)
             {
                 log.Warn("no user logged in. logout failed.");
-                throw new Exception("user not login"); 
+                throw new Exception("user not login");
             }
+            email = email.ToLower();
             if (!email.Equals(ActiveUser.getemail()))
             {
                 log.Warn("a user that is not logged in attempted to log out. logout failed.");
@@ -105,15 +112,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             }
             else
             {
+                ActiveUser.Logout();
                 log.Debug(ActiveUser.getemail() + " logged out.");
                 ActiveUser = null;
             }
         }
-        private Boolean checkUser(string email) 
-        { 
-            string path = Directory.GetCurrentDirectory();
-            if(!System.IO.Directory.Exists(path+"\\JSON\\" + email))
-                return false;
+        private Boolean checkUser(string email, string nickname)
+        {
+            foreach (User u in list)
+            {
+                if (u.getemail().Equals(email) | u.getnickname().Equals(nickname))
+                {
+                    return false;
+                }
+            }
             return true;
         }
         public void LoadData()
@@ -127,6 +139,30 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 u.Load();
                 log.Debug("user list has been loaded.");
                 list.Add(u);
+                if (u.IsLog() & ActiveUser == null)
+                {
+                    ActiveUser = u;
+                    log.Info(ActiveUser.getemail() + " has successfully logged in.");
+                }
+                else if (u.IsLog())
+                { throw new Exception("two or more user logged in."); }
+            }
+        }
+        private void checkEmail(string s)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(s);
+                if (addr.Address != s)
+                {
+
+                    throw new Exception("email adress invalid");
+                }
+            }
+            catch (Exception e)
+            {
+                log.Debug("email is invalid");
+                throw new Exception("email adress invalid");
             }
         }
     }

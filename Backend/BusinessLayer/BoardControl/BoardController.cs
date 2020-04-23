@@ -11,10 +11,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
     class BoardController
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private Dictionary<string,Board> BC;
+        private Dictionary<string, Board> BC;
         private Board Cur;
 
-        public BoardController() { 
+        public BoardController()
+        {
             BC = new Dictionary<string, Board>();
             Cur = new Board();
             log.Debug("BoardController created.");
@@ -22,16 +23,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public void LoadData()
         {
-            string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory()+"\\JSON");
-            foreach(string path in users)
+            string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
+            foreach (string path in users)
             {
                 var dir = new DirectoryInfo(path);
-                BC.Add(dir.Name,new Board(dir.Name));
+                BC.Add(dir.Name, new Board(dir.Name));
             }
             log.Debug(" board list has been loaded.");
         }
 
-        public void Login(string email) {
+        public void Login(string email)
+        {
+            email = email.ToLower();
             if (BC.ContainsKey(email))
             {
                 Cur = BC[email];
@@ -39,8 +42,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             }
             else
             {
-                log.Info(email + " does not have a board yet, creating new empty board." );
-                BC.Add(email,new Board(email));
+                log.Info(email + " does not have a board yet, creating new empty board.");
+                BC.Add(email, new Board(email));
                 Cur = BC[email];
             }
         }
@@ -59,14 +62,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         private void CheckEmail(string email)
         {
-            if (Cur.GetEmail() == null)
+            if (email == null)
             {
                 log.Error("An offline user tried to take action.");
-                throw new Exception("you need to login to system"); }
-            if (!email.Equals(Cur.GetEmail()))
+                throw new Exception("you need to login to system");
+            }
+            string s = email.ToLower();
+            if (!s.Equals(Cur.GetEmail()))
             {
-                log.Warn(email+" does not match the email connected to the system");
-                throw new Exception("The email you entered does not match the email of the party"); }
+                log.Warn(email + " does not match the email connected to the system");
+                throw new Exception("The email you entered does not match the email of the party");
+            }
         }
         public TC.Task AddTask(string email, string title, string desciption, DateTime dueTime)
         {
@@ -107,15 +113,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckEmail(email);
             return Cur.GetColumn(columnOrdinal);
         }
-        public Dictionary<string, TC.Column> getColumns(string email)
+        public List<TC.Column> getColumns(string email)
         {
             CheckEmail(email);
             return Cur.getColumns();
         }
-
- 
-
-
 
     }
 }

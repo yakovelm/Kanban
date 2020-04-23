@@ -31,11 +31,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         public Column() { }
-        
+
         private List<string> ChengeToString(List<Task> tasks)
         {
             List<string> output = new List<string>();
-            foreach(Task task in tasks)
+            foreach (Task task in tasks)
             {
                 output.Add(task.toJson());
             }

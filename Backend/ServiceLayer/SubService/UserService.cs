@@ -11,16 +11,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BusinessLayer.UserControl.UserController uc;
-        
+
         public UserService()
         {
             uc = new BusinessLayer.UserControl.UserController();
         }
-        public Response<User> login(string email,string password)
+        public Response<User> login(string email, string password)
         {
             try
             {
-                log.Info("logging in to user " + email+".");
+                log.Info("logging in to user " + email + ".");
                 uc.login(email, password);
                 return new Response<User>(new User(uc.get_active().getemail(), uc.get_active().getnickname()));
             }
@@ -29,17 +29,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response<User>(e.Message);
             }
         }
-        public Response register(string email,string password,string nickname)
+        public Response register(string email, string password, string nickname)
         {
             try
             {
-                log.Info("registering user " + email+".");
+                log.Info("registering user " + email + ".");
                 uc.register(email, password, nickname);
                 return new Response();
             }
             catch (Exception e)
             {
-                log.Info("register failed."); // can fail due to many reasons, added catch all.
+                log.Info("register failed. due to  " + e.Message); // can fail due to many reasons, added catch all.
                 return new Response(e.Message);
             }
         }
@@ -51,7 +51,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 uc.logout(email);
                 return new Response();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Info("login failed."); // can fail due to many reasons, added catch all.
                 return new Response(e.Message);
@@ -65,7 +65,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 uc.LoadData();
                 return new Response();
             }
-            catch(Exception e) { return new Response(e.Message); }
+            catch (Exception e) { return new Response(e.Message); }
         }
+        public string getActive() { return uc.get_active().getemail(); }
     }
 }

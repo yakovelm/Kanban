@@ -31,17 +31,24 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             BS = new SS.BoardService();
             LoadData();
         }
-               
+
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
         /// </summary>
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
-            Response Ures=US.LoadData();
+            Response Ures = US.LoadData();
             if (Ures.ErrorOccured) return Ures;
             Response Bres = BS.LoadData();
-            if (Bres.ErrorOccured) return Bres;
+            try
+            {
+                if (Bres.ErrorOccured) return Bres;
+                if (US.getActive() != null) { BS.Login(US.getActive()); }
+            }
+            catch (Exception e) {
+                log.Error("prublem");
+                new Response(e.Message); }
             return new Response();
         }
 
@@ -69,7 +76,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<User> Ures = US.login(email, password);
             if (Ures.ErrorOccured) { return Ures; }
             Response Bres = BS.Login(email);
-            if (Bres.ErrorOccured) return new Response<User>(Bres.ErrorMessage);
+            if (Bres.ErrorOccured) { return new Response<User>(Bres.ErrorMessage); }
             return Ures;
         }
 
@@ -82,8 +89,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response Ures = US.logout(email);
             if (Ures.ErrorOccured) { return Ures; }
-            Response Bres=BS.Logout(email);
-            if (Bres.ErrorOccured) return Bres;
+            Response Bres = BS.Logout(email);
+            if (Bres.ErrorOccured) { return Bres; }
             return Ures;
         }
 
@@ -132,7 +139,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            return BS.UpdateTaskDueDate(email,columnOrdinal,taskId,dueDate);
+            return BS.UpdateTaskDueDate(email, columnOrdinal, taskId, dueDate);
         }
 
         /// <summary>

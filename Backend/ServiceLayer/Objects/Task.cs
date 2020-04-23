@@ -6,25 +6,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         public readonly int Id;
         public readonly DateTime CreationTime;
+        public readonly DateTime DueDate;
         public readonly string Title;
         public readonly string Description;
-        internal Task(int id, DateTime creationTime, string title, string description)
+        internal Task(int id, DateTime creationTime, DateTime dueDate, string title, string description)
         {
             this.Id = id;
             this.CreationTime = creationTime;
+            this.DueDate = dueDate;
             this.Title = title;
             this.Description = description;
         }
         // You can add code here
         public override string ToString()
         {
-            string ret = "";
-            ret += "-TASK-"+"\n";
-            ret += "id: " + Id+"\n";
-            ret += "title: " + Title+"\n";
-            ret += "description: " + Description+"\n";
-            ret += "creation time: " + CreationTime+"\n";
-            return ret;
+            return "-Task-\n" + "ID: " + Id + "\n Title: " + Title + "\n Desc: " + Description + "\n Creation: " + CreationTime + "\n Due Date: " + DueDate + "\n";
         }
     }
 }

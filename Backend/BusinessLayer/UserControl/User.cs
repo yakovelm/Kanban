@@ -15,6 +15,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private String email;
         private String password;
         private String nickname;
+        private bool isLog = false;
 
         public User()
         {
@@ -23,7 +24,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             nickname = null;
         }
         public User(string email) { this.email = email; }
-        public User(string email, string password, string nickname) {
+        public User(string email, string password, string nickname)
+        {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
@@ -46,35 +48,36 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public DAL.User ToDalObject()
         {
-            log.Debug("converting user to DAL obj for " + email+".");
-            return new DAL.User(email, password, nickname);
+            log.Debug("converting user to DAL obj for " + email + ".");
+            return new DAL.User(email, password, nickname, isLog);
         }
 
         public void Save()
         {
-            log.Debug("saving user to hard drive for " + email + ".");
-            DAL.User DU = ToDalObject();
             try
             {
+                log.Debug("saving user to hard drive for " + email + ".");
+                DAL.User DU = ToDalObject();
                 DU.Write("JSON\\" + email + "\\" + email + ".json", DU.toJson());
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
-                log.Error("faild to write to file due to "+e.Message);
+                log.Error("faild to write to file due to " + e.Message);
                 throw e;
             }
         }
 
         public void FromDalObject(DAL.User DalObj)
         {
-            log.Debug("converting user from DAL obj for " + email + ".");
             try
             {
+                log.Debug("converting user from DAL obj for " + email + ".");
                 this.email = DalObj.getEmail();
                 this.password = DalObj.getPassword();
                 this.nickname = DalObj.getNickname();
+                this.isLog = DalObj.IsLog();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Error("issue converting user DAL object to user BL object due to " + e.Message);
                 throw e;
@@ -83,18 +86,29 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 
         public void Load()
         {
-            DAL.User DU = new DAL.User(email);
-            log.Debug("user " + DU.getNickname() + "loading from hard drive for " + email);
             try
             {
+                DAL.User DU = new DAL.User(email);
+                log.Debug("user " + DU.getNickname() + "loading from hard drive for " + email);
                 DU.fromJson("JSON\\" + email + "\\" + email + ".json");
+                FromDalObject(DU);
             }
             catch (Exception e)
             {
                 log.Error("failed to load user from file due to " + e.Message);
                 throw e;
             }
-            FromDalObject(DU);
         }
+        public void Login()
+        {
+            isLog = true;
+            Save();
+        }
+        public void Logout()
+        {
+            isLog = false;
+            Save();
+        }
+        public bool IsLog() { return isLog; }
     }
 }

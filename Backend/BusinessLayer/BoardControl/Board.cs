@@ -10,21 +10,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
     class Board
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private Dictionary<string,TC.Column> columns;
-        private int ID=0;
+        private List<TC.Column> columns;
+        private int ID = 0;
         private string email;
         private TC.Column[] columnsInt;
         public Board(string email)
         {
             this.email = email;
-            columns = new Dictionary<string, TC.Column>();
-            columnsInt = new TC.Column[4];
-            columns.Add("done", new TC.Column(email, "done"));
-            columnsInt[3] = columns["done"];
-            columns.Add("in progress", new TC.Column(email, "in progress"));
-            columnsInt[2] = columns["in progress"];
-            columns.Add("backlog", new TC.Column(email, "backlog"));
-            columnsInt[1] = columns["backlog"];
+            columns = new List<TC.Column>();
+            columnsInt = new TC.Column[3];
+            columns.Add(new TC.Column(email, "backlog"));
+            columnsInt[0] = columns[0];
+            columns.Add(new TC.Column(email, "in progress"));
+            columnsInt[1] = columns[1];
+            columns.Add(new TC.Column(email, "done"));
+            columnsInt[2] = columns[2];
+
             LoadData();
             log.Debug("a board for " + email + " has been made.");
         }
@@ -34,21 +35,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             log.Debug("empty board created.");
         }
 
-        public void LimitColumnTask(int ColumnOrdinal,int limit)
+        public void LimitColumnTask(int ColumnOrdinal, int limit)
         {
-            
+
             CheckColumnOrdinal(ColumnOrdinal);
-            columnsInt[ColumnOrdinal].setLimit(limit);
+            if (ColumnOrdinal == 1)
+            {
+                columnsInt[ColumnOrdinal].setLimit(limit);
+            }
+            else
+            { throw new Exception("column number cant set"); }
         }
 
         public string GetEmail() { return email; }
 
 
-        public TC.Task AddTask(string title,string desciption, DateTime dueTime)
+        public TC.Task AddTask(string title, string desciption, DateTime dueTime)
         {
             ID++;
-            TC.Task newTack = new TC.Task(ID, title,desciption,dueTime,this.email);
-            columnsInt[1].addTask(newTack);
+            TC.Task newTack = new TC.Task(ID, title, desciption, dueTime, this.email);
+            columnsInt[0].addTask(newTack);
             return newTack;
         }
         public void UpdateTaskDueDate(int columnOrdinal, int taskID, DateTime Due)
@@ -56,12 +62,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            TC.Task updateTask=columnsInt[columnOrdinal].getTask(taskID);
+            TC.Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
             updateTask.editDue(Due);
             log.Debug("due date of task #" + taskID + "has been updated.");
             columnsInt[columnOrdinal].Save();
         }
-        public void UpdateTaskTitle(int columnOrdinal, int taskID,string title)
+        public void UpdateTaskTitle(int columnOrdinal, int taskID, string title)
         {
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
@@ -71,7 +77,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             log.Debug("title of task #" + taskID + "has been updated.");
             columnsInt[columnOrdinal].Save();
         }
-        public void UpdateTaskDescription( int columnOrdinal ,int taskID, string description)
+        public void UpdateTaskDescription(int columnOrdinal, int taskID, string description)
         {
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
@@ -83,11 +89,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public TC.Task GetTask(int taskID)
         {
-            if (this.email == null) {
+            if (this.email == null)
+            {
                 log.Warn("user not logged into system.");
-                throw new Exception("you need to login to system"); }
+                throw new Exception("you need to login to system");
+            }
             CheckTaskID(taskID);
-            foreach (TC.Column a in columns.Values)
+            foreach (TC.Column a in columns)
             {
                 TC.Task checktask = a.getTask(taskID);
                 if (checktask != null)
@@ -95,7 +103,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             }
             return null;//we must to return something (defult).
         }
-        public void AdvanceTask(int columnOrdinal ,int taskId)
+        public void AdvanceTask(int columnOrdinal, int taskId)
         {
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
@@ -103,8 +111,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             TC.Task advTask = columnsInt[columnOrdinal].getTask(taskId);
             if (advTask == null)
             {
-                log.Warn(email + "  tried to advance task #"+taskId+" that does not exist in "+ columnsInt[columnOrdinal].getName()+" column.");
-                throw new Exception("task does not exist in this columm"); }
+                log.Warn(email + "  tried to advance task #" + taskId + " that does not exist in " + columnsInt[columnOrdinal].getName() + " column.");
+                throw new Exception("task does not exist in this columm");
+            }
             columnsInt[columnOrdinal + 1].addTask(advTask);
             columnsInt[columnOrdinal].deleteTask(advTask);
             log.Debug("task " + taskId + " advanced successfully.");
@@ -113,57 +122,69 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
 
             CheckColumnName(columnName);
-            return columns[columnName];
+            return columns[ChengeToInt(columnName)];
         }
         public TC.Column GetColumn(int columnOrdinal)
-        { 
+        {
             CheckColumnOrdinal(columnOrdinal);
             return columnsInt[columnOrdinal];
         }
-        public Dictionary<string, TC.Column> getColumns()
+        public List<TC.Column> getColumns()
         {
             return columns;
         }
 
         private void CheckTaskID(int taskID)
         {
-            if(taskID>this.ID | taskID < 1)
+            if (taskID > this.ID | taskID < 1)
             {
-                log.Warn(email+" has entered an invalid task ID.");
+                log.Warn(email + " has entered an invalid task ID.");
                 throw new Exception("you entered an invalid ID");
             }
         }
         private void ColumnIsNotDoneColumn(int columnOrdinal)
         {
-            if (columnOrdinal == 3)
+            if (columnOrdinal == 2)
             {
-                log.Warn(email+" has attempted to change a completed task. no tasks were changed.");
+                log.Warn(email + " has attempted to change a completed task. no tasks were changed.");
                 throw new Exception("Completed tasks cannot be changed");
             }
         }
         private void CheckColumnName(string name)
         {
-            if(!name.Equals(columnsInt[1].getName()) & !name.Equals(columnsInt[2].getName()) & !name.Equals(columnsInt[3].getName()))
+            if (!name.Equals(columnsInt[1].getName()) & !name.Equals(columnsInt[2].getName()) & !name.Equals(columnsInt[0].getName()))
             {
                 log.Warn(email + " has entered an invalid column name.");
-                throw new Exception("The column name you searched for is invalid"); }
+                throw new Exception("The column name you searched for is invalid");
+            }
         }
         private void LoadData()
         {
-            for(int i=1;i<4;i++)
+            foreach (TC.Column c in columns)
             {
-                columnsInt[i].Load();
-                ID += columnsInt[i].getSize();
+                c.Load();
+                ID += c.getSize();
             }
         }
 
         private void CheckColumnOrdinal(int num)
         {
-            if (num < 1 | num > 3)
+            if (num < 0 | num > 2)
             {
                 log.Warn(email + " has entered an invalid column number.");
                 throw new Exception("Invalid column number");
             }
+        }
+        private int ChengeToInt(string s)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (s.Equals(columnsInt[i].getName()))
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
     }
 }
