@@ -62,6 +62,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             if (tasks.Remove(task))
             {
                 Save();
+                size--;
                 return task;
             }
             log.Info("task does not exist in " + name + " column");

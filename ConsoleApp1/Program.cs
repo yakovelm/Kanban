@@ -30,9 +30,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string tn2 = "nitay";
 
                 print(s.Register(te2, tp2, tn2));
-                print(s.Logout(te));
                 print(s.Login(te2, tp2).toString());
-                print(s.GetColumn(te,0).toString());
+                print(s.GetColumn(te2,0).toString());
+                print(s.AddTask(te2, "a", null, DateTime.Today));
+                print(s.GetColumn(te2, 0).toString());
 
 
 

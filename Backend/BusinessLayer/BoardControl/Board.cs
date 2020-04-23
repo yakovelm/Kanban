@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private List<TC.Column> columns;
-        private int ID = 0;
+        private int ID = 1;
         private string email;
         private TC.Column[] columnsInt;
         public Board(string email)
@@ -52,8 +52,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public TC.Task AddTask(string title, string desciption, DateTime dueTime)
         {
-            ID++;
             TC.Task newTack = new TC.Task(ID, title, desciption, dueTime, this.email);
+            ID++;
             columnsInt[0].addTask(newTack);
             return newTack;
         }

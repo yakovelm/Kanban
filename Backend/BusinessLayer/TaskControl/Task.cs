@@ -23,17 +23,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public Task(int ID, string title, string desc, DateTime due, string email)
         {
             log.Info("creating new task: #" + ID + " title: " + title + " for " + email);
-            if(title==null|| title.Equals("") | due==null)
+            if(title==null || title.Equals(""))
             {
-                log.Error("title/due date is invalid.");
-                throw new Exception("title/due date is invalid.");
+                log.Error("title is invalid.");
+                throw new Exception("title is invalid.");
+            }
+            if (due==null || due < DateTime.Now)
+            {
+                log.Error("due is invalid.");
+                throw new Exception("due is invalid.");
             }
             if (title.Length > Tmax)
             {
                 log.Warn("Title too long");
                 throw new Exception("Title too long.");
             }
-            if (desc!=null && desc.Length > Dmax)
+            if (desc != null && desc.Length > Dmax)
             {
                 log.Warn("Description too long");
                 throw new Exception("Description too long.");
@@ -87,10 +92,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public void editDue(DateTime due)
         {
             log.Info("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email);
-            if (due==null || due.CompareTo(this.creation) < 0)
+            if (due==null || due < DateTime.Now)
             {
-                log.Warn("new due is earlier then creation");
-                throw new Exception("new due is earlier then creation");
+                log.Warn("new due is earlier then now");
+                throw new Exception("new due is earlier then now");
             }
             this.due = due;
         }
