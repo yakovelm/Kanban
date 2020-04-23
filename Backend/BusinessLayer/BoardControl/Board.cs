@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 columnsInt[ColumnOrdinal].setLimit(limit);
             }
             else
-            { throw new Exception("column number cant set"); }
+            { throw new Exception("can only limit the in progress column"); }
         }
 
         public string GetEmail() { return email; }

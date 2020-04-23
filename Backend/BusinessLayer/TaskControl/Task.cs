@@ -33,7 +33,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Warn("Title too long");
                 throw new Exception("Title too long.");
             }
-            if (desc!=null || desc.Length > Dmax)
+            if (desc!=null && desc.Length > Dmax)
             {
                 log.Warn("Description too long");
                 throw new Exception("Description too long.");
@@ -67,7 +67,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public void editTitle(string title)
         {
             log.Info("task #" + ID + "title changing from " + this.title + " to " + title + " for " + email);
-            if (title != null && title.Length > Tmax |title.Equals(""))
+            if (title == null || title.Length > Tmax |title.Equals(""))
             {
                 log.Warn("Title too long");
                 throw new Exception("Title too long.");
