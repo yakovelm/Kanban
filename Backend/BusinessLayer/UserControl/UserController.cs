@@ -24,32 +24,53 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public User get_active() { return ActiveUser; }
         public void register(string email, string password, string nickname)
         {
-            if (email == null || password == null || nickname == null)
+            NullCheck(email, password, nickname);
+            email = email.ToLower();
+            checkEmail(email); 
+            checkUser(email, nickname);
+            checkPassword(password);
+            log.Debug("Values of register is legal");
+            save(email, password, nickname);
+        }
+        private void NullCheck(params object[] s)
+        {
+            if(s.Length==2 & ActiveUser != null)
             {
-                log.Warn("attempted to register with at least one null value.");
-                throw new Exception("must register with non null values.");
+                log.Warn("a login was attempted while a user is already logged in.");
+                throw new Exception("user already login");
             }
-            if (email.Equals("") || password.Equals("") || nickname.Equals(""))
+            foreach(object check in s)
+            {
+                if(check==null & s.Length==3)
+                {
+                    log.Warn("attempted to register with at least one null value.");
+                    throw new Exception("must register with non null values.");
+                }
+                else if(check ==null)
+                {
+                    log.Warn("user tried to login with at least one null value.");
+                    throw new Exception("must login with non null values");
+                }
+            }
+            if(s.Length==3 && (string)s[2] == "")
             {
                 log.Warn("attempted to register with at least one empty value.");
                 throw new Exception("must register with non empty values.");
             }
-            email = email.ToLower();
-            checkEmail(email);
-            if (!checkUser(email, nickname))
-            {
-                log.Warn("attempted to register with a taken email.");
-                throw new Exception("this email is already taken.");
-            }
+        }
+        private void checkPassword(string password)
+        {
             var hasNumber = new Regex(@"[0-9]+");
             var hasUpperChar = new Regex(@"[A-Z]+");
-            var hasMiniMaxChars = new Regex(@".{4,20}");
             var hasLowerChar = new Regex(@"[a-z]+");
-            if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | !hasMiniMaxChars.IsMatch(password) | !hasLowerChar.IsMatch(password))
+            if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | password.Length < 4 | password.Length > 20 | !hasLowerChar.IsMatch(password))
             {
                 log.Warn("password too weak. must include at least one uppercase letter, one lowercase letter and a number.");
                 throw new Exception("must include at least one uppercase letter, one lowercase letter and a number.");
             }
+        }
+        private void save(string email, string password, string nickname)
+        {
             string path = Directory.GetCurrentDirectory();
             string pathString = System.IO.Path.Combine(path, "JSON", email);
             System.IO.Directory.CreateDirectory(pathString);
@@ -60,16 +81,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void login(string email, string password)
         {
-            if (ActiveUser != null)
-            {
-                log.Warn("a login was attempted while a user is already logged in.");
-                throw new Exception("user already login");
-            }
-            if (email == null || password == null)
-            {
-                log.Warn("user tried to login with at least one null value.");
-                throw new Exception("must login with non null values");
-            }
+            NullCheck(email, password);
             email = email.ToLower();
             checkEmail(email);
             foreach (User u in list)
@@ -116,16 +128,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 ActiveUser = null;
             }
         }
-        private Boolean checkUser(string email, string nickname)
+        private void checkUser(string email, string nickname)
         {
             foreach (User u in list)
             {
                 if (u.getemail().Equals(email))
                 {
-                    return false;
+                    log.Warn("attempted to register with a taken email.");
+                    throw new Exception("this email is already taken.");
                 }
             }
-            return true;
         }
         public void LoadData()
         {

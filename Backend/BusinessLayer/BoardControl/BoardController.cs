@@ -87,7 +87,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskID, string title)
         {
             CheckEmail(email);
-            Cur.UpdateTaskDescription(columnOrdinal, taskID, title);
+            Cur.UpdateTaskTitle(columnOrdinal, taskID, title);
         }
         public void UpdateTaskDescription(string email, int columnOrdinal, int taskID, string description)
         {
