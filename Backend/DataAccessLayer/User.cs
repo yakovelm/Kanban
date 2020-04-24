@@ -13,24 +13,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string email { get; set; }
         public string password { get; set; }
         public string nickname { get; set; }
-        public bool isLog { get; set; }
 
         public User(string email)
         {
             this.email = email;
         }
         public User() { }
-        public User(string email, string password, string nickname, bool isLog)
+        public User(string email, string password, string nickname)
         {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
-            this.isLog = isLog;
         }
         public string getEmail() { return email; }
         public string getNickname() { return nickname; }
         public string getPassword() { return password; }
-        public bool IsLog() { return isLog; }
         public override User fromJson(string filename)
         {
             if (File.Exists(Directory.GetCurrentDirectory() + "\\" + filename))
@@ -40,7 +37,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 this.email = temp.email;
                 this.password = temp.password;
                 this.nickname = temp.nickname;
-                this.isLog = temp.isLog;
                 return this;
             }
             else throw new Exception("Json file not exists");

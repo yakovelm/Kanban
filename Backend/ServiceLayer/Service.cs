@@ -41,14 +41,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response Ures = US.LoadData();
             if (Ures.ErrorOccured) return Ures;
             Response Bres = BS.LoadData();
-            try
-            {
-                if (Bres.ErrorOccured) return Bres;
-                if (US.getActive() != null) { BS.Login(US.getActive()); }
-            }
-            catch (Exception e) {
-                log.Error("prublem");
-                new Response(e.Message); }
             return new Response();
         }
 

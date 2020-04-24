@@ -47,7 +47,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public void addTask(Task task)
         {
             log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email);
-            if (limit != -1 & limit == size)
+            if (limit != -1 & limit <= size)
             {
                 log.Warn("task limit reached, task not added.");
                 throw new Exception("task limit reached, task not added.");
@@ -103,6 +103,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 throw new Exception("limit cannot be lower than current amount of tasks. limit not changed");
             }
             this.limit = limit;
+            Save();
         }
 
         public DAL.Column ToDalObject()
@@ -142,6 +143,37 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Error("issue converting column DAL object to column BL object due to " + e.Message);
                 throw e;
             }
+        }
+
+        public void editTitle(int ID, string title)
+        {
+            Task t = getTask(ID);
+            if (t == null)
+            {
+                throw new Exception("task does not exist in this columm");
+            }
+            t.editTitle(title);
+            Save();
+        }
+        public void editDesc(int ID, string desc)
+        {
+            Task t = getTask(ID);
+            if (t == null)
+            {
+                throw new Exception("task does not exist in this columm");
+            }
+            t.editDesc(desc);
+            Save();
+        }
+        public void editDue(int ID, DateTime due)
+        {
+            Task t = getTask(ID);
+            if (t == null)
+            {
+                throw new Exception("task does not exist in this columm");
+            }
+            t.editDue(due);
+            Save();
         }
 
         public void Save()

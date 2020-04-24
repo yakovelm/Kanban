@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.IO;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
@@ -81,7 +82,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                         log.Debug("given password matches.");
                         ActiveUser = u;
                         log.Info(ActiveUser.getemail() + " has successfully logged in.");
-                        ActiveUser.Login();
                     }
                     else
                     {
@@ -112,7 +112,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             }
             else
             {
-                ActiveUser.Logout();
                 log.Debug(ActiveUser.getemail() + " logged out.");
                 ActiveUser = null;
             }
@@ -121,7 +120,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             foreach (User u in list)
             {
-                if (u.getemail().Equals(email) | u.getnickname().Equals(nickname))
+                if (u.getemail().Equals(email))
                 {
                     return false;
                 }
@@ -139,31 +138,62 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 u.Load();
                 log.Debug("user list has been loaded.");
                 list.Add(u);
-                if (u.IsLog() & ActiveUser == null)
-                {
-                    ActiveUser = u;
-                    log.Info(ActiveUser.getemail() + " has successfully logged in.");
-                }
-                else if (u.IsLog())
-                { throw new Exception("two or more user logged in."); }
             }
         }
         private void checkEmail(string s)
         {
             try
             {
-                var addr = new System.Net.Mail.MailAddress(s);
-                if (addr.Address != s)
+                if (!IsValidEmail(s))
                 {
 
                     throw new Exception("email adress invalid");
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 log.Debug("email is invalid");
                 throw new Exception("email adress invalid");
             }
         }
+
+        public bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
+                                      RegexOptions.None, TimeSpan.FromMilliseconds(200));
+                // Examines the domain part of the email and normalizes it.
+                string DomainMapper(Match match)
+                {
+                    // Use IdnMapping class to convert Unicode domain names.
+                    var idn = new IdnMapping();
+
+                    // Pull out and process domain name (throws ArgumentException on invalid)
+                    var domainName = idn.GetAscii(match.Groups[2].Value);
+
+                    return match.Groups[1].Value + domainName;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            try
+            {
+                return Regex.IsMatch(email,
+                    @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
     }
 }

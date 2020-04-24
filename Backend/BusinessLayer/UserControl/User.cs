@@ -15,7 +15,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private String email;
         private String password;
         private String nickname;
-        private bool isLog = false;
 
         public User()
         {
@@ -49,7 +48,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public DAL.User ToDalObject()
         {
             log.Debug("converting user to DAL obj for " + email + ".");
-            return new DAL.User(email, password, nickname, isLog);
+            return new DAL.User(email, password, nickname);
         }
 
         public void Save()
@@ -75,7 +74,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 this.email = DalObj.getEmail();
                 this.password = DalObj.getPassword();
                 this.nickname = DalObj.getNickname();
-                this.isLog = DalObj.IsLog();
             }
             catch (Exception e)
             {
@@ -99,16 +97,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw e;
             }
         }
-        public void Login()
-        {
-            isLog = true;
-            Save();
-        }
-        public void Logout()
-        {
-            isLog = false;
-            Save();
-        }
-        public bool IsLog() { return isLog; }
     }
 }

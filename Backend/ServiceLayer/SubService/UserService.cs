@@ -67,6 +67,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return new Response(e.Message); }
         }
-        public string getActive() { return uc.get_active().getemail(); }
     }
 }

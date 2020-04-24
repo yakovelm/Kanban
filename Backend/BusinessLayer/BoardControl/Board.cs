@@ -62,30 +62,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            TC.Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
-            updateTask.editDue(Due);
+            columnsInt[columnOrdinal].editDue(taskID, Due);
             log.Debug("due date of task #" + taskID + "has been updated.");
-            columnsInt[columnOrdinal].Save();
         }
         public void UpdateTaskTitle(int columnOrdinal, int taskID, string title)
         {
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            TC.Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
-            updateTask.editTitle(title);
+            columnsInt[columnOrdinal].editTitle(taskID, title);
             log.Debug("title of task #" + taskID + "has been updated.");
-            columnsInt[columnOrdinal].Save();
         }
         public void UpdateTaskDescription(int columnOrdinal, int taskID, string description)
         {
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            TC.Task updateTask = columnsInt[columnOrdinal].getTask(taskID);
-            updateTask.editDesc(description);
+            columnsInt[columnOrdinal].editDesc(taskID, description);
             log.Debug("description of task #" + taskID + "has been updated.");
-            columnsInt[columnOrdinal].Save();
         }
         public TC.Task GetTask(int taskID)
         {
