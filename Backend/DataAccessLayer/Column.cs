@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public Column() { } // json package requires an empty constructor
 
-        private List<string> ChengeToString(List<Task> tasks) // turn tasklist into a slist of strings to save
+        private List<string> ChengeToString(List<Task> tasks) // turn task list into a slist of strings to save
         {
             List<string> output = new List<string>();
             foreach (Task task in tasks)
