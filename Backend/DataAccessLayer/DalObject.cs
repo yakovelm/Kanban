@@ -7,7 +7,7 @@ using System.IO;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    public abstract class DalObject<T> where T:DalObject<T>
+    abstract class DalObject<T> where T:DalObject<T>
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public abstract string toJson();

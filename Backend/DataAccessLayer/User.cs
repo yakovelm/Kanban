@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    public class User : DalObject<User>
+    class User : DalObject<User>
     {
         public string email { get; set; } // json serialiser requires all relevant fields be public with get/set attributes
         public string password { get; set; }

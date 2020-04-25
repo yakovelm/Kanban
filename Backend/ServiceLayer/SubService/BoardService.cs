@@ -8,7 +8,7 @@ using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
-    public class BoardService
+    class BoardService
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BL.BoardController BC;
