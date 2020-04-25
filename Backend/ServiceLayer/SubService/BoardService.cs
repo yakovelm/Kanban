@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             log.Debug("BoardService created.");
         }
 
-        public Response LoadData()
+        public Response LoadData() // load all data in board controller
         {
             log.Info("Loading BoardController and list of boards.");
             try
@@ -28,7 +28,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return new Response(e.Message); }
         }
-        public Response Login(string email)
+        public Response Login(string email) // log a user to be the current board holder
         {
             log.Info(email + " Logging in to the board.");
             try
@@ -38,7 +38,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        public Response Logout(string email)
+        public Response Logout(string email) // log out the current board holder
         {
             log.Info(email + " Logging out from the board.");
             try
@@ -48,7 +48,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        public Response LimitColumnTask(string email, int ColumnOrdinal, int limit)
+        public Response LimitColumnTask(string email, int ColumnOrdinal, int limit) // change the limit of a specific column
         {
             log.Info(email + " attempting to chenge the limit of column " + ColumnOrdinal + " to limit " + limit + ".");
             try
@@ -58,7 +58,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        public Response<Task> AddTask(string email, string title, string desciption, DateTime dueTime)
+        public Response<Task> AddTask(string email, string title, string desciption, DateTime dueTime) // add a new task for this user
         {
             log.Info(email + " attempting to add new task.");
             try
@@ -68,7 +68,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response<Task>(e.Message)); }
         }
-        public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskID, DateTime Due)
+        public Response UpdateTaskDueDate(string email, int columnOrdinal, int taskID, DateTime Due) // update due date of this task
         {
             log.Info(email + " attempting to Update the DueDate of task #" + taskID + ".");
             try
@@ -78,7 +78,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        public Response UpdateTaskTitle(string email, int columnOrdinal, int taskID, string title)
+        public Response UpdateTaskTitle(string email, int columnOrdinal, int taskID, string title) // update title of this task
         {
             log.Info(email + " attempting to Update the title of task #" + taskID + ".");
             try
@@ -88,7 +88,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        public Response UpdateTaskDescription(string email, int columnOrdinal, int taskID, string Desc)
+        public Response UpdateTaskDescription(string email, int columnOrdinal, int taskID, string Desc) // update description of this task
         {
             log.Info(email + " attempting to Update the description of task #" + taskID + ".");
             try
@@ -98,13 +98,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        //public Response<Task> GetTask(int ID) // no references. we should consider removing this.
-        //{
-        //    log.Debug("attempting to get the task #" + ID + ".");
-        //    try { return new Response<Task>(chengeType(BC.GetTask(ID))); }
-        //    catch (Exception e) { return (new Response<Task>(new Task(), e.Message)); }
-        //}
-        public Response AdvanceTask(string email, int columnOrdinal, int taskId)
+        public Response AdvanceTask(string email, int columnOrdinal, int taskId) // advance this task to the next column
         {
             log.Info(email + " attempting to advance task #" + taskId + ".");
             try
@@ -114,7 +108,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        public Response<Column> GetColumn(string email, string columnName)
+        public Response<Column> GetColumn(string email, string columnName) // get column data of a specific column (by name)
         {
             log.Debug(email + " attempting to get the column " + columnName + ".");
             try
@@ -124,7 +118,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response<Column>(e.Message)); }
         }
-        public Response<Column> GetColumn(string email, int columnOrdinal)
+        public Response<Column> GetColumn(string email, int columnOrdinal) // get column data of a specific column (by ID)
         {
             log.Debug(email + " attempting to get column #" + columnOrdinal + ".");
             try
@@ -134,7 +128,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response<Column>(e.Message)); }
         }
-        public Response<Board> GetBoard(string email)
+        public Response<Board> GetBoard(string email) // get all column names in the board
         {
             log.Debug(email + " attempting to get the board.");
             try
@@ -146,11 +140,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return new Response<Board>(e.Message); }
         }
-        private Task chengeType(TC.Task taskBL)
+        private Task chengeType(TC.Task taskBL) // convert a BuisnessLayer task to a ServiceLayer task
         {
             return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.GetDue(), taskBL.getTitle(), taskBL.getDesc());
         }
-        private Column chengeType(TC.Column columnBL)
+        private Column chengeType(TC.Column columnBL)// convert a BuisnessLayer column to a ServiceLayer column
         {
             List<Task> TaskListSL = new List<Task>();
             foreach (TC.Task taskBL in columnBL.getListTask())

@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private DateTime creation;
         private string email;
 
-        public Task() { log.Debug("new empty task obj created for " + email); }
+        public Task() { log.Debug("new empty task obj created for " + email); } // empty constructor for loading whole columns from json
         public Task(int ID, string title, string desc, DateTime due, string email)
         {
             log.Info("creating new task: #" + ID + " title: " + title + " for " + email);
@@ -69,7 +69,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public DateTime GetDue() { return due; }
 
-        public void editTitle(string title)
+        public void editTitle(string title) // update title of this task
         {
             log.Info("task #" + ID + "title changing from " + this.title + " to " + title + " for " + email + ".");
             if (title == null || title.Length > Tmax |title.Equals(""))
@@ -79,7 +79,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             this.title = title;
         }
-        public void editDesc(string desc)
+        public void editDesc(string desc) // update description of this task
         {
             log.Info("task #" + ID + "description changing from " + this.desc + " to " + desc + " for " + email + ".");
             if (desc != null && desc.Length > Dmax)
@@ -89,7 +89,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             this.desc = desc;
         }
-        public void editDue(DateTime due)
+        public void editDue(DateTime due) // update due date of this task
         {
             log.Info("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email + ".");
             if (due==null || due < DateTime.Now)
@@ -100,13 +100,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             this.due = due;
         }
 
-        public DAL.Task ToDalObject()
+        public DAL.Task ToDalObject() // convert this task to a DataAccessLayer object
         {
             log.Debug("task #" + ID + "converting to DAL obj in " + email + ".");
             return new DAL.Task(email, title, desc, ID, due, creation);
         }
 
-        public void FromDalObject(DAL.Task DalObj)
+        public void FromDalObject(DAL.Task DalObj)// convert a DataAccessLayer object to a BuisnessLayer task and set this to corresponding values
         {
             log.Debug("task #" + ID + "converting from DAL obj.");
             try
@@ -125,11 +125,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
         }
 
-        public void Save()
+        public void Save() // empty function to implement IPersistentObject, not relevant for task since it is saved alongside column
         {
         }
 
-        public void Load()
+        public void Load() // empty function to implement IPersistentObject, not relevant for task since it is saved alongside column
         {
         }
     }

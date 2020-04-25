@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             return name;
         }
 
-        public void addTask(Task task)
+        public void addTask(Task task) // add a new task to this column
         {
             log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email+".");
             if (limit != -1 & limit <= size)
@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             Save();
             size++;
         }
-        public Task deleteTask(Task task)
+        public Task deleteTask(Task task) // delete a task from this column (if exists) and return it
         {
             log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + email+".");
             if (tasks.Remove(task))
@@ -68,20 +68,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             log.Info("task does not exist in " + name + " column.");
             return null;
         }
-        //Task getTask(string title)
-        //{
-        //    log.Debug("retrieving task with title: " + title + " from column: " + name + " in " + email+".");
-        //    foreach (Task task in tasks)
-        //    {
-        //        if (task.getTitle() == title)
-        //        {
-        //            return task;
-        //        }
-        //    }
-        //    log.Info("task does not exist in " + name + " column.");
-        //    return null;
-        //}
-        public Task getTask(int ID)
+        public Task getTask(int ID) // get a task from this column by ID
         {
             log.Debug("retrieving task with ID: " + ID + " from column: " + name + " in " + email + ".");
             foreach (Task task in tasks)
@@ -94,7 +81,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             log.Info("task does not exist in " + name + " column.");
             return null;
         }
-        public void setLimit(int limit)
+        public void setLimit(int limit) // set the limit of this column
         {
             log.Info("changing task limit for column: " + name + " in " + email + " from: " + this.limit + " to: " + limit + ".");
             if (limit < size & limit > 0)
@@ -106,7 +93,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             Save();
         }
 
-        public DAL.Column ToDalObject()
+        public DAL.Column ToDalObject() // convert this column to a DataAccessLayer object
         {
             log.Debug("column " + name + "converting to DAL obj in " + email + ".");
             try
@@ -122,7 +109,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
         }
 
-        public void FromDalObject(DAL.Column DalObj)
+        public void FromDalObject(DAL.Column DalObj) // convert a DataAccessLayer object to a BuisnessLayer column and set this to corresponding values
         {
             log.Debug("column " + name + "converting from DAL obj in " + email + ".");
             try
@@ -130,7 +117,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 email = DalObj.email;
                 name = DalObj.name;
                 limit = DalObj.limit;
-                foreach (DAL.Task t in DalObj.getTasks())
+                foreach (DAL.Task t in DalObj.getTasks()) // convert each task in column individually
                 {
                     Task BT = new Task();
                     BT.FromDalObject(t);
@@ -145,7 +132,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
         }
 
-        public void editTitle(int ID, string title)
+        public void editTitle(int ID, string title) // update title of this task
         {
             Task t = getTask(ID);
             if (t == null)
@@ -155,7 +142,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             t.editTitle(title);
             Save();
         }
-        public void editDesc(int ID, string desc)
+        public void editDesc(int ID, string desc)// update description of this task
         {
             Task t = getTask(ID);
             if (t == null)
@@ -165,7 +152,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             t.editDesc(desc);
             Save();
         }
-        public void editDue(int ID, DateTime due)
+        public void editDue(int ID, DateTime due)// update due date of this task
         {
             Task t = getTask(ID);
             if (t == null)
@@ -175,8 +162,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             t.editDue(due);
             Save();
         }
-
-        public void Save()
+        public void Save() // save this column to a a json file
         {
             try
             {
@@ -191,7 +177,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
         }
 
-        public void Load()
+        public void Load() // lod this column's data from a json file
         {
             log.Debug("column " + name + "loading from hard drive for " + email + ".");
             DAL.Column DC = new DAL.Column(email, name);

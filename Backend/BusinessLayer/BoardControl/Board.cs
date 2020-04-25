@@ -13,117 +13,96 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         private List<TC.Column> columns;
         private int ID = 1;
         private string email;
-        private TC.Column[] columnsInt;
         public Board(string email)
         {
             this.email = email;
             columns = new List<TC.Column>();
-            columnsInt = new TC.Column[3];
             columns.Add(new TC.Column(email, "backlog"));
-            columnsInt[0] = columns[0];
             columns.Add(new TC.Column(email, "in progress"));
-            columnsInt[1] = columns[1];
             columns.Add(new TC.Column(email, "done"));
-            columnsInt[2] = columns[2];
 
             LoadData();
             log.Debug("a board for " + email + " has been made.");
         }
-        public Board()
+        public Board() // default board constructor in case no user in connected
         {
             email = null;
             log.Debug("empty board created.");
         }
 
-        public void LimitColumnTask(int ColumnOrdinal, int limit)
+        public void LimitColumnTask(int ColumnOrdinal, int limit) // change the limit of a specific column
         {
 
             CheckColumnOrdinal(ColumnOrdinal);
-            columnsInt[ColumnOrdinal].setLimit(limit);
+            columns[ColumnOrdinal].setLimit(limit);
         }
 
         public string GetEmail() { return email; }
 
 
-        public TC.Task AddTask(string title, string desciption, DateTime dueTime)
+        public TC.Task AddTask(string title, string desciption, DateTime dueTime) // add a new task for this user
         {
             TC.Task newTack = new TC.Task(ID, title, desciption, dueTime, this.email);
             ID++;
-            columnsInt[0].addTask(newTack);
+            columns[0].addTask(newTack);
             return newTack;
         }
-        public void UpdateTaskDueDate(int columnOrdinal, int taskID, DateTime Due)
+        public void UpdateTaskDueDate(int columnOrdinal, int taskID, DateTime Due) // update due date of this task
         {
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            columnsInt[columnOrdinal].editDue(taskID, Due);
+            columns[columnOrdinal].editDue(taskID, Due);
             log.Debug("due date of task #" + taskID + " has been updated.");
         }
-        public void UpdateTaskTitle(int columnOrdinal, int taskID, string title)
+        public void UpdateTaskTitle(int columnOrdinal, int taskID, string title) // update title of this task
         {
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            columnsInt[columnOrdinal].editTitle(taskID, title);
+            columns[columnOrdinal].editTitle(taskID, title);
             log.Debug("title of task #" + taskID + " has been updated.");
         }
-        public void UpdateTaskDescription(int columnOrdinal, int taskID, string description)
+        public void UpdateTaskDescription(int columnOrdinal, int taskID, string description) // update description of this task
         {
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskID);
-            columnsInt[columnOrdinal].editDesc(taskID, description);
+            columns[columnOrdinal].editDesc(taskID, description);
             log.Debug("description of task #" + taskID + " has been updated.");
         }
-        //public TC.Task GetTask(int taskID)
-        //{
-        //    if (this.email == null)
-        //    {
-        //        log.Warn("user not logged into system.");
-        //        throw new Exception("you need to login to system.");
-        //    }
-        //    CheckTaskID(taskID);
-        //    foreach (TC.Column a in columns)
-        //    {
-        //        TC.Task checktask = a.getTask(taskID);
-        //        if (checktask != null)
-        //            return checktask;
-        //    }
-        //    return null;//we must to return something (defult).
-        //}
-        public void AdvanceTask(int columnOrdinal, int taskId)
+        public void AdvanceTask(int columnOrdinal, int taskId) // advance this task to the next column
         {
             CheckColumnOrdinal(columnOrdinal);
             ColumnIsNotDoneColumn(columnOrdinal);
             CheckTaskID(taskId);
-            TC.Task advTask = columnsInt[columnOrdinal].getTask(taskId);
-            if (advTask == null)
+            TC.Task advTask = columns[columnOrdinal].getTask(taskId); // board handles a task because it is transfered between 2 columns and columns are not aware of each other
+            if (advTask == null) // case when the task in not in the given column
             {
-                log.Warn(email + "  tried to advance task #" + taskId + " that does not exist in " + columnsInt[columnOrdinal].getName() + " column.");
+                log.Warn(email + "  tried to advance task #" + taskId + " that does not exist in " + columns[columnOrdinal].getName() + " column.");
                 throw new Exception("task does not exist in this columm.");
             }
-            columnsInt[columnOrdinal + 1].addTask(advTask);
-            columnsInt[columnOrdinal].deleteTask(advTask);
+            columns[columnOrdinal + 1].addTask(advTask);
+            columns[columnOrdinal].deleteTask(advTask);
             log.Debug("task #" + taskId + " advanced successfully.");
         }
-        public TC.Column GetColumn(string columnName)
+        public TC.Column GetColumn(string columnName) // get column data of a specific column (by name)
         {
 
             CheckColumnName(columnName);
             return columns[ChengeToInt(columnName)];
         }
-        public TC.Column GetColumn(int columnOrdinal)
+        public TC.Column GetColumn(int columnOrdinal) // get column data of a specific column (by ID)
         {
             CheckColumnOrdinal(columnOrdinal);
-            return columnsInt[columnOrdinal];
+            return columns[columnOrdinal];
         }
-        public List<TC.Column> getColumns()
+        public List<TC.Column> getColumns() // gets all columns of current board holder
         {
             return columns;
         }
 
-        private void CheckTaskID(int taskID)
+        private void CheckTaskID(int taskID) // check if given task id is legal
         {
             if (taskID > this.ID | taskID < 1)
             {
@@ -131,7 +110,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("you entered an invalid ID.");
             }
         }
-        private void ColumnIsNotDoneColumn(int columnOrdinal)
+        private void ColumnIsNotDoneColumn(int columnOrdinal) // check if the given column is the 'done' column or not
         {
             if (columnOrdinal == 2)
             {
@@ -139,15 +118,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("Completed tasks cannot be changed.");
             }
         }
-        private void CheckColumnName(string name)
+        private void CheckColumnName(string name) // check if given column name is a legal name (is either 'backlog', 'in progress' or 'done')
         {
-            if (!name.Equals(columnsInt[1].getName()) & !name.Equals(columnsInt[2].getName()) & !name.Equals(columnsInt[0].getName()))
+            if (!name.Equals(columns[1].getName()) & !name.Equals(columns[2].getName()) & !name.Equals(columns[0].getName()))
             {
                 log.Warn(email + " has entered an invalid column name.");
                 throw new Exception("The column name you searched for is invalid.");
             }
         }
-        private void LoadData()
+        private void LoadData() // load column list from json
         {
             foreach (TC.Column c in columns)
             {
@@ -156,7 +135,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             }
         }
 
-        private void CheckColumnOrdinal(int num)
+        private void CheckColumnOrdinal(int num) // check if the given column number is legal
         {
             if (num < 0 | num > 2)
             {
@@ -164,11 +143,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("Invalid column number.");
             }
         }
-        private int ChengeToInt(string s)
+        private int ChengeToInt(string s) // get the munber of the column with the given name
         {
             for (int i = 0; i < 3; i++)
             {
-                if (s.Equals(columnsInt[i].getName()))
+                if (s.Equals(columns[i].getName()))
                 {
                     return i;
                 }

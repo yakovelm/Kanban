@@ -21,7 +21,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             log.Debug("BoardController created.");
         }
 
-        public void LoadData()
+        public void LoadData() // load board dictionary (boards keyd by email) of all saved boards
         {
             string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
             foreach (string path in users)
@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             log.Debug("board list has been loaded.");
         }
 
-        public void Login(string email)
+        public void Login(string email) // log in currend board holder
         {
             email = email.ToLower();
             if (BC.ContainsKey(email))
@@ -47,20 +47,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 Cur = BC[email];
             }
         }
-        public void Logout(string email)
+        public void Logout(string email) // log out current board holder
         {
             CheckEmail(email);
             Cur = new Board();
             log.Debug(email + " has logged out.");
         }
 
-        public void LimitColumnTask(string email, int ColumnOrdinal, int limit)
+        public void LimitColumnTask(string email, int ColumnOrdinal, int limit) // change the limit of a specific column
         {
             CheckEmail(email);
             Cur.LimitColumnTask(ColumnOrdinal, limit);
         }
 
-        private void CheckEmail(string email)
+        private void CheckEmail(string email) // checks that the email given in the request matches to the email of the currently logged in board holder
         {
             if (email == null)
             {
@@ -74,46 +74,42 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("The email you entered does not match the email connected to the system.");
             }
         }
-        public TC.Task AddTask(string email, string title, string desciption, DateTime dueTime)
+        public TC.Task AddTask(string email, string title, string desciption, DateTime dueTime) // add a new task for this user
         {
             CheckEmail(email);
             return Cur.AddTask(title, desciption, dueTime);
         }
-        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskID, DateTime Due)
+        public void UpdateTaskDueDate(string email, int columnOrdinal, int taskID, DateTime Due) // update due date of this task
         {
             CheckEmail(email);
             Cur.UpdateTaskDueDate(columnOrdinal, taskID, Due);
         }
-        public void UpdateTaskTitle(string email, int columnOrdinal, int taskID, string title)
+        public void UpdateTaskTitle(string email, int columnOrdinal, int taskID, string title) // update title of this task
         {
             CheckEmail(email);
             Cur.UpdateTaskTitle(columnOrdinal, taskID, title);
         }
-        public void UpdateTaskDescription(string email, int columnOrdinal, int taskID, string description)
+        public void UpdateTaskDescription(string email, int columnOrdinal, int taskID, string description) // update description of this task
         {
             CheckEmail(email);
             Cur.UpdateTaskDescription(columnOrdinal, taskID, description);
         }
-        //public TC.Task GetTask(int taskID)
-        //{
-        //    return Cur.GetTask(taskID);
-        //}
-        public void AdvanceTask(string email, int columnOrdinal, int taskId)
+        public void AdvanceTask(string email, int columnOrdinal, int taskId) // advance this task to the next column
         {
             CheckEmail(email);
             Cur.AdvanceTask(columnOrdinal, taskId);
         }
-        public TC.Column GetColumn(string email, string columnName)
+        public TC.Column GetColumn(string email, string columnName) // get column data of a specific column (by name)
         {
             CheckEmail(email);
             return Cur.GetColumn(columnName);
         }
-        public TC.Column GetColumn(string email, int columnOrdinal)
+        public TC.Column GetColumn(string email, int columnOrdinal) // get column data of a specific column (by ID)
         {
             CheckEmail(email);
             return Cur.GetColumn(columnOrdinal);
         }
-        public List<TC.Column> getColumns(string email)
+        public List<TC.Column> getColumns(string email) // get all columns of current board holder
         {
             CheckEmail(email);
             return Cur.getColumns();

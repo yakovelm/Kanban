@@ -12,11 +12,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BusinessLayer.UserControl.UserController uc;
 
-        public UserService()
+        public UserService() 
         {
             uc = new BusinessLayer.UserControl.UserController();
         }
-        public Response<User> login(string email, string password)
+        public Response<User> login(string email, string password) // login an existing user
         {
             try
             {
@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response<User>(e.Message);
             }
         }
-        public Response register(string email, string password, string nickname)
+        public Response register(string email, string password, string nickname) // register a new user
         {
             try
             {
@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
-        public Response logout(string email)
+        public Response logout(string email) // logout active user
         {
             try
             {
@@ -57,7 +57,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
-        public Response LoadData()
+        public Response LoadData() // load all user data
         {
             try
             {

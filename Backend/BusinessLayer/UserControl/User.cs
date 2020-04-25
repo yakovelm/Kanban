@@ -16,14 +16,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private String password;
         private String nickname;
 
-        public User()
-        {
-            email = null;
-            password = null;
-            nickname = null;
-        }
-        public User(string email) { this.email = email; }
-        public User(string email, string password, string nickname)
+        public User() { } // json package requires an empty constructor
+        public User(string email) { this.email = email; } // load data constructor, needs only email
+        public User(string email, string password, string nickname) // new user creation (register) constructor
         {
             this.email = email;
             this.password = password;
@@ -45,13 +40,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             return this.nickname;
         }
-        public DAL.User ToDalObject()
+        public DAL.User ToDalObject() // converts this object to a DataAccessLayer object
         {
             log.Debug("converting user to DAL obj for " + email + ".");
             return new DAL.User(email, password, nickname);
         }
 
-        public void Save()
+        public void Save() // saves this object to json
         {
             try
             {
@@ -66,7 +61,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             }
         }
 
-        public void FromDalObject(DAL.User DalObj)
+        public void FromDalObject(DAL.User DalObj) // converts a DataAccessLayer object to an object of this type and sets this to the corresponding values
         {
             try
             {
@@ -82,7 +77,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             }
         }
 
-        public void Load()
+        public void Load() // load this object from json (email based)
         {
             try
             {

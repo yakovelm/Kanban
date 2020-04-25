@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class User : DalObject<User>
     {
-        public string email { get; set; }
+        public string email { get; set; } // json serialiser requires all relevant fields be public with get/set attributes
         public string password { get; set; }
         public string nickname { get; set; }
 
@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             this.email = email;
         }
-        public User() { }
+        public User() { } // json package requires an empty constructor
         public User(string email, string password, string nickname)
         {
             this.email = email;
@@ -28,7 +28,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string getEmail() { return email; }
         public string getNickname() { return nickname; }
         public string getPassword() { return password; }
-        public override User fromJson(string filename)
+        public override User fromJson(string filename) // reads json file and sets this object tocorresponding values
         {
             if (File.Exists(Directory.GetCurrentDirectory() + "\\" + filename))
             {
@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             else throw new Exception("Json file does not exist.");
         }
 
-        public override string toJson()
+        public override string toJson() // conver this object to a json format string
         {
             return JsonSerializer.Serialize(this, this.GetType());
         }

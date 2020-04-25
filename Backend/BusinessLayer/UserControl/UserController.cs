@@ -22,7 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             this.ActiveUser = null;
         }
         public User get_active() { return ActiveUser; }
-        public void register(string email, string password, string nickname)
+        public void register(string email, string password, string nickname) // register a new user
         {
             NullCheck(email, password, nickname);
             email = email.ToLower();
@@ -32,28 +32,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             log.Debug("register values are legal.");
             save(email, password, nickname);
         }
-        private void NullCheck(params object[] s)
+        private void NullCheck(params object[] s) // checks if any of the given parameters are null or empty
         {
-            if(ActiveUser != null)
-            {
-                log.Warn("a login was attempted while a user is already logged in.");
-                throw new Exception("user already login.");
-            }
             foreach(object check in s)
             {
                 if(check==null)
                 {
-                    log.Warn("attempted to register with at least one null value.");
-                    throw new Exception("must register with non null values.");
+                    log.Warn("entered at least one null value.");
+                    throw new Exception("must enter non null values.");
                 }
                 else if ((string)check == "")
                 {
-                    log.Warn("attempted to register with at least one empty value.");
-                    throw new Exception("must register with non empty values.");
+                    log.Warn("entered at least one empty value.");
+                    throw new Exception("must enter non empty values.");
                 }
             }
         }
-        private void checkPassword(string password)
+        private void checkPassword(string password) // check if a password matches the requirements given
         {
             var hasNumber = new Regex(@"[0-9]+");
             var hasUpperChar = new Regex(@"[A-Z]+");
@@ -61,25 +56,29 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | password.Length < 4 | password.Length > 20 | !hasLowerChar.IsMatch(password))
             {
                 log.Warn("password too weak. must include at least one uppercase letter, one lowercase letter and a number and be between 4 and 20 characters.");
-                throw new Exception("must include at least one uppercase letter, one lowercase letter and a numberand be between 4 and 20 characters.");
+                throw new Exception("must include at least one uppercase letter, one lowercase letter and a number and be between 4 and 20 characters.");
             }
         }
-        private void save(string email, string password, string nickname)
+        private void save(string email, string password, string nickname) // saves newly registered user
         {
             string path = Directory.GetCurrentDirectory();
             string pathString = System.IO.Path.Combine(path, "JSON", email);
-            System.IO.Directory.CreateDirectory(pathString);
+            System.IO.Directory.CreateDirectory(pathString); // create directory for new user
             User NU = new User(email, password, nickname);
             NU.Save();
             log.Info(NU.getnickname() + " user created.");
             list.Add(NU);
         }
-        public void login(string email, string password)
+        public void login(string email, string password) // login an existing user
         {
+            if (ActiveUser != null) { // cant log in if a user is already logged in
+                log.Warn("a login was attempted while a user is already logged in.");
+                throw new Exception("user already login.");
+            }
             NullCheck(email, password);
             email = email.ToLower();
             checkEmail(email);
-            foreach (User u in list)
+            foreach (User u in list) // run on user list to fint correct user to login
             {
                 if (u.isMatchEmail(email))
                 {
@@ -104,9 +103,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             }
 
         }
-        public void logout(string email)
+        public void logout(string email) // log out active user
         {
-            if (ActiveUser == null)
+            if (ActiveUser == null) // if no active user no one can log out
             {
                 log.Warn("no user logged in. logout failed.");
                 throw new Exception("no user logged in.");
@@ -123,7 +122,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 ActiveUser = null;
             }
         }
-        private void checkUser(string email, string nickname)
+        private void checkUser(string email, string nickname) // checks that an email is not taken upon registration
         {
             foreach (User u in list)
             {
@@ -134,7 +133,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 }
             }
         }
-        public void LoadData()
+        public void LoadData() // load userlist from json files
         {
             list = new List<User>();
             string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
@@ -147,22 +146,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 list.Add(u);
             }
         }
-        private void checkEmail(string s)
+        private void checkEmail(string s) // check that email adress matches standard email format
         {
             try
             {
-                string DomainMapper(Match match)
+
+                if (string.IsNullOrWhiteSpace(s)) // check that email is not null and contains no spaces
+                    throw new Exception("email adress invalid.");
+                
+                string DomainMapper(Match match) // creates a regex map for replace function
                 {
                     var idn = new IdnMapping();
                     var domainName = idn.GetAscii(match.Groups[2].Value);
                     return match.Groups[1].Value + domainName;
                 }
-                if (string.IsNullOrWhiteSpace(s))
-                    throw new Exception("email adress invalid.");
                 s = Regex.Replace(s, @"(@)(.+)$", DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
-                if(!Regex.IsMatch(s,
+                if (!Regex.IsMatch(s,
                     @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
-                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", //stackoverflow regex
                     RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
                     throw new Exception("email adress invalid.");
             }

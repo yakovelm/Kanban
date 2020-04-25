@@ -10,13 +10,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Column : DalObject<Column>
     {
-        public string email { get; set; }
+        public string email { get; set; } // json serialiser requires all relevant fields be public with get/set attributes
         public string name { get; set; }
         public int limit { get; set; }
         public int size { get; set; }
         public List<string> tasks { get; set; }
 
-        public Column(string email, string name, int limit, List<Task> tasks)
+        public Column(string email, string name, int limit, List<Task> tasks) // regular constructor for saving data
         {
             this.email = email;
             this.name = name;
@@ -24,15 +24,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.tasks = ChengeToString(tasks);
             size = tasks.Count();
         }
-        public Column(string email, string name)
+        public Column(string email, string name) // partial constructor for loading data
         {
             this.email = email;
             this.name = name;
         }
 
-        public Column() { }
+        public Column() { } // json package requires an empty constructor
 
-        private List<string> ChengeToString(List<Task> tasks)
+        private List<string> ChengeToString(List<Task> tasks) // turn tasklist into a slist of strings to save
         {
             List<string> output = new List<string>();
             foreach (Task task in tasks)
@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return output;
         }
 
-        public List<Task> getTasks()
+        public List<Task> getTasks() // convert a list of strings to a list of tasks
         {
             List<Task> output = new List<Task>();
             foreach (string str in tasks)
@@ -52,7 +52,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return output;
         }
 
-        public override Column fromJson(string filename)
+        public override Column fromJson(string filename) // load this objects data from a json file
         {
             string objetAsJson = read(filename);
             Column temp = JsonSerializer.Deserialize<Column>(objetAsJson);
@@ -62,7 +62,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return this;
         }
 
-        public override string toJson()
+        public override string toJson() // convert this objects data to a json format string
         {
             return JsonSerializer.Serialize(this, this.GetType());
         }
