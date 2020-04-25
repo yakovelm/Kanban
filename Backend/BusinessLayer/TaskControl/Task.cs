@@ -10,8 +10,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
     class Task : IPersistentObject<DAL.Task>
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private int Tmax = 50;
-        private int Dmax = 300;
+        private const int Tmax = 50;
+        private const int Dmax = 300;
         private int ID;
         private string title;
         private string desc;
@@ -71,44 +71,44 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void editTitle(string title)
         {
-            log.Info("task #" + ID + "title changing from " + this.title + " to " + title + " for " + email);
+            log.Info("task #" + ID + "title changing from " + this.title + " to " + title + " for " + email + ".");
             if (title == null || title.Length > Tmax |title.Equals(""))
             {
-                log.Warn("Title too long");
+                log.Warn("Title too long.");
                 throw new Exception("Title too long.");
             }
             this.title = title;
         }
         public void editDesc(string desc)
         {
-            log.Info("task #" + ID + "description changing from " + this.desc + " to " + desc + " for " + email);
+            log.Info("task #" + ID + "description changing from " + this.desc + " to " + desc + " for " + email + ".");
             if (desc != null && desc.Length > Dmax)
             {
-                log.Warn("Description too long");
+                log.Warn("Description too long.");
                 throw new Exception("Description too long.");
             }
             this.desc = desc;
         }
         public void editDue(DateTime due)
         {
-            log.Info("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email);
+            log.Info("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email + ".");
             if (due==null || due < DateTime.Now)
             {
-                log.Warn("new due is earlier then now");
-                throw new Exception("new due is earlier then now");
+                log.Warn("new due is earlier then now.");
+                throw new Exception("new due is earlier then now.");
             }
             this.due = due;
         }
 
         public DAL.Task ToDalObject()
         {
-            log.Debug("task #" + ID + "converting to DAL obj in " + email);
+            log.Debug("task #" + ID + "converting to DAL obj in " + email + ".");
             return new DAL.Task(email, title, desc, ID, due, creation);
         }
 
         public void FromDalObject(DAL.Task DalObj)
         {
-            log.Debug("task #" + ID + "converting from DAL obj");
+            log.Debug("task #" + ID + "converting from DAL obj.");
             try
             {
                 email = DalObj.Email;

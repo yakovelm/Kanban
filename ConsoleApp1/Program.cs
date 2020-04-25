@@ -29,6 +29,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string tp2 = "123zsaZSA1212";
                 string tn2 = "nitay";
 
+                print(s.Register(te2, tp2, null));
+                print(s.Register(te2, null, null));
+                print(s.Register(null, tp2, tn2));
+                print(s.Register(te2, tp2, ""));
+                print(s.Register(te2, "", tn2));
+                print(s.Register("", tp2, tn2));
                 print(s.Register(te2, tp2, tn2));
                 print(s.Login(te2, tp2).toString());
                 print(s.GetColumn(te2,0).toString());

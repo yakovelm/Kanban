@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e)
             {
-                log.Info("register failed. due to  " + e.Message); // can fail due to many reasons, added catch all.
+                log.Info("register failed. due to " + e.Message); // can fail due to many reasons, added catch all.
                 return new Response(e.Message);
             }
         }
@@ -47,7 +47,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                log.Info("logging out user " + email);
+                log.Info("logging out user " + email + ".");
                 uc.logout(email);
                 return new Response();
             }
@@ -61,7 +61,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                log.Info("attempting to load user list");
+                log.Info("attempting to load user list.");
                 uc.LoadData();
                 return new Response();
             }

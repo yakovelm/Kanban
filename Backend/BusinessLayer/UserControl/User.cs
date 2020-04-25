@@ -87,7 +87,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             try
             {
                 DAL.User DU = new DAL.User(email);
-                log.Debug("user " + DU.getNickname() + "loading from hard drive for " + email);
+                log.Debug("user " + DU.getNickname() + "loading from hard drive for " + email+".");
                 DU.fromJson("JSON\\" + email + "\\" + email + ".json");
                 FromDalObject(DU);
             }

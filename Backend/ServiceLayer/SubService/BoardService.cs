@@ -30,7 +30,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response Login(string email)
         {
-            log.Info(email + "Logging in to the board.");
+            log.Info(email + " Logging in to the board.");
             try
             {
                 BC.Login(email);
@@ -40,7 +40,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         }
         public Response Logout(string email)
         {
-            log.Info(email + "Logging out from the board.");
+            log.Info(email + " Logging out from the board.");
             try
             {
                 BC.Logout(email);
@@ -98,12 +98,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return (new Response(e.Message)); }
         }
-        public Response<Task> GetTask(int ID) // no references. we should consider removing this.
-        {
-            log.Debug("attempting to get the task #" + ID + ".");
-            try { return new Response<Task>(chengeType(BC.GetTask(ID))); }
-            catch (Exception e) { return (new Response<Task>(new Task(), e.Message)); }
-        }
+        //public Response<Task> GetTask(int ID) // no references. we should consider removing this.
+        //{
+        //    log.Debug("attempting to get the task #" + ID + ".");
+        //    try { return new Response<Task>(chengeType(BC.GetTask(ID))); }
+        //    catch (Exception e) { return (new Response<Task>(new Task(), e.Message)); }
+        //}
         public Response AdvanceTask(string email, int columnOrdinal, int taskId)
         {
             log.Info(email + " attempting to advance task #" + taskId + ".");

@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 var dir = new DirectoryInfo(path);
                 BC.Add(dir.Name, new Board(dir.Name));
             }
-            log.Debug(" board list has been loaded.");
+            log.Debug("board list has been loaded.");
         }
 
         public void Login(string email)
@@ -65,13 +65,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             if (email == null)
             {
                 log.Error("An offline user tried to take action.");
-                throw new Exception("you need to login to system");
+                throw new Exception("you need to login to system.");
             }
             string s = email.ToLower();
             if (!s.Equals(Cur.GetEmail()))
             {
-                log.Warn(email + " does not match the email connected to the system");
-                throw new Exception("The email you entered does not match the email of the party");
+                log.Warn(email + " does not match the email connected to the system.");
+                throw new Exception("The email you entered does not match the email connected to the system.");
             }
         }
         public TC.Task AddTask(string email, string title, string desciption, DateTime dueTime)
@@ -94,10 +94,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckEmail(email);
             Cur.UpdateTaskDescription(columnOrdinal, taskID, description);
         }
-        public TC.Task GetTask(int taskID)
-        {
-            return Cur.GetTask(taskID);
-        }
+        //public TC.Task GetTask(int taskID)
+        //{
+        //    return Cur.GetTask(taskID);
+        //}
         public void AdvanceTask(string email, int columnOrdinal, int taskId)
         {
             CheckEmail(email);

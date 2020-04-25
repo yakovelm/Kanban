@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 this.nickname = temp.nickname;
                 return this;
             }
-            else throw new Exception("Json file not exists");
+            else throw new Exception("Json file does not exist.");
         }
 
         public override string toJson()
