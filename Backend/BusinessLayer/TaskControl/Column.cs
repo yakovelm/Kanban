@@ -43,7 +43,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             return name;
         }
-
+        public List<Task> getAll()
+        {
+            return tasks;
+        }
+        
+        public void addTasks(List<Task> ts)
+        {
+            if (limit != -1 & size + ts.Count() > limit)
+            {
+                log.Warn("task limit reached, tasks not added.");
+                throw new Exception("task limit reached, tasks not added.");
+            }
+            tasks.AddRange(ts);
+        }
         public void addTask(Task task) // add a new task to this column
         {
             log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email+".");
