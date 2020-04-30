@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 {
-    class Board
+    class Board : IPersistentObject<DAL.Board>
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private List<TC.Column> columns;
@@ -153,6 +154,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 }
             }
             return -1;
+        }
+
+        public DAL.Board ToDalObject()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FromDalObject(DAL.Board DalObj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Load()
+        {
+            throw new NotImplementedException();
         }
     }
 }
