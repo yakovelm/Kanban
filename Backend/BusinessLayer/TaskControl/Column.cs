@@ -210,9 +210,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             FromDalObject(DC);
         }
-        public void DeleteData()
-        {
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-        }
     }
 }
