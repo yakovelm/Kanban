@@ -13,11 +13,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private Dictionary<string, Board> BC;
         private Board Cur;
+        private bool Load;
 
         public BoardController()
         {
             BC = new Dictionary<string, Board>();
-            Cur = new Board();
+            Cur = null;
+            Load = false;
             log.Debug("BoardController created.");
         }
 
@@ -29,11 +31,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 var dir = new DirectoryInfo(path);
                 BC.Add(dir.Name, new Board(dir.Name));
             }
+            Load = true;
             log.Debug("board list has been loaded.");
+        }
+        private void CheckLoad()
+        {
+            if (!Load)
+            {
+                log.Error("try to do something before Load the data.");
+                throw new Exception("try to do something before Load the data.");
+            }
         }
 
         public void Login(string email) // log in currend board holder
         {
+            CheckLoad();
+            IsActive();
             email = email.ToLower();
             if (BC.ContainsKey(email))
             {
@@ -49,13 +62,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public void Logout(string email) // log out current board holder
         {
+            CheckLoad();
             CheckEmail(email);
-            Cur = new Board();
+            Cur = null;
             log.Debug(email + " has logged out.");
         }
 
         public void LimitColumnTask(string email, int ColumnOrdinal, int limit) // change the limit of a specific column
         {
+            CheckLoad();
             CheckEmail(email);
             Cur.LimitColumnTask(ColumnOrdinal, limit);
         }
@@ -68,7 +83,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("you need to login to system.");
             }
             string s = email.ToLower();
-            if (!s.Equals(Cur.GetEmail()))
+            if (Cur!=null && !s.Equals(Cur.GetEmail()))
             {
                 log.Warn(email + " does not match the email connected to the system.");
                 throw new Exception("The email you entered does not match the email connected to the system.");
@@ -76,43 +91,96 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public TC.Task AddTask(string email, string title, string desciption, DateTime dueTime) // add a new task for this user
         {
+            CheckLoad();
             CheckEmail(email);
             return Cur.AddTask(title, desciption, dueTime);
         }
         public void UpdateTaskDueDate(string email, int columnOrdinal, int taskID, DateTime Due) // update due date of this task
         {
+            CheckLoad();
             CheckEmail(email);
             Cur.UpdateTaskDueDate(columnOrdinal, taskID, Due);
         }
         public void UpdateTaskTitle(string email, int columnOrdinal, int taskID, string title) // update title of this task
         {
+            CheckLoad();
             CheckEmail(email);
             Cur.UpdateTaskTitle(columnOrdinal, taskID, title);
         }
         public void UpdateTaskDescription(string email, int columnOrdinal, int taskID, string description) // update description of this task
         {
+            CheckLoad();
             CheckEmail(email);
             Cur.UpdateTaskDescription(columnOrdinal, taskID, description);
         }
         public void AdvanceTask(string email, int columnOrdinal, int taskId) // advance this task to the next column
         {
+            CheckLoad();
             CheckEmail(email);
             Cur.AdvanceTask(columnOrdinal, taskId);
         }
         public TC.Column GetColumn(string email, string columnName) // get column data of a specific column (by name)
         {
+            CheckLoad();
             CheckEmail(email);
             return Cur.GetColumn(columnName);
         }
         public TC.Column GetColumn(string email, int columnOrdinal) // get column data of a specific column (by ID)
         {
+            CheckLoad();
             CheckEmail(email);
             return Cur.GetColumn(columnOrdinal);
         }
         public List<TC.Column> getColumns(string email) // get all columns of current board holder
         {
+            CheckLoad();
             CheckEmail(email);
             return Cur.getColumns();
+        }
+        public void DeleteData()
+        {
+            CheckLoad();
+            IsActive();
+            foreach(Board b in BC.Values)
+            {
+                b.DeleteData();
+            }
+            BC = new Dictionary<string, Board>();
+        }
+        private void IsActive()
+        {
+            if (Cur != null)
+            {
+                log.Error("try to do login/delete data when User alreay login");
+            }
+        }
+
+        public void RemoveColumn(string email, int columnOrdinal)
+        {
+            CheckLoad();
+            CheckEmail(email);
+            Cur.RemoveColumn(columnOrdinal);
+        }
+
+        public TC.Column AddColumn(string email, int columnOrdinal, string Name)
+        {
+            CheckLoad();
+            CheckEmail(email);
+             return Cur.AddColumn(columnOrdinal, Name);
+        }
+
+        public TC.Column MoveColumnRight(string email, int columnOrdinal)
+        {
+            CheckLoad();
+            CheckEmail(email);
+            return Cur.MoveColumnRight(columnOrdinal);
+        }
+
+        public TC.Column MoveColumnLeft(string email, int columnOrdinal)
+        {
+            CheckLoad();
+            CheckEmail(email);
+            return Cur.MoveColumnLeft(columnOrdinal);
         }
 
     }

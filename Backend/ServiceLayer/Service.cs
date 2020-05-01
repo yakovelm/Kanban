@@ -29,7 +29,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             log.Info("create service.");
             US = new SS.UserService();
             BS = new SS.BoardService();
-            LoadData();
         }
 
         /// <summary>        
@@ -41,8 +40,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response Ures = US.LoadData();
             if (Ures.ErrorOccured) return Ures;
             Response Bres = BS.LoadData();
+            if (Bres.ErrorOccured) return Bres;
             return new Response();
         }
+
 
 
         /// <summary>
@@ -195,6 +196,31 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<Column> GetColumn(string email, int columnOrdinal)
         {
             return BS.GetColumn(email, columnOrdinal);
+        }
+
+        public Response DeleteData()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response RemoveColumn(string email, int columnOrdinal)
+        {
+            return BS.RemoveColumn(email, columnOrdinal);
+        }
+
+        public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
+        {
+           return BS.AddColumn(email, columnOrdinal, Name);
+        }
+
+        public Response<Column> MoveColumnRight(string email, int columnOrdinal)
+        {
+            return BS.MoveColumnRight(email, columnOrdinal);
+        }
+
+        public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
+        {
+            return BS.MoveColumnLeft(email, columnOrdinal);
         }
     }
 }

@@ -40,5 +40,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return ret;
         }
 
+        public void Delete(string fileName)
+        {
+
+            string path = Directory.GetCurrentDirectory();
+            path = path + "\\" + fileName;
+                File.Delete(path);
+                log.Debug("JSON file deleted at " + path);
+        }
+
     }
 }

@@ -140,6 +140,64 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return new Response<Board>(e.Message); }
         }
+        public Response DeleteData()
+        {
+            try
+            {
+                log.Info("attempting to Delete Data.");
+                BC.DeleteData();
+                return new Response();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+
+        public Response RemoveColumn(string email, int columnOrdinal)
+        {
+            try
+            {
+                log.Info(email + " attempting to remove column number #"+columnOrdinal);
+                BC.RemoveColumn(email, columnOrdinal);
+                return new Response();
+            }
+            catch(Exception e) {    return new Response(e.Message);  }
+        }
+
+        public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
+        {
+            try
+            {
+                log.Info(email + " attempting to Add column number #" + columnOrdinal);
+                Column ans= chengeType(BC.AddColumn(email, columnOrdinal, Name));
+                return new Response<Column>(ans);
+            }
+            catch (Exception e) { return new Response<Column>(e.Message); }
+        }
+
+        public Response<Column> MoveColumnRight(string email, int columnOrdinal)
+        {
+            try
+            {
+                log.Info(email + " attempting to move to right, column number #" + columnOrdinal);
+                Column ans = chengeType(BC.MoveColumnRight(email, columnOrdinal));
+                return new Response<Column>(ans);
+            }
+            catch (Exception e) { return new Response<Column>(e.Message); }
+        }
+
+        public Response<Column> MoveColumnLeft(string email, int columnOrdinal)
+        {
+            try
+            {
+                log.Info(email + " attempting to move to left, column number #" + columnOrdinal);
+                Column ans = chengeType(BC.MoveColumnLeft(email, columnOrdinal));
+                return new Response<Column>(ans);
+            }
+            catch (Exception e) { return new Response<Column>(e.Message); }
+        }
+
         private Task chengeType(TC.Task taskBL) // convert a BuisnessLayer task to a ServiceLayer task
         {
             return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.GetDue(), taskBL.getTitle(), taskBL.getDesc());
