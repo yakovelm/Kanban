@@ -12,6 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string email;
+        private int CID;
         private string name;
         private List<Task> tasks;
         private int limit;
@@ -45,6 +46,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public List<Task> getAll()
         {
+            log.Debug("returning all tasks");
             return tasks;
         }
         

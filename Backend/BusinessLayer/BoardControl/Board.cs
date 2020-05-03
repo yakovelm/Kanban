@@ -270,13 +270,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             checkSize();
             if (columnOrdinal == 0){columns[1].addTasks(columns[0].getAll()); }
             else {
-                columns[columnOrdinal - 1].addTasks(columns[columnOrdinal].getAll());
+                var c = columns[columnOrdinal].getAll();
+                log.Debug("before add");
+                columns[columnOrdinal - 1].addTasks(c);
+                log.Debug("before move");
                 MoveColumns(columnOrdinal);
             }
             size--;
             log.Debug(email + " removed column number #" + columnOrdinal + " succses");
             Save();
         }
+
 
         public TC.Column AddColumn(int columnOrdinal, string Name)
         {
@@ -320,7 +324,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         private void MoveColumns(int num)
         {
-            for(int i=num; i<size-1; i--)
+            for(int i=num; i<size-1; i++)
             {
                 columns[i] = columns[i+1];
             }
