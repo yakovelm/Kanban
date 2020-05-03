@@ -42,7 +42,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public void Delete(string fileName)
         {
-
             string path = Directory.GetCurrentDirectory();
             path = path + "\\" + fileName;
                 File.Delete(path);

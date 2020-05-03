@@ -92,5 +92,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw e;
             }
         }
+        public void DeleteData()
+        {
+            try
+            {
+                DAL.Board temp = new DAL.Board(email);
+                temp.Delete("JSON\\" + email + "\\"+email+".json");
+            }
+            catch (Exception e) { throw new Exception("Could not delete the board"); }
+        }
     }
 }

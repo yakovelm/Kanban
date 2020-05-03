@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using UU=IntroSE.Kanban.Backend.ServiceLayer;
 using IntroSE.Kanban.Backend.BusinessLayer.UserControl;
-using CCC = IntroSE.Kanban.Backend.DataAccessLayer.User;
 using SSL = IntroSE.Kanban.Backend.ServiceLayer.SubService;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -29,19 +28,55 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string tp2 = "123zsaZSA1212";
                 string tn2 = "nitay";
 
-                print(s.Register(te2, tp2, null));
-                print(s.Register(te2, null, null));
-                print(s.Register(null, tp2, tn2));
-                print(s.Register(te2, tp2, ""));
-                print(s.Register(te2, "", tn2));
-                print(s.Register("", tp2, tn2));
-                print(s.Register(te2, tp2, tn2));
-                print(s.Login(te2, tp2).toString());
-                print(s.GetColumn(te2,0).toString());
-                print(s.AddTask(te2, "a", null, DateTime.Today));
+                print(s.LoadData());
+                print(s.Login(te2, tp2));
                 print(s.GetColumn(te2, 0).toString());
+                //Console.WriteLine("before LoadData");
+                //print(s.LimitColumnTasks(te2, 1, 5));
+                //print(s.Register(te2, tp2, "nit"));
+                //print(s.Login(te2, tp2).toString());
+                //print(s.AddTask(te2, "title1", "desc", new DateTime(22, 06, 22)));
+                //print(s.AddColumn(te, 4, "good"));
+                //print(s.MoveColumnLeft(te2, 1));
+                //print(s.MoveColumnRight(te2, 2));
+                //print(s.RemoveColumn(te2, 1));
+                //print(s.LimitColumnTasks(te2, 1, 5));
+                //Console.WriteLine("*************************************************************************");
 
 
+                //print(s.LoadData());
+                //print(s.Register(te2, tp2,"nit"));
+                //print(s.Login(te2, tp2).toString());
+                //print(s.Login(te2, tp2).toString());
+                //print(s.AddTask(te2, "title1", "desc", new DateTime(22, 06, 22)));
+                //print(s.AddTask(te2, "title2", "desc", new DateTime(22, 06, 22)));
+                //print(s.AddTask(te2, "title3", "desc", new DateTime(22, 06, 22)));
+                //print(s.AddTask(te2, "title4", "desc", new DateTime(22, 06, 22)));
+                //print(s.AddTask(te2, "title5", "desc", new DateTime(22, 06, 22)));
+                //print(s.AddTask(te2, "title6", "desc", new DateTime(22, 06, 22)));
+                //print(s.AddTask(te2, "title7", "desc", new DateTime(22, 06, 22)));
+                //print(s.AddColumn(te, 4, "good"));
+                //print(s.AddColumn(te2, 4, "good"));
+                //for(int i = 1; i < 8; i++)
+                //{
+                //    print(s.AdvanceTask(te2, 1, i));
+                //    if (i > 4)
+                //    {
+                //        print(s.AdvanceTask(te2, 2, i));
+                //    }
+                //}
+                //print(s.AdvanceTask(te2, 2, 1));
+                //print(s.AdvanceTask(te2, 3, 1));
+                //print(s.MoveColumnLeft(te, 1));
+                //print(s.MoveColumnLeft(te2, 1));
+                //print(s.MoveColumnRight(te, 2));
+                //print(s.MoveColumnRight(te2, 2));
+                //print(s.RemoveColumn(te, 1));
+                //print(s.RemoveColumn(te2, 1));
+                //print(s.LimitColumnTasks(te, 1, 5));
+                //print(s.LimitColumnTasks(te2, 20, 5));
+                //print(s.LimitColumnTasks(te2, 1, 0));
+                //print(s.LimitColumnTasks(te2, 1, 5));
 
             }
             catch (Exception e) { Console.WriteLine(e.Message); }

@@ -152,6 +152,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             if (Cur != null)
             {
                 log.Error("try to do login/delete data when User alreay login");
+                throw new Exception("try to do login/delete data when User alreay login");
             }
         }
 

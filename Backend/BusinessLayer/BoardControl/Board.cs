@@ -179,7 +179,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             log.Debug("the board converting from DAL obj in " + email + ".");
             try
             {
-                LoadData(DalObj.colums);
+                LoadData(DalObj.columns);
             }
             catch (Exception e)
             {
@@ -255,15 +255,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public void DeleteData()
         {
-            foreach(TC.Column c in columns) { c.DeleteData(); }
-            try
-            {
-                DAL.Board temp = new DAL.Board(email);
-                temp.Delete("JSON\\" + email + "\\Board.json");
-            }
-            catch(Exception e) {throw new Exception("Could not delete the board");}
+            //foreach(TC.Column c in columns) { c.DeleteData(); }
+            //try
+            //{
+            //    DAL.Board temp = new DAL.Board(email);
+            //    temp.Delete("JSON\\" + email + "\\Board.json");
+            //}
+            //catch(Exception e) {throw new Exception("Could not delete the board");}
         }
-
 
         public void RemoveColumn(int columnOrdinal)
         {

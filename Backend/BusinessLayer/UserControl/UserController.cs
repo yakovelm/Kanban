@@ -15,15 +15,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private User ActiveUser;
         private List<User> list;
+        private bool Load;
 
         public UserController()
         {
             log.Debug("createing user controller.");
             this.ActiveUser = null;
+            this.Load = false;
         }
         public User get_active() { return ActiveUser; }
         public void register(string email, string password, string nickname) // register a new user
         {
+            CheckLoad();
             NullCheck(email, password, nickname);
             email = email.ToLower();
             checkEmail(email); 
@@ -71,6 +74,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void login(string email, string password) // login an existing user
         {
+            CheckLoad();
             if (ActiveUser != null) { // cant log in if a user is already logged in
                 log.Warn("a login was attempted while a user is already logged in.");
                 throw new Exception("user already login.");
@@ -105,6 +109,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void logout(string email) // log out active user
         {
+            CheckLoad();
             if (ActiveUser == null) // if no active user no one can log out
             {
                 log.Warn("no user logged in. logout failed.");
@@ -136,14 +141,44 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public void LoadData() // load userlist from json files
         {
             list = new List<User>();
-            string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
+            string[] users;
+            try
+            {
+               users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
+            }
+            catch(Exception e) 
+            { 
+                System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "\\JSON");
+                users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
+            }
             foreach (string path in users)
             {
                 var dir = new DirectoryInfo(path);
                 User u = new User(dir.Name);
                 u.Load();
-                log.Debug("user list has been loaded.");
                 list.Add(u);
+            }
+            Load = true;
+            log.Debug("user list has been loaded.");
+        }
+        public void DeleteData()
+        {
+            CheckLoad();
+            if (ActiveUser != null)
+            {
+                foreach (User u in list)
+                {
+                    u.DeleteData();
+                }
+                list = new List<User>();
+            }
+        }
+        private void CheckLoad()
+        {
+            if (!Load)
+            {
+                log.Error("try to do something before Load the data.");
+                throw new Exception("try to do something before Load the data.");
             }
         }
         private void checkEmail(string s) // check that email adress matches standard email format
