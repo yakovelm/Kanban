@@ -14,6 +14,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string name { get; set; }
         public int limit { get; set; }
         public int size { get; set; }
+        public int ord { get; set; }
+        public int CID { get; set; }
         public List<string> tasks { get; set; }
 
         public Column(string email, string name, int limit, List<Task> tasks) // regular constructor for saving data

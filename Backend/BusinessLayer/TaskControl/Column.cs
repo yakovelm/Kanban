@@ -13,16 +13,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string email;
         private int CID;
+        private int ord;
         private string name;
         private List<Task> tasks;
         private int limit;
         private int size;
 
-        public Column(string email, string name)
+        public Column(string email, string name, int CID,int ord)
         {
             log.Info("creating new " + name + " column for " + email+".");
             this.email = email;
             this.name = name;
+            if(CID<1) throw new Exception("CID illegal.");
+            this.CID = CID;
+            if (ord < 1) throw new Exception("ordinal illegal.");
+            this.ord = ord;
             tasks = new List<Task>();
             size = 0;
             limit = -1;
@@ -31,7 +36,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             return size;
         }
-
+        public int getCID()
+        {
+            return CID;
+        }
+        public int getOrd()
+        {
+            return ord;
+        }
+        public void setOrd(int ord)
+        {
+            if (ord < 1) throw new Exception("ordinal illegal.");
+            this.ord = ord;
+        }
         public int getLimit()
         {
             return limit;
