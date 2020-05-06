@@ -7,20 +7,23 @@ using System.Data.SQLite;
 using System.IO;
 using IntroSE.Kanban.Backend.DataAccessLayer.DTO;
 
-namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
+namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
-    abstract class DALCtrl
+    public abstract class DALCtrl<T> where T : DalObject<T>
     {
         protected readonly string connectionString;
-        private readonly string tableName;
+        protected readonly string tableName;
 
-        public DALCtrl(string tableName){
+        public DALCtrl(string tableName)
+        {
             this.tableName = tableName;
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "database.db"));
             this.connectionString = $"Data Source={path}; Version=3;";
         }
 
-    public bool Delete(DTO obj)
+
+
+        public bool Delete(string Filter)
         {
             int res = -1;
 
@@ -28,11 +31,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
             {
                 var command = new SQLiteCommand
                 {
-                    Connection = connection, CommandText = $"DELETE FROM {tableName} WHERE email={obj.Email}"};
+                    Connection = connection,
+                    CommandText = $"DELETE FROM {tableName} WHERE {Filter}"
+                };
                 try
                 {
                     connection.Open();
                     res = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    /////////////////////////////////////////////////////////////////////////
                 }
                 finally
                 {
@@ -42,7 +51,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
             }
             return res > 0;
         }
-        public bool Update(string email, string attributeName, string attributeValue)
+
+        public bool Update(string Filter, string attributeName, string attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
@@ -50,7 +60,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {tableName} set [{attributeName}]=@{attributeName} where email={email}"
+                    CommandText = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} WHERE {Filter}"
                 };
                 try
                 {
@@ -60,7 +70,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
                 }
                 catch
                 {
-                    //log
+                    ///////////////////////////////////////////////////////////////////////////
                 }
                 finally
                 {
@@ -72,7 +82,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
             return res > 0;
         }
 
-        public bool Update(string email, string attributeName, long attributeValue)
+        public bool Update(string Filter, string attributeName, long attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
@@ -80,13 +90,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {tableName} set [{attributeName}]=@{attributeName} where email={email}"
+                    CommandText = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} WHERE {Filter}"
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
                     connection.Open();
                     command.ExecuteNonQuery();
+                }
+                catch (Exception e){
+                    /////////////////////////////////////////////////////////////////////////
                 }
                 finally
                 {
@@ -99,13 +112,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
             return res > 0;
         }
 
-        public List<DTO> Select()
+        public List<T> Select(string Filter)
         {
-            List<DTO> results = new List<DTO>();
+            List<T> results = new List<T>();
             using (var connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"SELECT * FROM {tableName};";
+                command.CommandText = $"SELECT * FROM {tableName} WHERE {Filter}";
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -114,7 +127,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
 
                     while (dataReader.Read())
                     {
-                        results.Add(convert(dataReader));
+                        results.Add(ConvertReaderToObject(dataReader));
 
                     }
                 }
@@ -132,8 +145,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTO
             }
             return results;
         }
-        public abstract bool Insert(DTO obj);
-        protected abstract DTO convert(SQLiteDataReader reader);
+        protected abstract T ConvertReaderToObject(SQLiteDataReader reader);
+        public abstract bool Insert(T obj);
 
     }
 }

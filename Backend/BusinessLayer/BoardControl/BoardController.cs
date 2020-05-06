@@ -25,6 +25,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public void LoadData() // load board dictionary (boards keyd by email) of all saved boards
         {
+            checkLoad2();
             string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
             foreach (string path in users)
             {
@@ -40,6 +41,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             {
                 log.Error("try to do something before Load the data.");
                 throw new Exception("try to do something before Load the data.");
+            }
+        }
+        private void checkLoad2()
+        {
+            if (!Load)
+            {
+                log.Info("already load data.");
+                throw new Exception("already load data.");
             }
         }
 

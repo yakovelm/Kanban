@@ -7,9 +7,23 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
-    class TaskCtrl : DALCtrl<Task>
+     class TaskCtrl : DALCtrl<Task>
     {
-        protected override DalObject<Task> convert(SQLiteDataReader reader)
+        private const string TaskTableName = "tasks";
+        public TaskCtrl(): base(TaskTableName)
+        {
+
+        }
+        
+
+        public override bool Insert(Task obj)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        protected override Task ConvertReaderToObject(SQLiteDataReader reader)
         {
             throw new NotImplementedException();
         }
