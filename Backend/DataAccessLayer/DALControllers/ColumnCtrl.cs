@@ -4,12 +4,13 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer.DTO;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
-    class ColumnCtrl : DALCtrl<Column>
+    class ColumnCtrl : DALCtrl
     {
-        protected override DalObject<Column> convert(SQLiteDataReader reader)
+        protected override ColumnDTO convert(SQLiteDataReader reader)
         {
             throw new NotImplementedException();
         }

@@ -15,7 +15,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         private List<TC.Column> columns;
         private const int minColumn = 2;
         private int size;
-        private int ID;
+        private int IDtask;
+        private int IDcolumn;
         private string email;
         public Board(string email)
         {
@@ -36,8 +37,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public TC.Task AddTask(string title, string desciption, DateTime dueTime) // add a new task for this user
         {
-            TC.Task newTack = new TC.Task(ID, title, desciption, dueTime, this.email);
-            ID++;
+            TC.Task newTack = new TC.Task(IDtask, title, desciption, dueTime, this.email);
+            IDtask++;
             columns[0].addTask(newTack);
             return newTack;
         }
@@ -101,7 +102,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         private void CheckTaskID(int taskID) // check if given task id is legal
         {
-            if (taskID > this.ID | taskID < 1)
+            if (taskID > this.IDtask | taskID < 1)
             {
                 log.Warn(email + " has entered an invalid task ID.");
                 throw new Exception("you entered an invalid ID.");
@@ -128,14 +129,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         private void LoadData(List<string> names) // load column list from json
         {
-            ID = 0;
+            IDtask = 0;
             foreach (string s in names)
             {
                 TC.Column temp = new TC.Column(email, s);
                 temp.Load();
                 columns.Add(new TC.Column(email, s));
                 size++;
-                ID += temp.getSize();
+                IDtask += temp.getSize();
             }
         }
 
@@ -237,44 +238,49 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 FromDalObject(DB);
             }
         }
-        private void ResetBoard()
+        private void ResetBoard()///////////////////////////////////////////////////////////////////////////////////////
         {
-            ID = 0;
+            IDtask = 0;
+            IDcolumn = 0;//////////////////////////////////////////////////////////////////////////////////////////////
             size = 0;
             columns = new List<TC.Column>();
         }
+
         private void newBoard()
         {
-            columns.Add(new TC.Column(email, "backlog"));
-            columns.Add(new TC.Column(email, "in progress"));
-            columns.Add(new TC.Column(email, "done"));
+            columns.Add(new TC.Column(email, "backlog",IDcolumn,0));
+            IDcolumn++;
+            columns.Add(new TC.Column(email, "in progress", IDcolumn, 1));
+            IDcolumn++;
+            columns.Add(new TC.Column(email, "done", IDcolumn, 2));
+            IDcolumn++;
             size = 3;
-            ID = 1;
+            IDtask = 1;
+            IDcolumn = 1;
             log.Debug("a new board for " + email + " has been made.");
         }
 
         public void DeleteData()
         {
-            //foreach(TC.Column c in columns) { c.DeleteData(); }
+            //foreach (TC.Column c in columns) { c.DeleteData(); }
             //try
             //{
             //    DAL.Board temp = new DAL.Board(email);
             //    temp.Delete("JSON\\" + email + "\\Board.json");
             //}
-            //catch(Exception e) {throw new Exception("Could not delete the board");}
+            //catch (Exception e) { throw new Exception("Could not delete the board"); }
         }
 
         public void RemoveColumn(int columnOrdinal)
         {
             CheckColumnOrdinal(columnOrdinal);
             checkSize();
-            if (columnOrdinal == 0){columns[1].addTasks(columns[0].getAll()); }
-            else {
-                var c = columns[columnOrdinal].getAll();
-                log.Debug("before add");
+            var c = columns[columnOrdinal].getAll();
+            if (columnOrdinal == 0){columns[1].addTasks(c); }
+            else { 
                 columns[columnOrdinal - 1].addTasks(c);
-                log.Debug("before move");
                 MoveColumns(columnOrdinal);
+                setOrdColumns();
             }
             size--;
             log.Debug(email + " removed column number #" + columnOrdinal + " succses");
@@ -284,17 +290,34 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public TC.Column AddColumn(int columnOrdinal, string Name)
         {
-            CheckColumnOrdinal(columnOrdinal);
+            checkrColumnNumber(columnOrdinal);
             if (CheckColumnName(Name))
             {
                 log.Warn(email + " has entered exist column name.");
                 throw new Exception("The column name you searched for is invalid.");
             }
-            columns.Insert(0,new TC.Column(email, Name));
+            columns.Insert(columnOrdinal,new TC.Column(email, Name,IDcolumn,columnOrdinal));
             size++;
+            IDcolumn++;
+            setOrdColumns();
             log.Debug(email + " added column number #" + columnOrdinal + " succses");
             Save();
-            return columns[0];
+            return columns[columnOrdinal];
+        }
+        private void setOrdColumns()
+        {
+            for(int i=0;i<size;i++)
+            {
+                columns[i].setOrd(i);
+            }
+        }
+        private void checkrColumnNumber(int ord)
+        {
+            if (ord < 0 | ord > size)
+            {
+                log.Warn(email + " has entered an invalid column number for the new column.");
+                throw new Exception("Invalid column number.");
+            }
         }
 
         public TC.Column MoveColumnRight(int columnOrdinal)
@@ -321,6 +344,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             TC.Column temp = columns[num1];
             columns[num1] = columns[num2];
             columns[num2] = temp;
+            log.Debug("the columns #" + num1 + " #" + num2 + " chenge place.");
+            columns[num1].setOrd(num2);
+            columns[num1].setOrd(num2);
         }
         private void MoveColumns(int num)
         {

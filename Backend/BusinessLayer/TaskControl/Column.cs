@@ -32,6 +32,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             size = 0;
             limit = -1;
         }
+        public Column(string email, string name)
+        {
+            this.email = email;
+            this.name = name;
+        }
         public int getSize()
         {
             return size;
