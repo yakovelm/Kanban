@@ -34,7 +34,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public string GetEmail() { return email; }
 
-
         public TC.Task AddTask(string title, string desciption, DateTime dueTime) // add a new task for this user
         {
             TC.Task newTack = new TC.Task(IDtask, title, desciption, dueTime, this.email);

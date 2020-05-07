@@ -18,12 +18,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string DueAtt = "dueDate";
         public const string createAtt = "creationDate";
 
-        public long ID { get => ID; set { throw new Exception("LaLaLa"); } }
+        public long ID { get => ID; set {
+                log.Warn("task Id can not be chenged.");
+                throw new Exception("task Id can not be chenged."); } }
         public string Cname { get => Cname; set { Cname = value; UpdateColumn(value); } }
-        public string Title { get => Title; set { Title = value; UpdateTitle(value); } }///
-        public string Desc { get => Desc; set { Desc = value; UpdateDesc(value); } }///
-        public long Due { get => Due; set { Due = value; UpdateDue(value); } }///
-        public long Create { get => Create; set { throw new Exception("LaLaLa"); } }/// 
+        public string Title { get => Title; set { Title = value; UpdateTitle(value); } }
+        public string Desc { get => Desc; set { Desc = value; UpdateDesc(value); } }
+        public long Due { get => Due; set { Due = value; UpdateDue(value); } }
+        public long Create { get => Create; set {
+                log.Warn("Task Creation date can not be chenged.");
+                throw new Exception("Task Creation date can not be chenged.");
+            } }
 
         public Task(string Email, long ID, string Cname, string Title, string Desc, long Due, long Cre) : base(new TaskCtrl())
         {

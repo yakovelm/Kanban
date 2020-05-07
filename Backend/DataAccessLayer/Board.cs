@@ -8,32 +8,52 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class Board : DalObject<Board>
+    class Board
     {
-        public string email { get; set; }
-        public List <string> columns { get; set; }
-
-        public Board() { } // json package requires an empty constructor
-        public Board(string email,List<string> columns)
-        {
-            this.email = email;
-            this.columns = columns;
-        }
+        public List<Column> columns { get; set; }
+        public string Email { get; set; }
         public Board(string email)
         {
-            this.email = email;
-            this.columns = columns;
+            Email = email;
         }
-        public override Board fromJson(string filename)
+
+        public void LoadData()
         {
-            string objectAsJson = read(filename);
-            Board temp = JsonSerializer.Deserialize<Board>(objectAsJson);
-            this.columns = temp.columns;
-            return this;
+            Column temp = new Column();
+            columns = temp.GetAllColumns(Email);
         }
-        public override string toJson()
+
+
+
+        //public string email { get; set; }
+        //public List <string> columns { get; set; }
+
+        //public Board() { } // json package requires an empty constructor
+        //public Board(string email,List<string> columns)
+        //{
+        //    this.email = email;
+        //    this.columns = columns;
+        //}
+        //public Board(string email)
+        //{
+        //    this.email = email;
+        //    this.columns = columns;
+        //}
+        //public override Board fromJson(string filename)
+        //{
+        //    string objectAsJson = read(filename);
+        //    Board temp = JsonSerializer.Deserialize<Board>(objectAsJson);
+        //    this.columns = temp.columns;
+        //    return this;
+        //}
+        //public override string toJson()
+        //{
+        //    return JsonSerializer.Serialize(this, this.GetType());
+        //}
+
+        protected override string MakeFilter()
         {
-            return JsonSerializer.Serialize(this, this.GetType());
+            throw new NotImplementedException();
         }
     }
 }

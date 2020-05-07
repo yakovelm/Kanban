@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
-using IntroSE.Kanban.Backend.DataAccessLayer.DTO;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
@@ -17,7 +16,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         public DALCtrl(string tableName)
         {
             this.tableName = tableName;
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "database.db"));
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
             this.connectionString = $"Data Source={path}; Version=3;";
         }
 
