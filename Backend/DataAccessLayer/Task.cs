@@ -44,6 +44,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         protected override string MakeFilter()
         {
             return $"{EmailAtt}='{Email}' AND {IDAtt}={ID}";
+              
         }
 
         public Task() : base(new TaskCtrl())

@@ -14,11 +14,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         {
 
         }
-        public List<Task> SelectAllTasks(string Filter)
-        {
-            List<Task> result = Select(Filter).Cast<Task>().ToList();
-            return result;
-        }
+        //public List<Task> SelectAllTasks(string Filter)
+        //{
+        //    List<Task> result = Select(Filter).Cast<Task>().ToList();
+        //    return result;
+        //}
 
 
         public override bool Insert(Task obj)

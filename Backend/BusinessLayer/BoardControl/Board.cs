@@ -275,7 +275,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckColumnOrdinal(columnOrdinal);
             checkSize();
             var c = columns[columnOrdinal].getAll();
-            if (columnOrdinal == 0){columns[1].addTasks(c); }
+            if (columnOrdinal == 0){columns[1].addTasks(c);
+            ///////////////////////////////////////////
+            }
             else { 
                 columns[columnOrdinal - 1].addTasks(c);
                 MoveColumns(columnOrdinal);
@@ -345,7 +347,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             columns[num2] = temp;
             log.Debug("the columns #" + num1 + " #" + num2 + " chenge place.");
             columns[num1].setOrd(num2);
-            columns[num1].setOrd(num2);
+            columns[num2].setOrd(num1);
         }
         private void MoveColumns(int num)
         {

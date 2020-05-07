@@ -12,14 +12,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
     {
         protected readonly string connectionString;
         protected readonly string tableName;
+        protected readonly string DB= "KanbanDB.db";
 
         public DALCtrl(string tableName)
         {
             this.tableName = tableName;
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), DB));
             this.connectionString = $"Data Source={path}; Version=3;";
         }
-
 
 
         public bool Delete(string Filter)
@@ -129,6 +129,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                         results.Add(ConvertReaderToObject(dataReader));
 
                     }
+                }
+                catch (Exception e){/////////////////////////////////////////////////////////
                 }
                 finally
                 {
