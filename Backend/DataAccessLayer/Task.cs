@@ -56,8 +56,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return controller.Select($"{EmailAtt}='{email}' AND {ColumnAtt}='{Cname}'");
         }
 
-
-        private void UpdateTitle(string t)
+        public Task load()
+        {
+            List<Task> res = controller.Select(MakeFilter());
+            if (res.Count > 1) throw new Exception("found 2 matching tasks.");
+            if (res.Count<0) throw new Exception("ok i have no idea. we fucked up.");
+            if (res.Count==0) throw new Exception("task failed to load task from DB.");
+            return res[0];
+        }
+        public void UpdateTitle(string t)
         {
             if (!controller.Update(MakeFilter(), TitleAtt, t))
             {
@@ -65,7 +72,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new Exception("fail to updata the limit for column " + Cname + " on email " + Email);
             }
         }
-        private void UpdateDesc(string d)
+        public void UpdateDesc(string d)
         {
             if (!controller.Update(MakeFilter(), DescAtt, d))
             {
@@ -73,7 +80,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new Exception("fail to updata the ordinal for column " + Cname + " on email " + Email);
             }
         }
-        private void UpdateColumn(string c)
+        public void UpdateColumn(string c)
         {
             if (!controller.Update(MakeFilter(), ColumnAtt, c))
             {
@@ -81,7 +88,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new Exception("fail to updata the name for column " + Cname + " on email " + Email);
             }
         }
-        private void UpdateDue(long d)
+        public void UpdateDue(long d)
         {
             if (!controller.Update(MakeFilter(), DueAtt, d))
             {

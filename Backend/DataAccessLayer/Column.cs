@@ -15,15 +15,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string OrdAtt = "Ord";
         public const string LimitAtt = "Limit";
 
-        private string Cname;
-        private long Ord;
-        private long Limit;
         private List<Task> tasks;
 
 
-        public string cName{ get => Cname; set { Cname = value; UpdateName(value); } }
-        public long Ordinal{ get => Ord; set { Ord = value; UpdateOrd(value); } }
-        public long limit{ get => Limit; set { Limit = value; UpdateLimit(value); } }
+        public string Cname { get => Cname; set { Cname = value; UpdateName(value); } }
+        public long Ord { get => Ord; set { Ord = value; UpdateOrd(value); } }
+        public long Limit { get => Limit; set { Limit = value; UpdateLimit(value); } }
         public Column(string Email, string Cname, long Ord, long Limit) : base(new ColumnCtrl())
         {
             this.Email = Email;
@@ -52,15 +49,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return output;
         }
 
-        private void LoadTasks()
+        public void LoadTasks()
         {
             Task temp = new Task();
             tasks = temp.GetAllTasks(Email, Cname);
         }
-
+        public Column load()
+        {
+            List<Column> res = controller.Select(MakeFilter());
+            if (res.Count > 1) throw new Exception("found 2 matching Columns.");
+            if (res.Count < 0) throw new Exception("ok i have no idea. we fucked up.");
+            if (res.Count == 0) throw new Exception("task failed to load Column from DB.");
+            return res[0];
+        }
         public List<Task> getTasks() { return tasks; }
 
-        private void UpdateLimit(long limit)
+        public void UpdateLimit(long limit)
         {
            if(!controller.Update(MakeFilter(), LimitAtt, limit))
             {
@@ -68,7 +72,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new Exception("fail to updata the limit for column " + Cname + " on email "+Email);
             }
         }
-        private void UpdateOrd(long ord)
+        public void UpdateOrd(long ord)
         {
             if (!controller.Update(MakeFilter(), OrdAtt, ord))
             {
@@ -76,7 +80,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new Exception("fail to updata the ordinal for column " + Cname + " on email " + Email);
             }
         }
-        private void UpdateName(string name)
+        public void UpdateName(string name)
         {
             if (!controller.Update(MakeFilter(), NameAtt, name))
             {
@@ -110,64 +114,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new Exception("fail to add new column for email " + Email);
             }
         }
-
-
-        // public Column() { } // json package requires an empty constructor
-        //public string email { get; set; } // json serialiser requires all relevant fields be public with get/set attributes
-        //public string name { get; set; }
-        //public int limit { get; set; }
-        //public int size { get; set; }
-        //public int ord { get; set; }
-        //public int CID { get; set; }
-        //public List<string> tasks { get; set; }
-
-        //public Column(string email, string name, int limit, List<Task> tasks) // regular constructor for saving data
-        //{
-        //    this.email = email;
-        //    this.name = name;
-        //    this.limit = limit;
-        //    this.tasks = ChengeToString(tasks);
-        //    size = tasks.Count();
-        //}
-        //public Column(string email, string name) // partial constructor for loading data
-        //{
-        //    this.email = email;
-        //    this.name = name;
-        //}
-
-        //private List<string> ChengeToString(List<Task> tasks) // turn task list into a slist of strings to save
-        //{
-        //    List<string> output = new List<string>();
-        //    foreach (Task task in tasks)
-        //    {
-        //        output.Add(task.toJson());
-        //    }
-        //    return output;
-        //}
-
-        //public List<Task> getTasks() // convert a list of strings to a list of tasks
-        //{
-        //    List<Task> output = new List<Task>();
-        //    foreach (string str in tasks)
-        //    {
-        //        output.Add(JsonSerializer.Deserialize<Task>(str));
-        //    }
-        //    return output;
-        //}
-
-        //public override Column fromJson(string filename) // load this objects data from a json file
-        //{
-        //    string objetAsJson = read(filename);
-        //    Column temp = JsonSerializer.Deserialize<Column>(objetAsJson);
-        //    this.limit = temp.limit;
-        //    this.tasks = temp.tasks;
-        //    size = tasks.Count();
-        //    return this;
-        //}
-
-        //public override string toJson() // convert this objects data to a json format string
-        //{
-        //    return JsonSerializer.Serialize(this, this.GetType());
-        //}
     }
 }

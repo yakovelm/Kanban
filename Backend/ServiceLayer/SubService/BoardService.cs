@@ -205,7 +205,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         private Column chengeType(TC.Column columnBL)// convert a BuisnessLayer column to a ServiceLayer column
         {
             List<Task> TaskListSL = new List<Task>();
-            foreach (TC.Task taskBL in columnBL.getListTask())
+            foreach (TC.Task taskBL in columnBL.getAll())
             { TaskListSL.Add(chengeType(taskBL)); }
             return new Column(TaskListSL, columnBL.getName(), columnBL.getLimit());
         }
