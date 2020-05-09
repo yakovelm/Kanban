@@ -45,20 +45,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             log.Debug("converting user to DAL obj for " + email + ".");
             return new DAL.User(email, password, nickname);
         }
-
-        public void Save() // saves this object to json
+        public void DeleteData()
         {
-            try
-            {
-                log.Debug("saving user to hard drive for " + email + ".");
-                DAL.User DU = ToDalObject();
-                DU.Write("JSON\\" + email + "\\" + email + ".json", DU.toJson());
-            }
-            catch (Exception e)
-            {
-                log.Error("faild to write to file due to " + e.Message);
-                throw e;
-            }
+            DAL.User DU = ToDalObject();
+            DU.DeleteAllData();
         }
 
         public void FromDalObject(DAL.User DalObj) // converts a DataAccessLayer object to an object of this type and sets this to the corresponding values
@@ -66,9 +56,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             try
             {
                 log.Debug("converting user from DAL obj for " + email + ".");
-                this.email = DalObj.getEmail();
-                this.password = DalObj.getPassword();
-                this.nickname = DalObj.getNickname();
+                this.email = DalObj.email;
+                this.password = DalObj.password;
+                this.nickname = DalObj.nickname;
             }
             catch (Exception e)
             {
@@ -77,29 +67,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             }
         }
 
-        public void Load() // load this object from json (email based)
+        public void Load() // empty function to implement IPersistentObject, not relevant for user since it is saved from the UserController
         {
-            try
-            {
-                DAL.User DU = new DAL.User(email);
-                log.Debug("user " + DU.getNickname() + "loading from hard drive for " + email+".");
-                DU.fromJson("JSON\\" + email + "\\" + email + ".json");
-                FromDalObject(DU);
-            }
-            catch (Exception e)
-            {
-                log.Error("failed to load user from file due to " + e.Message);
-                throw e;
-            }
         }
-        public void DeleteData()
+        public void Save() 
         {
-            try
-            {
-                DAL.Board temp = new DAL.Board(email);
-                temp.Delete("JSON\\" + email + "\\"+email+".json");
-            }
-            catch (Exception e) { throw new Exception("Could not delete the board"); }
+            DAL.User DU = ToDalObject();
+            DU.save();
         }
     }
 }

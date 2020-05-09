@@ -7,12 +7,15 @@ using System.IO;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
     class UserController
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private const int MaxLength = 25;
+        private const int MinLength = 5;
         private User ActiveUser;
         private List<User> list;
         private bool Load;
@@ -56,7 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             var hasNumber = new Regex(@"[0-9]+");
             var hasUpperChar = new Regex(@"[A-Z]+");
             var hasLowerChar = new Regex(@"[a-z]+");
-            if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | password.Length < 4 | password.Length > 20 | !hasLowerChar.IsMatch(password))
+            if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | password.Length < MinLength | password.Length > MaxLength | !hasLowerChar.IsMatch(password))
             {
                 log.Warn("password too weak. must include at least one uppercase letter, one lowercase letter and a number and be between 4 and 20 characters.");
                 throw new Exception("must include at least one uppercase letter, one lowercase letter and a number and be between 4 and 20 characters.");
@@ -64,12 +67,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         private void save(string email, string password, string nickname) // saves newly registered user
         {
-            string path = Directory.GetCurrentDirectory();
-            string pathString = System.IO.Path.Combine(path, "JSON", email);
-            System.IO.Directory.CreateDirectory(pathString); // create directory for new user
             User NU = new User(email, password, nickname);
             NU.Save();
-            log.Info(NU.getnickname() + " user created.");
+            log.Info("user created for "+ NU.getemail());
             list.Add(NU);
         }
         public void login(string email, string password) // login an existing user
@@ -140,26 +140,30 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void LoadData() // load userlist from json files
         {
-            list = new List<User>();
-            string[] users;
-            try
+            if (!Load)
             {
-               users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
+                try
+                {
+                    list = new List<User>();
+                    DataAccessLayer.DALControllers.UserCtrl DUC = new UserCtrl();
+                    foreach (DataAccessLayer.User run in DUC.Select(""))
+                    {
+                        User u = new User();
+                        u.FromDalObject(run);
+                        list.Add(u);
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Error("faild to load data");
+                    throw new Exception("faild to load data: "+e.Message);
+                }
             }
-            catch(Exception e) 
-            { 
-                System.IO.Directory.CreateDirectory(Directory.GetCurrentDirectory() + "\\JSON");
-                users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
-            }
-            foreach (string path in users)
+            else 
             {
-                var dir = new DirectoryInfo(path);
-                User u = new User(dir.Name);
-                u.Load();
-                list.Add(u);
+                log.Warn("User attempt repeat LoadData");
+                throw new Exception("Can't double loadDate");
             }
-            Load = true;
-            log.Debug("user list has been loaded.");
         }
         public void DeleteData()
         {

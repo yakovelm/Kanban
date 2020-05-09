@@ -2,6 +2,7 @@
 using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 using UC = IntroSE.Kanban.Backend.BusinessLayer.UserControl;
 using SS = IntroSE.Kanban.Backend.ServiceLayer.SubService;
+using IntroSE.Kanban.Backend.BusinessLayer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -37,10 +38,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
-            Response Ures = US.LoadData();
-            if (Ures.ErrorOccured) return Ures;
-            Response Bres = BS.LoadData();
-            if (Bres.ErrorOccured) return Bres;
+            DB DB = new DB();
+            if (DB.DBexist())
+            {
+                Response Ures = US.LoadData();
+                if (Ures.ErrorOccured) return Ures;
+                Response Bres = BS.LoadData();
+                if (Bres.ErrorOccured) return Bres;
+            }
             return new Response();
         }
 

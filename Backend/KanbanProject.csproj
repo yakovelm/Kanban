@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="BusinessLayer\BoardControl\Board.cs" />
     <Compile Include="BusinessLayer\BoardControl\BoardController.cs" />
+    <Compile Include="BusinessLayer\DB.cs" />
     <Compile Include="BusinessLayer\TaskControl\Column.cs" />
     <Compile Include="BusinessLayer\IPersistentObject.cs" />
     <Compile Include="BusinessLayer\TaskControl\Task.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="DataAccessLayer\DALControllers\TaskCtrl.cs" />
     <Compile Include="DataAccessLayer\DALControllers\UserCtrl.cs" />
     <Compile Include="DataAccessLayer\DalObject.cs" />
+    <Compile Include="DataAccessLayer\DB.cs" />
     <Compile Include="DataAccessLayer\Task.cs" />
     <Compile Include="DataAccessLayer\User.cs" />
     <Compile Include="ServiceLayer\Response.cs" />

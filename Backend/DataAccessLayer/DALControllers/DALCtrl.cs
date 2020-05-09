@@ -10,6 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
     public abstract class DALCtrl<T> where T : DalObject<T>
     {
+        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected readonly string connectionString;
         protected readonly string tableName;
         protected readonly string DB= "KanbanDB.db";
