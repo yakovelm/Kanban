@@ -12,8 +12,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private Dictionary<string, Board> BC;
-        private Board Cur;
         private bool Load;
+        private Board Cur;
 
         public BoardController()
         {
@@ -148,13 +148,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public void DeleteData()
         {
-            CheckLoad();
-            IsActive();
-            foreach(Board b in BC.Values)
+            if (Cur != null)
             {
-                b.DeleteData();
+                log.Warn("user login to the system of the Board, so you cant Delete Data before you logout from the system.");
+                throw new Exception("user login to the system of the Board, so you cant Delete Data before you logout from the system.");
             }
+            Board temp = new Board();
+            temp.DeleteAllData();
             BC = new Dictionary<string, Board>();
+            log.Debug("All Boards deleted.");
         }
         private void IsActive()
         {

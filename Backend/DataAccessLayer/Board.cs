@@ -23,37 +23,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             columns = temp.GetAllColumns(Email);
         }
 
-
-
-        //public string email { get; set; }
-        //public List <string> columns { get; set; }
-
-        //public Board() { } // json package requires an empty constructor
-        //public Board(string email,List<string> columns)
-        //{
-        //    this.email = email;
-        //    this.columns = columns;
-        //}
-        //public Board(string email)
-        //{
-        //    this.email = email;
-        //    this.columns = columns;
-        //}
-        //public override Board fromJson(string filename)
-        //{
-        //    string objectAsJson = read(filename);
-        //    Board temp = JsonSerializer.Deserialize<Board>(objectAsJson);
-        //    this.columns = temp.columns;
-        //    return this;
-        //}
-        //public override string toJson()
-        //{
-        //    return JsonSerializer.Serialize(this, this.GetType());
-        //}
-
-        protected override string MakeFilter()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

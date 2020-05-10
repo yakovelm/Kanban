@@ -140,7 +140,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 throw e;
             }
         }
-        void DeleteAllData()
+        public void DeleteAllData()
         {
             DAL.Task Dtask = ToDalObject();
             Dtask.DeleteAllData();

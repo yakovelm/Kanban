@@ -20,6 +20,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private SS.BoardService BS;
         private SS.UserService US;
+        private DB DataBase;
+
 
 
         /// <summary>
@@ -30,6 +32,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             log.Info("create service.");
             US = new SS.UserService();
             BS = new SS.BoardService();
+            DataBase = new DB();
         }
 
         /// <summary>        
@@ -38,15 +41,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
-            DB DB = new DB();
-            if (DB.DBexist())
+            try
             {
-                Response Ures = US.LoadData();
-                if (Ures.ErrorOccured) return Ures;
-                Response Bres = BS.LoadData();
-                if (Bres.ErrorOccured) return Bres;
+                DataBase.IsLoad();
+                if (DataBase.DBexist())
+                {
+                    Response Ures = US.LoadData();
+                    if (Ures.ErrorOccured) return Ures;
+                    Response Bres = BS.LoadData();
+                    if (Bres.ErrorOccured) return Bres;
+                }
+                DataBase.LoadData();
+                return new Response();
             }
-            return new Response();
+            catch (Exception e) { return new Response(e.Message); }
         }
 
 
@@ -205,7 +213,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response DeleteData()
         {
-            throw new NotImplementedException();
+            try { DataBase.ExistDataBase(); }
+            catch (Exception e) { return new Response(e.Message); }
+            Response n = US.DeleteData();
+            if (n.ErrorOccured) { return n; }
+            n= BS.DeleteData();
+            if (n.ErrorOccured) { return n; }
+            return new Response();
+
         }
 
         public Response RemoveColumn(string email, int columnOrdinal)

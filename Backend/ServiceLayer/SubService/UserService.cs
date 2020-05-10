@@ -43,6 +43,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
+        public Response DeleteData()/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        {
+            throw new Exception();
+        }
         public Response logout(string email) // logout active user
         {
             try

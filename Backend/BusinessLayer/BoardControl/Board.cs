@@ -9,37 +9,119 @@ using System.IO;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 {
-    class Board : IPersistentObject<DAL.Board>
+    class Board
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private List<TC.Column> columns;
         private const int minColumn = 2;
         private int size;
         private int IDtask;
-        private int IDcolumn;
         private string email;
         public Board(string email)
         {
             this.email = email;
-            Load();
+            size = 0;
+            IDtask = 0;
             log.Debug("a board for " + email + " has been made.");        
         }
+        public Board() { }
 
+        public void Login()
+        {
+            if (columns.Count() == 0)
+            {
+                NewBoard();
+                IDtask = 1;
+            }
+        }
+        public void LoadData()
+        {
+            log.Debug("LoadData Board of email: " + email);
+            DAL.Board b = new DAL.Board(email);
+            b.LoadData();
+            OrdinaltheList(ColumnsToBT(b.columns));
+            UpdateTheIdTask();
+            UpdateTheSize();
+            log.Debug("LoadData Board of email: " + email+" seccess");
+        }
+        private void UpdateTheIdTask()
+        {
+            foreach(TC.Column c in columns)
+            {
+                IDtask += c.getSize();
+            }
+            if (IDtask == 0) { IDtask = 1; }
+        }
+        private void UpdateTheSize()
+        {
+            foreach (TC.Column c in columns)
+            {
+                size += 1;
+            }
+            if (columns.Count() == 0) {
+                NewBoard(); }
+        }
+        private void NewBoard()
+        {
+            columns.Add(new TC.Column(email, "backlog", 0));
+            columns.Add(new TC.Column(email, "in progress", 1));
+            columns.Add(new TC.Column(email, "done", 2));
+            size = 3;
+            log.Debug("a new board for " + email + " has been made.");
+        }
+        private void OrdinaltheList(List<TC.Column> list)
+        {
+            log.Debug("Ordinal the columns of email: " + email);
+            List<TC.Column> output = new List<TC.Column>();
+            for(int i=0; i<list.Count(); i++)
+            {
+                for(int j=0; j<list.Count(); j++)
+                {
+                    if (list[j].getOrd() == i)
+                    {
+                        output.Add(list[j]);
+                    }
+                }
+                if (output.Count() != i + 1)
+                {
+                    log.Warn("there are not a column with ord " + i );
+                    throw new Exception("there are not a column with ord " + i);
+                }
+            }
+            columns = output;
+        }
+        private List<TC.Column> ColumnsToBT(List<DAL.Column> list)
+        {
+            List<TC.Column> output = new List<TC.Column>();
+            foreach (DAL.Column a in list)
+            {
+                TC.Column temp = new TC.Column();
+                temp.FromDalObject(a);
+                output.Add(temp);
+            }
+            return output;
+        }
         public void LimitColumnTask(int ColumnOrdinal, int limit) // change the limit of a specific column
         {
 
             CheckColumnOrdinal(ColumnOrdinal);
             columns[ColumnOrdinal].setLimit(limit);
         }
-
+        private void CheckColumnOrdinal(int num) // check if the given column number is legal
+        {
+            if (num < 0 | num >= size)
+            {
+                log.Warn(email + " has entered an invalid column number.");
+                throw new Exception("Invalid column number.");
+            }
+        }
         public string GetEmail() { return email; }
 
         public TC.Task AddTask(string title, string desciption, DateTime dueTime) // add a new task for this user
         {
-            TC.Task newTack = new TC.Task(IDtask, title, desciption, dueTime, this.email);
+            TC.Task output=columns[0].addTask(IDtask, title, desciption, dueTime, this.email);
             IDtask++;
-            columns[0].addTask(newTack);
-            return newTack;
+            return output;
         }
         public void UpdateTaskDueDate(int columnOrdinal, int taskID, DateTime Due) // update due date of this task
         {
@@ -126,27 +208,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             }
             return false;
         }
-        private void LoadData(List<string> names) // load column list from json
-        {
-            IDtask = 0;
-            foreach (string s in names)
-            {
-                TC.Column temp = new TC.Column(email, s);
-                temp.Load();
-                columns.Add(new TC.Column(email, s));
-                size++;
-                IDtask += temp.getSize();
-            }
-        }
 
-        private void CheckColumnOrdinal(int num) // check if the given column number is legal
-        {
-            if (num < 0 | num >= size)
-            {
-                log.Warn(email + " has entered an invalid column number.");
-                throw new Exception("Invalid column number.");
-            }
-        }
         private int ChengeToInt(string s) // get the munber of the column with the given name
         {
             for (int i = 0; i < size; i++)
@@ -158,116 +220,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             }
             return -1;
         }
-
-        public DAL.Board ToDalObject()
+        public void DeleteAllData()
         {
-            log.Debug("the board converting to DAL obj in " + email + ".");
-            try
-            {
-                List<string> DColumns = new List<string>();
-                return new DAL.Board(email, ChengeToString());
-            }
-            catch (Exception e)
-            {
-                log.Error("issue converting board BL object to column DAL object due to " + e.Message);
-                throw e;
-            }
-        }
-
-        public void FromDalObject(DAL.Board DalObj)
-        {
-            log.Debug("the board converting from DAL obj in " + email + ".");
-            try
-            {
-                LoadData(DalObj.columns);
-            }
-            catch (Exception e)
-            {
-                log.Error("issue converting board DAL object to column BL object due to " + e.Message);
-                throw e;
-            }
-        }
-
-        public void Save()
-        {
-            try
-            {
-                log.Debug("the board saving to hard drive for " + email + ".");
-                DAL.Board DB = ToDalObject();
-                DB.Write("JSON\\" + email + "\\Board.json", DB.toJson());
-            }
-            catch (Exception e)
-            {
-                log.Error("failed to write to file due to " + e.Message);
-                throw e;
-            }
-        }
-        private List<string> ChengeToString()
-        {
-            List<string> output = new List<string>();
-            foreach(TC.Column c in columns)
-            {
-                output.Add(c.getName());
-            }
-            return output;
-        }
-
-        public void Load()
-        {
-            ResetBoard();
-            log.Debug("the board of " + email + "loading from hard drive.");
-            DAL.Board DB = new DAL.Board(email);
-            if (!File.Exists(Directory.GetCurrentDirectory() + "\\JSON\\" + email + "\\Board.json"))
-            {
-                log.Info("no preexisting the board file for " + email + " initializing new empty file.");
-                newBoard();
-                Save();
-            }
-            else
-            {
-                try
-                {
-                    DB.fromJson("JSON\\" + email + "\\Board.json");
-                }
-                catch (Exception e)
-                {
-                    log.Error("failed to load board from file due to " + e.Message);
-                    throw e;
-                }
-                FromDalObject(DB);
-            }
-        }
-        private void ResetBoard()///////////////////////////////////////////////////////////////////////////////////////
-        {
-            IDtask = 0;
-            IDcolumn = 0;//////////////////////////////////////////////////////////////////////////////////////////////
-            size = 0;
-            columns = new List<TC.Column>();
-        }
-
-        private void newBoard()
-        {
-            columns.Add(new TC.Column(email, "backlog",IDcolumn,0));
-            IDcolumn++;
-            columns.Add(new TC.Column(email, "in progress", IDcolumn, 1));
-            IDcolumn++;
-            columns.Add(new TC.Column(email, "done", IDcolumn, 2));
-            IDcolumn++;
-            size = 3;
-            IDtask = 1;
-            IDcolumn = 1;
-            log.Debug("a new board for " + email + " has been made.");
-        }
-
-        public void DeleteData()
-        {
-            //foreach (TC.Column c in columns) { c.DeleteData(); }
-            //try
-            //{
-            //    DAL.Board temp = new DAL.Board(email);
-            //    temp.Delete("JSON\\" + email + "\\Board.json");
-            //}
-            //catch (Exception e) { throw new Exception("Could not delete the board"); }
+            TC.Column temp = new TC.Column();
+            temp.DeleteAllData();
         }
 
         public void RemoveColumn(int columnOrdinal)
@@ -276,18 +232,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             checkSize();
             var c = columns[columnOrdinal].getAll();
             if (columnOrdinal == 0){columns[1].addTasks(c);
-            ///////////////////////////////////////////
             }
-            else { 
-                columns[columnOrdinal - 1].addTasks(c);
-                MoveColumns(columnOrdinal);
-                setOrdColumns();
-            }
+            else {  columns[columnOrdinal - 1].addTasks(c); }
+            MoveColumns(columnOrdinal);
+            setOrdColumns();
             size--;
             log.Debug(email + " removed column number #" + columnOrdinal + " succses");
-            Save();
         }
-
 
         public TC.Column AddColumn(int columnOrdinal, string Name)
         {
@@ -297,12 +248,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 log.Warn(email + " has entered exist column name.");
                 throw new Exception("The column name you searched for is invalid.");
             }
-            columns.Insert(columnOrdinal,new TC.Column(email, Name,IDcolumn,columnOrdinal));
+            columns.Insert(columnOrdinal,new TC.Column(email, Name,columnOrdinal));
             size++;
-            IDcolumn++;
             setOrdColumns();
             log.Debug(email + " added column number #" + columnOrdinal + " succses");
-            Save();
             return columns[columnOrdinal];
         }
         private void setOrdColumns()
@@ -327,7 +276,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             ColumnIsNotDoneColumn(columnOrdinal);
             ExchangeColumns(columnOrdinal, columnOrdinal + 1);
             log.Debug(email + " Moved right column was number #" + columnOrdinal + " succses");
-            Save();
             return columns[columnOrdinal + 1];
         }
 
@@ -337,7 +285,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             ColumnIsNotFirstColumn(columnOrdinal);
             ExchangeColumns(columnOrdinal, columnOrdinal -1);
             log.Debug(email + " Moved left column was number #" + columnOrdinal + " succses");
-            Save();
             return columns[columnOrdinal - 1];
         }
         private void ExchangeColumns(int num1, int num2)
@@ -345,9 +292,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             TC.Column temp = columns[num1];
             columns[num1] = columns[num2];
             columns[num2] = temp;
-            log.Debug("the columns #" + num1 + " #" + num2 + " chenge place.");
             columns[num1].setOrd(num2);
             columns[num2].setOrd(num1);
+            log.Debug("the columns #" + num1 + " #" + num2 + " chenge place.");
         }
         private void MoveColumns(int num)
         {
@@ -372,5 +319,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("user attempted to remove column when the minmum columns is 2.");
             }
         }
+        
+        
     }
 }

@@ -31,6 +31,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Column Dcol = ToDalObject();
             Dcol.Add();
         }
+        public Column()
+        {
+
+        }
         public Column(string email, string name)
         {
             this.email = email;
@@ -94,7 +98,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             tasks.AddRange(ts);
             size = size + ts.Count;
         }
-        public void addTask(Task task) // add a new task to this column
+        public void addTask(Task task) // add a new task to this column/////////////////////////////////////////////////////////////////////////////////////////////////////
         {
             log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email+".");
             if (limit != -1 & limit <= size)
@@ -105,6 +109,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             task.editColumn(name);
             tasks.Add(task);
             size++;
+        }
+        public Task addTask(int ID, string title, string desc, DateTime due, string email) // add a new task to this column
+        {
+            Task task= new Task(ID,name, title, desc, due, this.email);
+            log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email + ".");
+            if (limit != -1 & limit <= size)
+            {
+                log.Warn("task limit reached, task not added.");
+                throw new Exception("task limit reached, task not added.");
+            }
+            task.editColumn(name);
+            tasks.Add(task);
+            size++;
+            return task;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
         public Task deleteTask(Task task) // delete a task from this column (if exists) and return it
         {
@@ -198,6 +216,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 throw new Exception("task does not exist in this columm.");
             }
             t.editDue(due);
+        }
+
+        public void DeleteAllData()
+        {
+            DAL.Column temp1 = new DAL.Column();
+            Task temp2 = new Task();
+            temp2.DeleteAllData();
+            log.Info("delete all tasks");
+            temp1.DeleteAllData();
+            log.Info("delete all columns");
         }
         public void Save() // save this column to a a json file
         {
