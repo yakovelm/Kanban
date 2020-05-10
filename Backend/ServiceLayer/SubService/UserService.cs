@@ -43,9 +43,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
-        public Response DeleteData()/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        public Response DeleteData()
         {
-            throw new Exception();
+            try
+            {
+                log.Info("attempting to Delete Data.");
+                uc.DeleteData();
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
         }
         public Response logout(string email) // logout active user
         {

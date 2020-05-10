@@ -22,13 +22,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if(!ExistDB)
             {
-                log.Warn("you can not delete non data because dont have a Data Base.");
-                throw new Exception("you can not delete non data because dont have a Data Base.");
+                log.Warn("Cannot delete non-existent Data.");
+                throw new Exception("Cannot delete non-existent Data.");
             }
         }
         public bool DBexist()
         {
-            if (!sqlfilexist())
+            if (ExistDB)
             {
                 try
                 {
@@ -46,8 +46,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
         private bool sqlfilexist()
         {
-            string check = Directory.GetCurrentDirectory() + $"\\{database_name}";
-            return File.Exists(database_name);
+            string check = Directory.GetCurrentDirectory() + $"//{database_name}";
+            return File.Exists(check);
         }
         public void LoadData()
         {
