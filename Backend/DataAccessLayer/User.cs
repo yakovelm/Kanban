@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             return $"WHERE {emailAtt}='{email}'";
         }
-        public void save()
+        public void Insert()
         {
             if (!controller.Insert(this))
             {

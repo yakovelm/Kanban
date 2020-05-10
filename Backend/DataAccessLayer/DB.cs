@@ -32,7 +32,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public DB(string database_name) 
         {
             SQLiteConnection connection;
-            string connetion_string = $"Data Source={database_name};Version=3;";
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), database_name));
+            string connetion_string = $"Data Source={path};Version=3;";
             using (connection = new SQLiteConnection(connetion_string))
             {
                 try

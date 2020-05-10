@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected override string MakeFilter()
         {
-            return $"{EmailAtt}='{Email}' AND {NameAtt}='{Cname}'";
+            return $"WHERE {EmailAtt}='{Email}' AND {NameAtt}='{Cname}'";
         }
 
         public Column() : base(new ColumnCtrl())

@@ -68,7 +68,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private void save(string email, string password, string nickname) // saves newly registered user
         {
             User NU = new User(email, password, nickname);
-            NU.Save();
+            NU.Insert();
             log.Info("user created for "+ NU.getemail());
             list.Add(NU);
         }

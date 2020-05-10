@@ -145,13 +145,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Task Dtask = ToDalObject();
             Dtask.DeleteAllData();
         }
-
-        public void Save() // empty function to implement IPersistentObject, not relevant for task since it is saved alongside column
-        {
-        }
-
-        public void Load() // empty function to implement IPersistentObject, not relevant for task since it is saved alongside column
-        {
-        }
     }
 }

@@ -40,9 +40,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                         $"VALUES (@emailVal,@nameVal,@ordVal,@limitVal);";
 
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", c.Email);
-                    SQLiteParameter CnameParam = new SQLiteParameter(@"nameVal", c.cName);
-                    SQLiteParameter OrdParam = new SQLiteParameter(@"ordVal", c.Ordinal);
-                    SQLiteParameter LimitParam = new SQLiteParameter(@"limitVal", c.limit);
+                    SQLiteParameter CnameParam = new SQLiteParameter(@"nameVal", c.Cname);
+                    SQLiteParameter OrdParam = new SQLiteParameter(@"ordVal", c.Ord);
+                    SQLiteParameter LimitParam = new SQLiteParameter(@"limitVal", c.Limit);
 
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(CnameParam);

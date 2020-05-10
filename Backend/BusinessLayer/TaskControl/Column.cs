@@ -174,7 +174,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 email = DalObj.Email;
                 name = DalObj.Cname;
                 limit = (int)DalObj.Limit;
-                DalObj.LoadTasks();
+                //DalObj.LoadTasks();
                 foreach (DAL.Task t in DalObj.getTasks()) // convert each task in column individually
                 {
                     Task BT = new Task(); 
@@ -226,41 +226,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             log.Info("delete all tasks");
             temp1.DeleteAllData();
             log.Info("delete all columns");
-        }
-        public void Save() // save this column to a a json file
-        {
-            //try
-            //{
-            //    log.Debug("column " + name + " saving to hard drive for " + email + ".");
-            //    DAL.Column DC = ToDalObject();
-            //    DC.Write("JSON\\" + email + "\\" + name + ".json", DC.toJson());
-            //}
-            //catch (Exception e)
-            //{
-            //    log.Error("failed to write to file due to " + e.Message);
-            //    throw e;
-            //}
-        }
-
-        public void Load() // lod this column's data from a json file
-        {
-        //    log.Debug("column " + name + "loading from hard drive for " + email + ".");
-        //    DAL.Column DC = new DAL.Column(email, name);
-        //    if (!File.Exists(Directory.GetCurrentDirectory() + "\\JSON\\" + email + "\\" + name + ".json"))
-        //    {
-        //        log.Info("no preexisting " + name + "column file for " + email + " initializing new empty file.");
-        //        Save();
-        //    }
-        //    try
-        //    {
-        //        DC.fromJson("JSON\\" + email + "\\" + name + ".json");
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        log.Error("failed to load column from file due to " + e.Message);
-        //        throw e;
-        //    }
-        //    FromDalObject(DC);
         }
     }
 }

@@ -66,14 +66,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw e;
             }
         }
-
-        public void Load() // empty function to implement IPersistentObject, not relevant for user since it is saved from the UserController
-        {
-        }
-        public void Save() 
+        public void Insert() 
         {
             DAL.User DU = ToDalObject();
-            DU.save();
+            DU.Insert();
         }
     }
 }
