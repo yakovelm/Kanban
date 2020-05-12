@@ -40,8 +40,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             log.Debug("LoadData Board of email: " + email);
             DAL.Board b = new DAL.Board(email);
             b.LoadData();
+            log.Debug("data loaded "+b.columns.Count());
             OrdinaltheList(ColumnsToBT(b.columns));
+            log.Debug("list ordered");
             UpdateTheIdTask();
+            log.Debug("task id's updated");
             UpdateTheSize();
             log.Debug("LoadData Board of email: " + email+" seccess");
         }
@@ -59,6 +62,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             {
                 size += 1;
             }
+            log.Debug("columns loaded: " + columns.Count());
             if (columns.Count() == 0) {
                 NewBoard(); }
         }
@@ -120,7 +124,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public TC.Task AddTask(string title, string desciption, DateTime dueTime) // add a new task for this user
         {
-            TC.Task output=columns[0].addTask(IDtask, title, desciption, dueTime, this.email);
+            TC.Task output=new TC.Task(IDtask, columns[0].getName(), title, desciption, dueTime, this.email);  
+            columns[0].addTask(output);
             IDtask++;
             return output;
         }
@@ -200,6 +205,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         private bool CheckColumnName(string name) // check if given column name is a legal name (is either 'backlog', 'in progress' or 'done')
         {
+            if (name == null) return false;
             foreach(TC.Column c in columns)
             {
                 if (name.Equals(c.getName()))

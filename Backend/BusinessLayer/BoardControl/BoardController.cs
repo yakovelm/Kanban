@@ -92,7 +92,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("you need to login to system.");
             }
             string s = email.ToLower();
-            if (Cur!=null && !s.Equals(Cur.GetEmail()))
+            if (Cur==null || !s.Equals(Cur.GetEmail()))
             {
                 log.Warn(email + " does not match the email connected to the system.");
                 throw new Exception("The email you entered does not match the email connected to the system.");
@@ -176,9 +176,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public TC.Column AddColumn(string email, int columnOrdinal, string Name)
         {
+            log.Debug("in BC add column");
             CheckLoad();
+            log.Debug("post checkload");
             CheckEmail(email);
-             return Cur.AddColumn(columnOrdinal, Name);
+            log.Debug("post check email");
+            return Cur.AddColumn(columnOrdinal, Name);
         }
 
         public TC.Column MoveColumnRight(string email, int columnOrdinal)

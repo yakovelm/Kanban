@@ -41,11 +41,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public List<Column> GetAllColumns(string email)
         {
-            List<Column> output = controller.Select($"{EmailAtt}='{email}'");
+            List<Column> output = controller.Select($"WHERE {EmailAtt}='{email}'");
             foreach(Column c in output)
             {
                 c.LoadTasks();
             }
+            log.Debug("columns loaded for " + email + " with size: " + output.Count());
             return output;
         }
 

@@ -55,7 +55,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             try
             {
-                log.Debug("converting user from DAL obj for " + email + ".");
+                log.Debug("converting user from DAL obj for " + DalObj.email + ".");
                 this.email = DalObj.email;
                 this.password = DalObj.password;
                 this.nickname = DalObj.nickname;

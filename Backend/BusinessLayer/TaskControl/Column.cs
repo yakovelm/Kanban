@@ -22,6 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             log.Info("creating new empty " + name + " column for " + email+".");
             this.email = email;
+            if (name == null || name == "") throw new Exception("illegal name.");
             this.name = name;
             if (ord < 0) throw new Exception("ordinal illegal.");
             this.ord = ord;
@@ -33,12 +34,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public Column()
         {
-
+            tasks = new List<Task>();
         }
         public Column(string email, string name)
         {
             this.email = email;
             this.name = name;
+            tasks= new List<Task>();
         }
         public int getSize()
         {
@@ -98,6 +100,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             tasks.AddRange(ts);
             size = size + ts.Count;
         }
+
         public void addTask(Task task) // add a new task to this column/////////////////////////////////////////////////////////////////////////////////////////////////////
         {
             log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email+".");
@@ -106,24 +109,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Warn("task limit reached, task not added.");
                 throw new Exception("task limit reached, task not added.");
             }
+            if(ord==0) task.insert();
             task.editColumn(name);
             tasks.Add(task);
             size++;
         }
-        public Task addTask(int ID, string title, string desc, DateTime due, string email) // add a new task to this column
-        {
-            Task task= new Task(ID,name, title, desc, due, this.email);
-            log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email + ".");
-            if (limit != -1 & limit <= size)
-            {
-                log.Warn("task limit reached, task not added.");
-                throw new Exception("task limit reached, task not added.");
-            }
-            task.editColumn(name);
-            tasks.Add(task);
-            size++;
-            return task;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        }
+        //public Task addTask(int ID, string title, string desc, DateTime due, string email) // add a new task to this column
+        //{
+        //    Task task= new Task(ID,name, title, desc, due, this.email);
+        //    log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email + ".");
+        //    if (limit != -1 & limit <= size)
+        //    {
+        //        log.Warn("task limit reached, task not added.");
+        //        throw new Exception("task limit reached, task not added.");
+        //    }
+        //    task.insert();
+        //    task.editColumn(name);
+        //    tasks.Add(task);
+        //    size++;
+        //    return task;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //}
         public Task deleteTask(Task task) // delete a task from this column (if exists) and return it
         {
             log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + email+".");
@@ -175,18 +180,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void FromDalObject(DAL.Column DalObj) // convert a DataAccessLayer object to a BuisnessLayer column and set this to corresponding values
         {
-            log.Debug("column " + name + "converting from DAL obj in " + email + ".");
+            log.Debug("column " + DalObj.Cname + " converting from DAL obj in " + DalObj.Email + ".");
             try
             {
                 email = DalObj.Email;
                 name = DalObj.Cname;
+                ord = (int)DalObj.Ord;
                 limit = (int)DalObj.Limit;
+                log.Debug("post base values");
                 //DalObj.LoadTasks();
+                log.Debug(DalObj.getTasks().Count());
                 foreach (DAL.Task t in DalObj.getTasks()) // convert each task in column individually
                 {
+                    log.Debug("in foreach with: " + t.ID);
                     Task BT = new Task(); 
                     BT.FromDalObject(t);
+                    log.Debug("made task: " + BT.getID()+ " with title: "+BT.getTitle());
                     tasks.Add(BT);
+                    log.Debug(tasks.Count());
                 }
                 size = tasks.Count();
             }

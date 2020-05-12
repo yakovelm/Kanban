@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 var command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DELETE FROM {tableName} WHERE {Filter}"
+                    CommandText = $"DELETE FROM {tableName} {Filter}"
                 };
                 try
                 {
@@ -61,7 +61,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} WHERE {Filter}"
+                    CommandText = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} {Filter}"
                 };
                 try
                 {
@@ -85,20 +85,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         public bool Update(string Filter, string attributeName, long attributeValue)
         {
-            log.Debug("update ord with: " +Filter+" "+attributeName+" "+attributeValue);
+            //log.Debug("update ord with: " +Filter+" "+attributeName+" "+attributeValue);
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} WHERE {Filter}"
+                    CommandText = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} {Filter}"
                 };
+                log.Debug(command.CommandText);
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    res=command.ExecuteNonQuery();
                 }
                 catch (Exception e){
                     /////////////////////////////////////////////////////////////////////////
@@ -121,6 +122,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 command.CommandText = $"SELECT * FROM {tableName} {Filter}";
+                log.Debug(command.CommandText);
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -147,6 +149,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 }
 
             }
+            log.Debug("results len: " + results.Count());
             return results;
         }
         protected abstract T ConvertReaderToObject(SQLiteDataReader reader);

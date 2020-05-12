@@ -59,22 +59,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.AddColumn(te3, 3, "col3").toString());
                 print(s.GetColumn(te3, 3).toString());
                 print(s.AddTask(te3, "title1", "desc1", new DateTime(2200, 10, 10)));
-                print(s.GetColumn(te3, 1).toString());
+                print(s.GetColumn(te3, 0).toString());
                 print(s.Logout(te3));
 
                 //creation edge cases - all should fail
-                print(s.AddColumn(te3, 4, "col4").toString());
-                print(s.AddTask(te3, "title2", "desc2", new DateTime(2200, 10, 10)));
+                //print(s.AddColumn(te3, 4, "col4").toString());
+                //print(s.AddTask(te3, "title2", "desc2", new DateTime(2200, 10, 10)));
                 print(s.Login(te3, tp3));
-                print(s.AddColumn(te2, 4, "col4").toString());
-                print(s.AddTask(te2, "title2", "desc2", new DateTime(2200, 10, 10)));
-                print(s.AddColumn(te3, 1, "col4").toString());
-                print(s.AddColumn(te3, 4, "col3").toString());
-                print(s.AddColumn(te3, -6, "col7").toString());
-                print(s.AddColumn(te3, 0, "col8").toString());
-                print(s.AddColumn(te3, 9, "col9").toString());
-                print(s.AddColumn(te3, 4, "").toString());
-                print(s.AddColumn(te3, 4, null).toString());
+                //print(s.AddColumn(te2, 4, "col3").toString());
+                //print(s.AddTask(te2, "title2", "desc2", new DateTime(2200, 10, 10)));
+                //print(s.AddColumn(te3, 4, "col3").toString());
+                //print(s.AddColumn(te3, -6, "col7").toString());
+                //print(s.AddColumn(te3, 9, "col9").toString());
+                //print(s.AddColumn(te3, 4, "").toString());
+                //print(s.AddColumn(te3, 4, null).toString());
                 print(s.LimitColumnTasks(te3, 0, 3));
                 for (int i = 2; i < 8; i++) print(s.AddTask(te3, "title"+i, "desc"+i, new DateTime(2200, 06, 22)));
                 print(s.GetBoard(te3).toString());
@@ -92,10 +90,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.MoveColumnLeft(te3, 2));
                 print(s.GetBoard(te3).toString());
                 print(s.LimitColumnTasks(te3, 0, 20));
-                for (int i = 3; i <= 20; i++) print(s.AddTask(te3, "title" + i, "desc" + i, new DateTime(2200, 06, 22)));
+                for (int i = 4; i <= 20; i++) print(s.AddTask(te3, "title" + i, "desc" + i, new DateTime(2200, 06, 22)));
                 for (int i = 1; i <= 15; i++) print(s.AdvanceTask(te3, 0, i));
                 for (int i = 1; i <= 10; i++) print(s.AdvanceTask(te3, 1, i));
-                for (int i = 1; i <= 15; i++) print(s.AdvanceTask(te3, 2, i));
+                for (int i = 1; i <= 5; i++) print(s.AdvanceTask(te3, 2, i));
                 print(s.GetColumn(te3, 0).toString());
                 print(s.GetColumn(te3, 1).toString());
                 print(s.GetColumn(te3, 2).toString());
@@ -129,7 +127,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.MoveColumnRight(te3, 3));
                 print(s.LimitColumnTasks(te3, 0, 1));
                 print(s.LimitColumnTasks(te3, 1, 5));
-                print(s.AdvanceTask(te3, 1, 18));
+                print(s.AdvanceTask(te3, 0, 18));
                 print(s.Logout(te3));
 
                 //proper remove tests - all should work

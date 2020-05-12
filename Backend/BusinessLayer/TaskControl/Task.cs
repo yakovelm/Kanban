@@ -51,6 +51,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             this.due = due;
             this.email = email;
             creation = DateTime.Now;
+        }
+        public void insert()
+        {
             DAL.Task Dtask = ToDalObject();
             Dtask.Add();
         }
@@ -124,10 +127,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public void FromDalObject(DAL.Task DalObj)// convert a DataAccessLayer object to a BuisnessLayer task and set this to corresponding values
         {
-            log.Debug("task #" + ID + "converting from DAL obj.");
+            log.Debug("task #" + DalObj.ID + " converting from DAL obj.");
             try
             {
                 email = DalObj.Email;
+                Cname = DalObj.Cname;
                 title = DalObj.Title;
                 ID = (int)DalObj.ID;
                 desc = DalObj.Desc;
