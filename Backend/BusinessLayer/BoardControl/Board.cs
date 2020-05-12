@@ -22,6 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             this.email = email;
             size = 0;
             IDtask = 0;
+            LoadData();
             log.Debug("a board for " + email + " has been made.");        
         }
         public Board() { }

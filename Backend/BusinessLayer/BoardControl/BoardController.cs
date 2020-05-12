@@ -26,11 +26,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         public void LoadData() // load board dictionary (boards keyd by email) of all saved boards
         {
             checkLoad2();
-            string[] users = Directory.GetDirectories(Directory.GetCurrentDirectory() + "\\JSON");
-            foreach (string path in users)
+            DataAccessLayer.DALControllers.BoardCtrl DBC = new DataAccessLayer.DALControllers.BoardCtrl();
+            List<string> temp = DBC.LoadData();
+            foreach(string b in temp)
             {
-                var dir = new DirectoryInfo(path);
-                BC.Add(dir.Name, new Board(dir.Name));
+                BC.Add(b, new Board(b));
             }
             Load = true;
             log.Debug("board list has been loaded.");
@@ -45,7 +45,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         private void checkLoad2()
         {
-            if (!Load)
+            if (Load)
             {
                 log.Info("already load data.");
                 throw new Exception("already load data.");

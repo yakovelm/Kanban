@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private const string ColumnDBName1 = "email";
         private const string ColumnDBName2 = "Cname";
         private const string ColumnDBName3 = "Ord";
-        private const string ColumnDBName4 = "limit";
+        private const string ColumnDBName4 = "lim";
 
         public DB(string database_name) 
         {

@@ -39,15 +39,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.Logout(te));
 
                 //login edge cases - all should fail
-                print(s.LoadData());
-                print(s.Register(te, tp, tn));
-                print(s.Login(te2, tp2));
-                print(s.Login(te2, tp));
-                print(s.Logout(te));
-                print(s.Login(te, tp));
-                print(s.Logout(te2));
-                print(s.Logout(te));
-                print(s.LoadData());
+                //print(s.LoadData());
+                //print(s.Register(te, tp, tn));
+                //print(s.Login(te2, tp2));
+                //print(s.Login(te2, tp));
+                //print(s.Logout(te));
+                //print(s.Login(te, tp));
+                //print(s.Logout(te2));
+                //print(s.Logout(te));
+                //print(s.LoadData());
 
                 //proper creation tests - all should work
                 print(s.Register(te3, tp3, tn3));

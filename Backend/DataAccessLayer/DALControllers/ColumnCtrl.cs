@@ -30,6 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
+                //log.Debug("insert to DB with: "+c.Email +" "+ c.Cname + " " + c.Ord + " " + c.Limit);
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 int res = -1;
                 try
@@ -37,8 +38,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     connection.Open();
                     command.CommandText = $"INSERT INTO {tableName} ({Column.EmailAtt} ,{Column.NameAtt}," +
                         $"{Column.OrdAtt},{Column.LimitAtt}) " +
-                        $"VALUES (@emailVal,@nameVal,@ordVal,@limitVal);";
-
+                        $"VALUES (@emailVal,@nameVal,@ordVal,@limitVal)";
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", c.Email);
                     SQLiteParameter CnameParam = new SQLiteParameter(@"nameVal", c.Cname);
                     SQLiteParameter OrdParam = new SQLiteParameter(@"ordVal", c.Ord);

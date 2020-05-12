@@ -54,6 +54,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         public bool Update(string Filter, string attributeName, string attributeValue)
         {
+            log.Debug("in update.");
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -84,6 +85,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         public bool Update(string Filter, string attributeName, long attributeValue)
         {
+            log.Debug("update ord with: " +Filter+" "+attributeName+" "+attributeValue);
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {

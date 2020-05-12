@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             log.Info("creating new empty " + name + " column for " + email+".");
             this.email = email;
             this.name = name;
-            if (ord < 1) throw new Exception("ordinal illegal.");
+            if (ord < 0) throw new Exception("ordinal illegal.");
             this.ord = ord;
             tasks = new List<Task>();
             size = 0;
@@ -63,7 +63,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void setOrd(int ord)
         {
-            if (ord < 1) throw new Exception("ordinal illegal.");
+            if (ord < 0) throw new Exception("ordinal illegal.");
             this.ord = ord;
             DAL.Column Dcol = ToDalObject();
             Dcol.UpdateOrd(ord);
@@ -152,12 +152,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
 
         public DAL.Column ToDalObject() // convert this column to a DataAccessLayer object
         {
-            log.Debug("column " + name + "converting to DAL obj in " + email + ".");
+            log.Debug("column " + name + " converting to DAL obj in " + email + ".");
             try
             {
                 List<DAL.Task> Dtasks = new List<DAL.Task>();
-                foreach (Task t in tasks) { Dtasks.Add(t.ToDalObject()); }
-                return new DAL.Column(email,name,ord,limit); 
+                log.Debug("list made");
+                foreach (Task t in tasks) {
+                    //log.Debug("converting "+t.getTitle()+" to dal object.");
+                    Dtasks.Add(t.ToDalObject()); 
+                }
+                log.Debug("post foreach");
+                DAL.Column c= new DAL.Column(email, name, ord, limit);
+                log.Debug("made dal column.");
+                return c;
             }
             catch (Exception e)
             {

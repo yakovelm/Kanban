@@ -13,14 +13,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     {
         public const string NameAtt = "Cname";
         public const string OrdAtt = "Ord";
-        public const string LimitAtt = "Limit";
+        public const string LimitAtt = "lim";
 
         private List<Task> tasks;
 
 
-        public string Cname { get => Cname; set { Cname = value; UpdateName(value); } }
-        public long Ord { get => Ord; set { Ord = value; UpdateOrd(value); } }
-        public long Limit { get => Limit; set { Limit = value; UpdateLimit(value); } }
+        public string Cname { get; set; }
+        public long Ord { get; set; }
+        public long Limit { get; set; }
         public Column(string Email, string Cname, long Ord, long Limit) : base(new ColumnCtrl())
         {
             this.Email = Email;
@@ -68,24 +68,27 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
            if(!controller.Update(MakeFilter(), LimitAtt, limit))
             {
-                log.Error("fail to updata the limit for column " + Cname + " on email " + Email);
-                throw new Exception("fail to updata the limit for column " + Cname + " on email "+Email);
+                log.Error("fail to update the limit for column " + Cname + " on email " + Email);
+                throw new Exception("fail to update the limit for column " + Cname + " on email "+Email);
             }
         }
         public void UpdateOrd(long ord)
         {
             if (!controller.Update(MakeFilter(), OrdAtt, ord))
             {
-                log.Error("fail to updata the ordinal for column " + Cname + " on email " + Email);
-                throw new Exception("fail to updata the ordinal for column " + Cname + " on email " + Email);
+                log.Error("fail to update the ordinal for column " + Cname + " on email " + Email);
+                throw new Exception("fail to update the ordinal for column " + Cname + " on email " + Email);
             }
         }
         public void UpdateName(string name)
         {
-            if (!controller.Update(MakeFilter(), NameAtt, name))
+            log.Debug("in update name");
+            string filter = MakeFilter();
+            log.Debug(filter);
+            if (!controller.Update(filter, NameAtt, name))
             {
-                log.Error("fail to updata the name for column " + Cname + " on email " + Email);
-                throw new Exception("fail to updata the name for column " + Cname + " on email " + Email);
+                log.Error("fail to update the name for column " + Cname + " on email " + Email);
+                throw new Exception("fail to update the name for column " + Cname + " on email " + Email);
             }
         }
         public void Add()

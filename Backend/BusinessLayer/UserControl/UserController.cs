@@ -107,7 +107,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 if (ActiveUser == null)
                 {
                     log.Warn("user not yet registered.");
-                    throw new Exception(email + "," + password);
+                    throw new Exception(email + " user not yet registered.");
                 }
             }
 
