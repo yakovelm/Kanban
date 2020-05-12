@@ -32,57 +32,155 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string tp3 = "123zsaZSA1212";
                 string tn3 = "aleks";
 
+                //proper login tests - all should work
                 print(s.LoadData());
-                print(s.Login(te,tp));
+                print(s.Register(te, tp, tn));
+                print(s.Login(te, tp));
+                print(s.Logout(te));
+
+                //login edge cases - all should fail
+                print(s.LoadData());
+                print(s.Register(te, tp, tn));
+                print(s.Login(te2, tp2));
+                print(s.Login(te2, tp));
+                print(s.Logout(te));
+                print(s.Login(te, tp));
                 print(s.Logout(te2));
-                ////print(s.Login(te2, tp2));
-                ////print(s.GetColumn(te2, 0).toString());
-                ////Console.WriteLine("before LoadData");
-                ////print(s.LimitColumnTasks(te2, 1, 5));
-                ////print(s.Register(te2, tp2, "nit"));
-                ////print(s.Login(te2, tp2).toString());
-                ////print(s.AddTask(te2, "title1", "desc", new DateTime(2200,06,22)));
-                ////print(s.AddColumn(te, 4, "good"));
-                ////print(s.MoveColumnLeft(te2, 1));
-                ////print(s.MoveColumnRight(te2, 2));
-                ////print(s.RemoveColumn(te2, 1));
-                ////print(s.LimitColumnTasks(te2, 1, 5));
-                ////Console.WriteLine("*************************************************************************");
+                print(s.Logout(te));
+                print(s.LoadData());
 
+                //proper creation tests - all should work
+                print(s.Register(te3, tp3, tn3));
+                print(s.Login(te3, tp3));
+                print(s.GetBoard(te3).toString());
+                print(s.GetColumn(te3, 0).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.GetColumn(te3, 2).toString());      
+                print(s.AddColumn(te3, 3, "col3").toString());
+                print(s.GetColumn(te3, 3).toString());
+                print(s.AddTask(te3, "title1", "desc1", new DateTime(2200, 10, 10)));
+                print(s.GetColumn(te3, 1).toString());
+                print(s.Logout(te3));
 
-                //print(s.LoadData());
-                //print(s.Register(te2, tp2, "nit"));
-                //print(s.Login(te2, tp2).toString());
-                //print(s.Login(te2, tp2).toString());
-                //print(s.AddTask(te2, "title1", "desc", new DateTime(2200, 06, 22)));
-                //print(s.AddTask(te2, "title2", "desc", new DateTime(2200, 06, 22)));
-                //print(s.AddTask(te2, "title3", "desc", new DateTime(2200, 06, 22)));
-                //print(s.AddTask(te2, "title4", "desc", new DateTime(2200, 06, 22)));
-                //print(s.AddTask(te2, "title5", "desc", new DateTime(2200, 06, 22)));
-                //print(s.AddTask(te2, "title6", "desc", new DateTime(2200, 06, 22)));
-                //print(s.AddTask(te2, "title7", "desc", new DateTime(2200, 06, 22)));
-                //print(s.AddColumn(te, 4, "good"));
-                //print(s.AddColumn(te2, 4, "good"));
-                //for (int i = 1; i < 8; i++)
-                //{
-                //    print(s.AdvanceTask(te2, 1, i));
-                //    if (i > 4)
-                //    {
-                //        print(s.AdvanceTask(te2, 2, i));
-                //    }
-                //}
-                //print(s.AdvanceTask(te2, 2, 1));
-                //print(s.AdvanceTask(te2, 3, 1));
-                //print(s.MoveColumnLeft(te, 1));
-                //print(s.MoveColumnLeft(te2, 1));
-                //print(s.MoveColumnRight(te, 2));
-                //print(s.MoveColumnRight(te2, 2));
-                //print(s.RemoveColumn(te, 1));
-                //print(s.RemoveColumn(te2, 1));
-                //print(s.LimitColumnTasks(te, 1, 5));
-                //print(s.LimitColumnTasks(te2, 20, 5));
-                //print(s.LimitColumnTasks(te2, 1, 0));
-                //print(s.LimitColumnTasks(te2, 1, 5));
+                //creation edge cases - all should fail
+                print(s.AddColumn(te3, 4, "col4").toString());
+                print(s.AddTask(te3, "title2", "desc2", new DateTime(2200, 10, 10)));
+                print(s.Login(te3, tp3));
+                print(s.AddColumn(te2, 4, "col4").toString());
+                print(s.AddTask(te2, "title2", "desc2", new DateTime(2200, 10, 10)));
+                print(s.AddColumn(te3, 1, "col4").toString());
+                print(s.AddColumn(te3, 4, "col3").toString());
+                print(s.AddColumn(te3, -6, "col7").toString());
+                print(s.AddColumn(te3, 0, "col8").toString());
+                print(s.AddColumn(te3, 9, "col9").toString());
+                print(s.AddColumn(te3, 4, "").toString());
+                print(s.AddColumn(te3, 4, null).toString());
+                print(s.LimitColumnTasks(te3, 0, 3));
+                for (int i = 2; i < 8; i++) print(s.AddTask(te3, "title"+i, "desc"+i, new DateTime(2200, 06, 22)));
+                print(s.GetBoard(te3).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.Logout(te3));
+
+                //proper change tests - all should work
+                print(s.Login(te3, tp3));
+                print(s.GetBoard(te3).toString());
+                print(s.GetColumn(te3, 0).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.GetColumn(te3, 2).toString());
+                print(s.GetColumn(te3, 3).toString());
+                print(s.MoveColumnLeft(te3, 3));
+                print(s.MoveColumnLeft(te3, 2));
+                print(s.GetBoard(te3).toString());
+                print(s.LimitColumnTasks(te3, 0, 20));
+                for (int i = 3; i <= 20; i++) print(s.AddTask(te3, "title" + i, "desc" + i, new DateTime(2200, 06, 22)));
+                for (int i = 1; i <= 15; i++) print(s.AdvanceTask(te3, 0, i));
+                for (int i = 1; i <= 10; i++) print(s.AdvanceTask(te3, 1, i));
+                for (int i = 1; i <= 15; i++) print(s.AdvanceTask(te3, 2, i));
+                print(s.GetColumn(te3, 0).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.GetColumn(te3, 2).toString());
+                print(s.GetColumn(te3, 3).toString());
+                print(s.MoveColumnLeft(te3, 3));
+                print(s.MoveColumnLeft(te3, 3));
+                print(s.MoveColumnRight(te3, 0));
+                print(s.GetBoard(te3).toString());
+                print(s.GetColumn(te3, 0).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.GetColumn(te3, 2).toString());
+                print(s.GetColumn(te3, 3).toString());
+                print(s.Logout(te3));
+
+                //change edge cases - all should fail
+                print(s.LimitColumnTasks(te3, 1, 2));
+                print(s.MoveColumnLeft(te3, 3));
+                print(s.MoveColumnRight(te3, 1));
+                print(s.AdvanceTask(te3, 1, 18));
+                print(s.Login(te3, tp3));
+                print(s.LimitColumnTasks(te2, 1, 2));
+                print(s.MoveColumnLeft(te, 3));
+                print(s.MoveColumnRight(te2, 1));
+                print(s.AdvanceTask(te, 1, 18));
+
+                print(s.MoveColumnLeft(te3, 7));
+                print(s.MoveColumnRight(te3, 42));
+                print(s.AdvanceTask(te3, 10, 18));
+                print(s.AdvanceTask(te3, 1, 32));
+                print(s.MoveColumnLeft(te3, 0));
+                print(s.MoveColumnRight(te3, 3));
+                print(s.LimitColumnTasks(te3, 0, 1));
+                print(s.LimitColumnTasks(te3, 1, 5));
+                print(s.AdvanceTask(te3, 1, 18));
+                print(s.Logout(te3));
+
+                //proper remove tests - all should work
+                print(s.Login(te3, tp3));
+                print(s.GetBoard(te3).toString());
+                print(s.GetColumn(te3, 0).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.GetColumn(te3, 2).toString());
+                print(s.GetColumn(te3, 3).toString());
+                print(s.LimitColumnTasks(te3, 0, 100));
+                print(s.LimitColumnTasks(te3, 1, 100));
+                print(s.LimitColumnTasks(te3, 2, 100));
+                print(s.LimitColumnTasks(te3, 3, 100));
+                print(s.RemoveColumn(te3, 0));
+                print(s.RemoveColumn(te3, 1));
+                print(s.GetBoard(te3).toString());
+                print(s.GetColumn(te3, 0).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.Logout(te3));
+
+                //remove edge cases - all should fail
+                print(s.RemoveColumn(te3, 1));
+                print(s.Login(te3, tp3));
+                print(s.RemoveColumn(te2, 1));
+                print(s.RemoveColumn(te3, 1));
+                print(s.AddColumn(te3, 2, "2").toString());
+                print(s.AddColumn(te3, 3, "3").toString());
+                for (int i = 1; i <= 20; i++) print(s.AdvanceTask(te3, 1, i));
+                print(s.LimitColumnTasks(te3, 1, 1));
+                print(s.LimitColumnTasks(te3, 3, 1));
+                print(s.RemoveColumn(te3, 2));
+                print(s.Logout(te3));
+
+                // delete all
+                print(s.DeleteData());
+                print(s.Login(te3, tp3));
+                print(s.GetBoard(te3).toString());
+                print(s.GetColumn(te3, 0).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.GetColumn(te3, 2).toString());
+                print(s.GetColumn(te3, 3).toString());
+                print(s.DeleteData());
+                print(s.GetBoard(te3).toString());
+                print(s.GetColumn(te3, 0).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.GetColumn(te3, 2).toString());
+                print(s.GetColumn(te3, 3).toString());
+                print(s.Logout(te3));
+                print(s.Login(te3, tp3));
+                print(s.Login(te2, tp2));
+                print(s.Login(te, tp));
 
             }
             catch (Exception e) { Console.WriteLine(e.Message); }
