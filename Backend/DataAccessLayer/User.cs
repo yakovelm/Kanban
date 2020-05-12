@@ -15,30 +15,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string passwordAtt = "password";
         public const string nicknameAtt = "nickname";
 
-        public string email
-        {
-            get => email; set
-            {
-                log.Warn("email can not be chenged.");
-                throw new Exception("email can not be chenged.");
-            }
-        }
-        public string password
-        {
-            get => email; set
-            {
-                log.Warn("password can not be chenged.");
-                throw new Exception("password can not be chenged.");
-            }
-        }
-        public string nickname
-        {
-            get => email; set
-            {
-                log.Warn("nickname can not be chenged.");
-                throw new Exception("nickname can not be chenged.");
-            }
-        }
+        public string email;
+        public string password;
+        public string nickname;
         public User(string email, string password, string nickname):base(new UserCtrl())
         {
             this.email = email;

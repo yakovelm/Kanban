@@ -20,14 +20,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {tableName} ({Task.EmailAtt} ,{Task.IDAtt}," +
+                    command.CommandText = $"INSERT INTO {tableName} ({User.EmailAtt} ,{User.passwordAtt}," +
                         $"{User.nicknameAtt}) " +
                         $"VALUES (@emailVal,@passwordVal,@nicknameVal);";
 
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", obj.email);
-                    SQLiteParameter passwordParam = new SQLiteParameter(@"IDVal", obj.password);
-                    SQLiteParameter nicknameParam = new SQLiteParameter(@"CnameVal", obj.nickname);
-
+                    SQLiteParameter passwordParam = new SQLiteParameter(@"passwordVal", obj.password);
+                    SQLiteParameter nicknameParam = new SQLiteParameter(@"nicknameVal", obj.nickname);
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(passwordParam);
                     command.Parameters.Add(nicknameParam);

@@ -11,55 +11,37 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const string database_name = "KanbanDB.db";
-        private bool ExistDB;
         private bool Load;
         public DB() 
         {
             Load = false;
-            ExistDB = sqlfilexist();
         }
-        public void ExistDataBase()
+
+        public void DBexist()
         {
-            if(!ExistDB)
+            try
             {
-                log.Warn("Cannot delete non-existent Data.");
-                throw new Exception("Cannot delete non-existent Data.");
-            }
-        }
-        public bool DBexist()
-        {
-            if (ExistDB)
-            {
-                try
+                if (!sqlfilexist())
                 {
                     log.Debug("create SQL file");
                     DataAccessLayer.DB db = new DataAccessLayer.DB(database_name);
-                    return false;
-                }
-                catch (Exception e)
-                {
-                    log.Error("fail to create SQL file: " + e.Message);
-                    throw new Exception(e.Message);
                 }
             }
-            return true;
+            catch (Exception e)
+            {
+                log.Error("fail to create SQL file: " + e.Message);
+                throw new Exception(e.Message);
+            }
+            Load = true;
         }
         private bool sqlfilexist()
         {
             string check = Directory.GetCurrentDirectory() + $"//{database_name}";
             return File.Exists(check);
         }
-        public void LoadData()
+        public bool IsLoad()
         {
-            Load = true;
-        }
-        public void IsLoad()
-        {
-            if (Load)
-            {
-                log.Warn("the Data already loaded.");
-                throw new Exception("the Data already loaded.");
-            }
+            return Load;
         }
     }
 }

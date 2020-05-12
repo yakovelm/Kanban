@@ -41,20 +41,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error.</returns>
         public Response LoadData()
         {
-            try
-            {
-                DataBase.IsLoad();
-                if (DataBase.DBexist())
-                {
-                    Response Ures = US.LoadData();
-                    if (Ures.ErrorOccured) return Ures;
-                    Response Bres = BS.LoadData();
-                    if (Bres.ErrorOccured) return Bres;
-                }
-                DataBase.LoadData();
-                return new Response();
-            }
-            catch (Exception e) { return new Response(e.Message); }
+            DataBase.DBexist();
+            Response Ures = US.LoadData();
+            if (Ures.ErrorOccured) return Ures;
+            Response Bres = BS.LoadData();
+            if (Bres.ErrorOccured) return Bres;
+            return new Response();
         }
 
 
@@ -213,12 +205,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response DeleteData()
         {
-            try { DataBase.ExistDataBase(); }
-            catch (Exception e) { return new Response(e.Message); }
-            Response n = US.DeleteData();
-            if (n.ErrorOccured) { return n; }
-            n= BS.DeleteData();
-            if (n.ErrorOccured) { return n; }
+            if (DataBase.IsLoad())
+            {
+                Response n = US.DeleteData();
+                if (n.ErrorOccured) { return n; }
+                n = BS.DeleteData();
+                if (n.ErrorOccured) { return n; }
+            }
             return new Response();
 
         }

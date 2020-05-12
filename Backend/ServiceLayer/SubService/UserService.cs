@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using UC = IntroSE.Kanban.Backend.BusinessLayer.UserControl;
@@ -11,6 +12,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BusinessLayer.UserControl.UserController uc;
+        private bool load=false;
 
         public UserService() 
         {
@@ -76,6 +78,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             {
                 log.Info("attempting to load user list.");
                 uc.LoadData();
+                load = true;
                 return new Response();
             }
             catch (Exception e) { return new Response(e.Message); }

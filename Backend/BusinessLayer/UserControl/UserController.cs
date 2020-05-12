@@ -29,14 +29,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public User get_active() { return ActiveUser; }
         public void register(string email, string password, string nickname) // register a new user
         {
-            CheckLoad();
-            NullCheck(email, password, nickname);
-            email = email.ToLower();
-            checkEmail(email); 
-            checkUser(email, nickname);
-            checkPassword(password);
-            log.Debug("register values are legal.");
-            save(email, password, nickname);
+            if (Load)
+            {
+                NullCheck(email, password, nickname);
+                email = email.ToLower();
+                checkEmail(email);
+                checkUser(email, nickname);
+                checkPassword(password);
+                log.Debug("register values are legal.");
+                save(email, password, nickname);
+            }
         }
         private void NullCheck(params object[] s) // checks if any of the given parameters are null or empty
         {
@@ -74,57 +76,62 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void login(string email, string password) // login an existing user
         {
-            CheckLoad();
-            if (ActiveUser != null) { // cant log in if a user is already logged in
-                log.Warn("a login was attempted while a user is already logged in.");
-                throw new Exception("user already login.");
-            }
-            NullCheck(email, password);
-            email = email.ToLower();
-            checkEmail(email);
-            foreach (User u in list) // run on user list to fint correct user to login
+            if (Load)
             {
-                if (u.isMatchEmail(email))
+                if (ActiveUser != null)
+                { // cant log in if a user is already logged in
+                    log.Warn("a login was attempted while a user is already logged in.");
+                    throw new Exception("user already login.");
+                }
+                NullCheck(email, password);
+                email = email.ToLower();
+                checkEmail(email);
+                foreach (User u in list) // run on user list to fint correct user to login
                 {
-                    log.Debug("email " + email + " exists in the system.");
-                    if (u.isMatchPassword(password))
+                    if (u.isMatchEmail(email))
                     {
-                        log.Debug("given password matches.");
-                        ActiveUser = u;
-                        log.Info(ActiveUser.getemail() + " has successfully logged in.");
-                    }
-                    else
-                    {
-                        log.Warn(u.getemail() + " tried to login with incorrect password.");
-                        throw new Exception("invaild password.");
+                        log.Debug("email " + email + " exists in the system.");
+                        if (u.isMatchPassword(password))
+                        {
+                            log.Debug("given password matches.");
+                            ActiveUser = u;
+                            log.Info(ActiveUser.getemail() + " has successfully logged in.");
+                        }
+                        else
+                        {
+                            log.Warn(u.getemail() + " tried to login with incorrect password.");
+                            throw new Exception("invaild password.");
+                        }
                     }
                 }
-            }
-            if (ActiveUser == null)
-            {
-                log.Warn("user not yet registered.");
-                throw new Exception(email + "," + password);
+                if (ActiveUser == null)
+                {
+                    log.Warn("user not yet registered.");
+                    throw new Exception(email + "," + password);
+                }
             }
 
         }
         public void logout(string email) // log out active user
         {
-            CheckLoad();
-            if (ActiveUser == null) // if no active user no one can log out
+            if (Load)
             {
-                log.Warn("no user logged in. logout failed.");
-                throw new Exception("no user logged in.");
-            }
-            email = email.ToLower();
-            if (!email.Equals(ActiveUser.getemail()))
-            {
-                log.Warn("a user that is not logged in attempted to log out. logout failed.");
-                throw new Exception("given email is invalid.");
-            }
-            else
-            {
-                log.Debug(ActiveUser.getemail() + " logged out.");
-                ActiveUser = null;
+                if (ActiveUser == null) // if no active user no one can log out
+                {
+                    log.Warn("no user logged in. logout failed.");
+                    throw new Exception("no user logged in.");
+                }
+                email = email.ToLower();
+                if (!email.Equals(ActiveUser.getemail()))
+                {
+                    log.Warn("a user that is not logged in attempted to log out. logout failed.");
+                    throw new Exception("given email is invalid.");
+                }
+                else
+                {
+                    log.Debug(ActiveUser.getemail() + " logged out.");
+                    ActiveUser = null;
+                }
             }
         }
         private void checkUser(string email, string nickname) // checks that an email is not taken upon registration
@@ -152,6 +159,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                         u.FromDalObject(run);
                         list.Add(u);
                     }
+                    Load = true;
                 }
                 catch (Exception e)
                 {
@@ -167,22 +175,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void DeleteData()
         {
-            CheckLoad();
-            if (ActiveUser != null)
+            if (Load)
             {
-                foreach (User u in list)
+                if (ActiveUser != null)
                 {
-                    u.DeleteData();
+                    foreach (User u in list)
+                    {
+                        u.DeleteData();
+                    }
+                    list = new List<User>();
                 }
-                list = new List<User>();
-            }
-        }
-        private void CheckLoad()
-        {
-            if (!Load)
-            {
-                log.Error("try to do something before Load the data.");
-                throw new Exception("try to do something before Load the data.");
             }
         }
         private void checkEmail(string s) // check that email adress matches standard email format
