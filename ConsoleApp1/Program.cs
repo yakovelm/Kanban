@@ -162,24 +162,24 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.Logout(te3));
                 Console.WriteLine("___________________________________________________________");
 
-                // delete all
-                print(s.DeleteData());
-                print(s.Login(te3, tp3));
-                print(s.GetBoard(te3).toString());
-                print(s.GetColumn(te3, 0).toString());
-                print(s.GetColumn(te3, 1).toString());
-                print(s.GetColumn(te3, 2).toString());
-                print(s.GetColumn(te3, 3).toString());
-                print(s.DeleteData());
-                print(s.GetBoard(te3).toString());
-                print(s.GetColumn(te3, 0).toString());
-                print(s.GetColumn(te3, 1).toString());
-                print(s.GetColumn(te3, 2).toString());
-                print(s.GetColumn(te3, 3).toString());
-                print(s.Logout(te3));
-                print(s.Login(te3, tp3));
-                print(s.Login(te2, tp2));
-                print(s.Login(te, tp));
+                //// delete all
+                //print(s.DeleteData());
+                //print(s.Login(te3, tp3));
+                //print(s.GetBoard(te3).toString());
+                //print(s.GetColumn(te3, 0).toString());
+                //print(s.GetColumn(te3, 1).toString());
+                //print(s.GetColumn(te3, 2).toString());
+                //print(s.GetColumn(te3, 3).toString());
+                //print(s.DeleteData());
+                //print(s.GetBoard(te3).toString());
+                //print(s.GetColumn(te3, 0).toString());
+                //print(s.GetColumn(te3, 1).toString());
+                //print(s.GetColumn(te3, 2).toString());
+                //print(s.GetColumn(te3, 3).toString());
+                //print(s.Logout(te3));
+                //print(s.Login(te3, tp3));
+                //print(s.Login(te2, tp2));
+                //print(s.Login(te, tp));
 
             }
             catch (Exception e) { Console.WriteLine(e.Message); }

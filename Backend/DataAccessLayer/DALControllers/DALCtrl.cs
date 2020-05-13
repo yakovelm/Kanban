@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
+using DAL= IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
@@ -13,7 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected readonly string connectionString;
         protected readonly string tableName;
-        protected readonly string DB= "KanbanDB.db";
+        protected readonly string DB= DAL.DB.database_name;
 
         public DALCtrl(string tableName)
         {
@@ -41,7 +42,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 }
                 catch (Exception e)
                 {
-                    /////////////////////////////////////////////////////////////////////////
+                    log.Error("fail to delete from " + tableName);
+                    throw new Exception("fail to delete from " + tableName);
                 }
                 finally
                 {
@@ -54,7 +56,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         public bool Update(string Filter, string attributeName, string attributeValue)
         {
-            log.Debug("in update.");
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -71,7 +72,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 }
                 catch
                 {
-                    ///////////////////////////////////////////////////////////////////////////
+                    log.Error("fail to Update from " + tableName);
+                    throw new Exception("fail to Update from " + tableName);
                 }
                 finally
                 {
@@ -85,7 +87,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         public bool Update(string Filter, string attributeName, long attributeValue)
         {
-            //log.Debug("update ord with: " +Filter+" "+attributeName+" "+attributeValue);
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -94,7 +95,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     Connection = connection,
                     CommandText = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} {Filter}"
                 };
-                log.Debug(command.CommandText);
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
@@ -102,7 +102,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     res=command.ExecuteNonQuery();
                 }
                 catch (Exception e){
-                    /////////////////////////////////////////////////////////////////////////
+                    log.Error("fail to Update from " + tableName);
+                    throw new Exception("fail to Update from " + tableName);
                 }
                 finally
                 {
@@ -122,7 +123,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 command.CommandText = $"SELECT * FROM {tableName} {Filter}";
-                log.Debug(command.CommandText);
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -135,7 +135,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
                     }
                 }
-                catch (Exception e){/////////////////////////////////////////////////////////
+                catch (Exception e){
+                    log.Error("fail to Select from " + tableName);
+                    throw new Exception("fail to Select from " + tableName);
                 }
                 finally
                 {
@@ -149,7 +151,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 }
 
             }
-            log.Debug("results len: " + results.Count());
             return results;
         }
         protected abstract T ConvertReaderToObject(SQLiteDataReader reader);

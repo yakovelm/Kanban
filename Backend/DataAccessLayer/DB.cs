@@ -11,25 +11,26 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     class DB
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private const string FirstTableName = "users";
-        private const string SecondTableName = "columns";
-        private const string ThirdTableName = "tasks";
-        private const string UserDBName1 = "email";
-        private const string UserDBName2 = "password";
-        private const string UserDBName3 = "nickname";
-        private const string TaskDBName1 = "email";
-        private const string TaskDBName2 = "TID";
-        private const string TaskDBName3 = "Cname";
-        private const string TaskDBName4 = "title";
-        private const string TaskDBName5 = "description";
-        private const string TaskDBName6 = "dueDate";
-        private const string TaskDBName7 = "creationDate";
-        private const string ColumnDBName1 = "email";
-        private const string ColumnDBName2 = "Cname";
-        private const string ColumnDBName3 = "Ord";
-        private const string ColumnDBName4 = "lim";
+        public const string FirstTableName = "users";
+        public const string SecondTableName = "columns";
+        public const string ThirdTableName = "tasks";
+        public const string UserDBName1 = "email";
+        public const string UserDBName2 = "password";
+        public const string UserDBName3 = "nickname";
+        public const string TaskDBName1 = "email";
+        public const string TaskDBName2 = "TID";
+        public const string TaskDBName3 = "Cname";
+        public const string TaskDBName4 = "title";
+        public const string TaskDBName5 = "description";
+        public const string TaskDBName6 = "dueDate";
+        public const string TaskDBName7 = "creationDate";
+        public const string ColumnDBName1 = "email";
+        public const string ColumnDBName2 = "Cname";
+        public const string ColumnDBName3 = "Ord";
+        public const string ColumnDBName4 = "lim";
+        public const string database_name ="KanbanDB.db";
 
-        public DB(string database_name) 
+        public DB() 
         {
             SQLiteConnection connection;
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), database_name));

@@ -4,12 +4,13 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
     internal class ColumnCtrl : DALCtrl<Column>
     {
-        private const string ColumnTableName = "columns";
+        private const string ColumnTableName = DAL.DB.SecondTableName;
 
         public ColumnCtrl() : base(ColumnTableName)
         {

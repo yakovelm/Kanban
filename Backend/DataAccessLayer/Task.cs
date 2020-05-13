@@ -11,12 +11,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     class Task : DalObject<Task>
     {
 
-        public const string IDAtt = "TID";
-        public const string ColumnAtt = "Cname";
-        public const string TitleAtt = "title";
-        public const string DescAtt = "description";
-        public const string DueAtt = "dueDate";
-        public const string createAtt = "creationDate";
+        public const string IDAtt = DB.TaskDBName2;
+        public const string ColumnAtt = DB.TaskDBName3;
+        public const string TitleAtt = DB.TaskDBName4;
+        public const string DescAtt = DB.TaskDBName5;
+        public const string DueAtt = DB.TaskDBName6;
+        public const string createAtt = DB.TaskDBName7;
 
         public long ID { get; }
         public string Cname { get; set; }

@@ -4,12 +4,13 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
      class TaskCtrl : DALCtrl<Task>
     {
-        private const string TaskTableName = "tasks";
+        private const string TaskTableName = DAL.DB.ThirdTableName;
         public TaskCtrl(): base(TaskTableName)
         {
 

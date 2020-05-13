@@ -11,9 +11,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Column : DalObject<Column>
     {
-        public const string NameAtt = "Cname";
-        public const string OrdAtt = "Ord";
-        public const string LimitAtt = "lim";
+        public const string NameAtt = DB.ColumnDBName2;
+        public const string OrdAtt = DB.ColumnDBName3;
+        public const string LimitAtt = DB.ColumnDBName4;
 
         private List<Task> tasks;
 

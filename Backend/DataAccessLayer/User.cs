@@ -11,9 +11,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class User : DalObject<User>
     {
-        public const string emailAtt = "email";
-        public const string passwordAtt = "password";
-        public const string nicknameAtt = "nickname";
+        public const string passwordAtt = DB.UserDBName2;
+        public const string nicknameAtt = DB.UserDBName3;
 
         public string email;
         public string password;
@@ -27,7 +26,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public User(): base(new UserCtrl()) { }
         protected override string MakeFilter()
         {
-            return $"WHERE {emailAtt}='{email}'";
+            return $"WHERE {EmailAtt}='{email}'";
         }
         public void Insert()
         {

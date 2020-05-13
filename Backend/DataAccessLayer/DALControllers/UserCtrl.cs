@@ -4,12 +4,13 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL= IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
     class UserCtrl : DALCtrl<User>
     {
-        private const string UserTableName = "users";
+        private const string UserTableName = DAL.DB.FirstTableName;
         public UserCtrl(): base (UserTableName) { }
         public override bool Insert(User obj)
         {
