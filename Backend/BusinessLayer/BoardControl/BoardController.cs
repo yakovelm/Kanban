@@ -153,9 +153,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 log.Warn("user login to the system of the Board, so you cant Delete Data before you logout from the system.");
                 throw new Exception("user login to the system of the Board, so you cant Delete Data before you logout from the system.");
             }
-            Board temp = new Board();
-            temp.DeleteAllData();
-            BC = new Dictionary<string, Board>();
+            if (BC.Count() != 0)
+            {
+                Board temp = new Board();
+                temp.DeleteAllData();
+                BC = new Dictionary<string, Board>();
+            }
             log.Debug("All Boards deleted.");
         }
         private void IsActive()

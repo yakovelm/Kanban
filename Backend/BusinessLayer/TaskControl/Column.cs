@@ -245,5 +245,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             temp1.DeleteAllData();
             log.Info("delete all columns");
         }
+        public void delete()
+        {
+            DAL.Column c = ToDalObject();
+            c.Delete();
+        }
     }
 }

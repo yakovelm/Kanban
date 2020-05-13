@@ -241,9 +241,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             if (columnOrdinal == 0){columns[1].addTasks(c);
             }
             else {  columns[columnOrdinal - 1].addTasks(c); }
+            columns[columnOrdinal].delete();
             MoveColumns(columnOrdinal);
-            setOrdColumns();
             size--;
+            setOrdColumns();
+
             log.Debug(email + " removed column number #" + columnOrdinal + " succses");
         }
 
@@ -308,6 +310,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             for(int i=num; i<size-1; i++)
             {
                 columns[i] = columns[i+1];
+            }
+            if (columns[size - 1] != null)
+            {
+                columns.Remove(columns[size - 1]);
             }
         }
         private void ColumnIsNotFirstColumn(int num)

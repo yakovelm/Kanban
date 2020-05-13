@@ -160,6 +160,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.LimitColumnTasks(te3, 3, 1));
                 print(s.RemoveColumn(te3, 2));
                 print(s.Logout(te3));
+                Console.WriteLine("___________________________________________________________");
 
                 // delete all
                 print(s.DeleteData());

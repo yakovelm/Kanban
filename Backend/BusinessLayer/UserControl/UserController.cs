@@ -177,11 +177,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             if (Load)
             {
-                if (ActiveUser != null)
+                if (ActiveUser == null)
                 {
-                    foreach (User u in list)
+                    if (list.Count() != 0)
                     {
-                        u.DeleteData();
+                        list[0].DeleteData();
                     }
                     list = new List<User>();
                 }
