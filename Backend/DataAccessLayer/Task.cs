@@ -36,10 +36,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.Create = Cre;
         }
 
-        protected override string MakeFilter()
+        protected override List<Tuple<string, string>> MakeFilter()
         {
-            return $"WHERE {EmailAtt}='{Email}' AND {IDAtt}={ID}";
-              
+            List<Tuple<string, string>> output = new List<Tuple<string, string>>();
+            output.Add(Tuple.Create(EmailAtt, "'" + Email + "'"));
+            output.Add(Tuple.Create(IDAtt, ""+ID ));
+            return output;
         }
 
         public Task() : base(new TaskCtrl())
@@ -48,7 +50,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public List<Task> GetAllTasks(string email,string Cname)
         {
-            List<Task> c= controller.Select($"WHERE {EmailAtt}='{email}' AND {ColumnAtt}='{Cname}'");
+            List<Tuple<string, string>> output = new List<Tuple<string, string>>();
+            output.Add(Tuple.Create(EmailAtt, "'" + Email + "'"));
+            output.Add(Tuple.Create(ColumnAtt, "'" + Cname+"'"));
+            List<Task> c= controller.Select(output);
             log.Debug(c.Count());
             return c;
         }
@@ -113,7 +118,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
         public void DeleteAllData()
         {
-            if (!controller.Delete(""))
+            if (!controller.Delete(new List<Tuple<string, string>>()))
             {
                 log.Error("fail to add new column for email " + Email);
                 throw new Exception("fail to add new column for email " + Email);

@@ -7,7 +7,8 @@ using System.IO;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
+using  DALC= IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
@@ -63,8 +64,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             var hasLowerChar = new Regex(@"[a-z]+");
             if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | password.Length < MinLength | password.Length > MaxLength | !hasLowerChar.IsMatch(password))
             {
-                log.Warn("password too weak. must include at least one uppercase letter, one lowercase letter and a number and be between 4 and 20 characters.");
-                throw new Exception("must include at least one uppercase letter, one lowercase letter and a number and be between 4 and 20 characters.");
+                log.Warn("password too weak. must include at least one uppercase letter, one lowercase letter and a number and be between 5 and 25 characters.");
+                throw new Exception("must include at least one uppercase letter, one lowercase letter and a number and be between 5 and 25 characters.");
             }
         }
         private void save(string email, string password, string nickname) // saves newly registered user
@@ -84,7 +85,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                     throw new Exception("user already login.");
                 }
                 NullCheck(email, password);
-                email = email.ToLower();
+                //email = email.ToLower();
                 checkEmail(email);
                 foreach (User u in list) // run on user list to fint correct user to login
                 {
@@ -152,8 +153,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 try
                 {
                     list = new List<User>();
-                    DataAccessLayer.DALControllers.UserCtrl DUC = new UserCtrl();
-                    foreach (DataAccessLayer.User run in DUC.Select(""))
+                   DALC.UserCtrl DUC = new DALC.UserCtrl();
+                    foreach (DAL.User run in DUC.Select(new List<Tuple<string, string>>()))
                     {
                         User u = new User();
                         u.FromDalObject(run);

@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             this.controller = controller;
         }
-        protected abstract string MakeFilter();
+        protected abstract List<Tuple<string,string>> MakeFilter();
 
 
         //public abstract string toJson();

@@ -24,9 +24,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.nickname = nickname;
         }
         public User(): base(new UserCtrl()) { }
-        protected override string MakeFilter()
+        protected override List<Tuple<string, string>> MakeFilter()
         {
-            return $"WHERE {EmailAtt}='{email}'";
+            List<Tuple<string, string>> output = new List<Tuple<string, string>>();
+            output.Add(Tuple.Create(EmailAtt, "'" + Email + "'"));
+            return output;
         }
         public void Insert()
         {
@@ -47,7 +49,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
         public void DeleteAllData()
         {
-            if (!controller.Delete(""))
+            if (!controller.Delete(new List<Tuple<string, string>>()))
             {
                 log.Error("fail to detele alldata");
                 throw new Exception("fail to add new column for email " + Email);

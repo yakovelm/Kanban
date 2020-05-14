@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         public ColumnCtrl() : base(ColumnTableName)
         {
         }
-        public List<Column> SelectAllColumn(string Filter)
+        public List<Column> SelectAllColumn(List<Tuple<string,string>> Filter)
         {
             List<Column> result = Select(Filter).Cast<Column>().ToList();
             return result;

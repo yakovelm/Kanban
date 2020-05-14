@@ -30,9 +30,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             tasks = new List<Task>();
         }
 
-        protected override string MakeFilter()
+        protected override List<Tuple<string,string>> MakeFilter()
         {
-            return $"WHERE {EmailAtt}='{Email}' AND {NameAtt}='{Cname}'";
+            List<Tuple<string, string>> output = new List<Tuple<string, string>>();
+            output.Add(Tuple.Create(EmailAtt, "'" + Email + "'"));
+            output.Add(Tuple.Create(NameAtt, "'" + Cname + "'"));
+            return output;
         }
 
         public Column() : base(new ColumnCtrl())
@@ -41,7 +44,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public List<Column> GetAllColumns(string email)
         {
-            List<Column> output = controller.Select($"WHERE {EmailAtt}='{email}'");
+            List<Tuple<string, string>> list = new List<Tuple<string, string>>();
+            list.Add(Tuple.Create(EmailAtt, "'" + Email + "'"));
+            List<Column> output = controller.Select(list);
             foreach(Column c in output)
             {
                 c.LoadTasks();
@@ -83,10 +88,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
         public void UpdateName(string name)
         {
-            log.Debug("in update name");
-            string filter = MakeFilter();
-            log.Debug(filter);
-            if (!controller.Update(filter, NameAtt, name))
+            if (!controller.Update(MakeFilter(), NameAtt, name))
             {
                 log.Error("fail to update the name for column " + Cname + " on email " + Email);
                 throw new Exception("fail to update the name for column " + Cname + " on email " + Email);
@@ -112,7 +114,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
         public void DeleteAllData()
         {
-            if (!controller.Delete(""))
+            if (!controller.Delete(new List<Tuple<string, string>>()))
             {
                 log.Error("fail to add new column for email " + Email);
                 throw new Exception("fail to add new column for email " + Email);

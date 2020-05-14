@@ -24,20 +24,34 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         }
 
 
-        public bool Delete(string Filter)
+        public bool Delete(List<Tuple<string,string>> Filter)
         {
             int res = -1;
 
             using (var connection = new SQLiteConnection(connectionString))
             {
+                string s = $"DELETE FROM {tableName} ";
+                if (Filter.Count() > 0)
+                {
+                    s += "WHERE ";
+                    foreach (Tuple<string, string> t in Filter)
+                    {
+                        s += $"{t.Item1}=@{t.Item1} AND ";
+                    }
+                    s = s.Substring(0, s.Length - 4);
+                }
                 var command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"DELETE FROM {tableName} {Filter}"
+                    CommandText = s
                 };
                 try
                 {
                     connection.Open();
+                    foreach (Tuple<string, string> t in Filter)
+                    {
+                        command.Parameters.Add(new SQLiteParameter(t.Item1,t.Item2));
+                    }
                     res = command.ExecuteNonQuery();
                 }
                 catch (Exception e)
@@ -54,20 +68,35 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             return res > 0;
         }
 
-        public bool Update(string Filter, string attributeName, string attributeValue)
+        public bool Update(List<Tuple<string, string>> Filter, string attributeName, string attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {
+                string s = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} ";
+                if (Filter.Count() > 0)
+                {
+                    s += "WHERE ";
+                    foreach (Tuple<string, string> t in Filter)
+                    {
+                        s += $"{t.Item1}=@{t.Item1} AND ";
+                    }
+                    s = s.Substring(0, s.Length - 4);
+                }
+
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} {Filter}"
+                    CommandText = s
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
                     connection.Open();
+                    foreach (Tuple<string, string> t in Filter)
+                    {
+                        command.Parameters.Add(new SQLiteParameter(t.Item1, t.Item2));
+                    }
                     res = command.ExecuteNonQuery();
                 }
                 catch
@@ -85,21 +114,35 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             return res > 0;
         }
 
-        public bool Update(string Filter, string attributeName, long attributeValue)
+        public bool Update(List<Tuple<string, string>> Filter, string attributeName, long attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {
+                string s = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} ";
+                if (Filter.Count() > 0)
+                {
+                    s += "WHERE ";
+                    foreach (Tuple<string, string> t in Filter)
+                    {
+                        s += $"{t.Item1}=@{t.Item1} AND ";
+                    }
+                    s = s.Substring(0, s.Length - 4);
+                }
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"UPDATE {tableName} SET [{attributeName}]=@{attributeName} {Filter}"
+                    CommandText = s
                 };
                 try
                 {
                     command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
                     connection.Open();
-                    res=command.ExecuteNonQuery();
+                    foreach (Tuple<string, string> t in Filter)
+                    {
+                        command.Parameters.Add(new SQLiteParameter(t.Item1, t.Item2));
+                    }
+                    res =command.ExecuteNonQuery();
                 }
                 catch (Exception e){
                     log.Error("fail to Update from " + tableName);
@@ -116,17 +159,31 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             return res > 0;
         }
 
-        public List<T> Select(string Filter)
+        public List<T> Select(List<Tuple<string, string>> Filter)
         {
             List<T> results = new List<T>();
             using (var connection = new SQLiteConnection(connectionString))
             {
+                string s = $"SELECT * FROM {tableName} " ;
+                if (Filter.Count() > 0)
+                {
+                    s += "WHERE ";
+                    foreach (Tuple<string, string> t in Filter)
+                    {
+                        s += $"{t.Item1}=@{t.Item1} AND ";
+                    }
+                    s = s.Substring(0, s.Length - 4);
+                }
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"SELECT * FROM {tableName} {Filter}";
+                command.CommandText = s;
                 SQLiteDataReader dataReader = null;
                 try
                 {
                     connection.Open();
+                    foreach (Tuple<string, string> t in Filter)
+                    {
+                        command.Parameters.Add(new SQLiteParameter(t.Item1, t.Item2));
+                    }
                     dataReader = command.ExecuteReader();
 
                     while (dataReader.Read())
