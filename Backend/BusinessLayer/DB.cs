@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
@@ -23,7 +24,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 if (!sqlfilexist())
                 {
                     log.Debug("create SQL file");
-                    DataAccessLayer.DB db = new DataAccessLayer.DB();
+                    DAL.DB db = new DAL.DB();
                 }
             }
             catch (Exception e)
@@ -35,7 +36,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
         private bool sqlfilexist()
         {
-            string check =Path.Combine( Directory.GetCurrentDirectory(),DataAccessLayer.DB.database_name);
+            string check =Path.Combine( Directory.GetCurrentDirectory(),DAL.DB.database_name);
             return File.Exists(check);
         }
         public bool IsLoad()

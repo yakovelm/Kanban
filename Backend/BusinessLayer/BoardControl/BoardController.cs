@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
+using DC = IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 {
@@ -26,7 +28,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         public void LoadData() // load board dictionary (boards keyd by email) of all saved boards
         {
             checkLoad2();
-            DataAccessLayer.DALControllers.BoardCtrl DBC = new DataAccessLayer.DALControllers.BoardCtrl();
+            DC.BoardCtrl DBC = new DC.BoardCtrl();
             List<string> temp = DBC.LoadData();
             foreach(string b in temp)
             {

@@ -7,7 +7,8 @@ using System.IO;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
+using DC=IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
@@ -152,8 +153,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 try
                 {
                     list = new List<User>();
-                    DataAccessLayer.DALControllers.UserCtrl DUC = new UserCtrl();
-                    foreach (DataAccessLayer.User run in DUC.Select(""))
+                    DC.UserCtrl DUC = new DC.UserCtrl();
+                    foreach (DAL.User run in DUC.Select(""))
                     {
                         User u = new User();
                         u.FromDalObject(run);
