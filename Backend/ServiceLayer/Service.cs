@@ -33,6 +33,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             US = new SS.UserService();
             BS = new SS.BoardService();
             DataBase = new DB();
+            LoadData();
         }
 
         /// <summary>        

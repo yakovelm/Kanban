@@ -301,8 +301,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             TC.Column temp = columns[num1];
             columns[num1] = columns[num2];
             columns[num2] = temp;
-            columns[num1].setOrd(num2);
-            columns[num2].setOrd(num1);
+            columns[num1].setOrd(num1);
+            columns[num2].setOrd(num2);
             log.Debug("the columns #" + num1 + " #" + num2 + " chenge place.");
         }
         private void MoveColumns(int num)
