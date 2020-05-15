@@ -39,7 +39,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Warn("Title too long");
                 throw new Exception("Title too long.");
             }
-            if (desc != null && desc.Length > Dmax)
+            if (desc!=null && desc.Length > Dmax)
             {
                 log.Warn("Description too long");
                 throw new Exception("Description too long.");

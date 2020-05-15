@@ -34,9 +34,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
                 //proper login tests - all should work
                 //print(s.LoadData());
-                print(s.Register(te, tp, tn));
-                print(s.Login(te, tp));
-                print(s.Logout(te));
+                print(s.Register(te3, tp3, tn3));
+                print(s.Login(te3, tp3));
+                //print(s.Logout(te));
 
                 //login edge cases - all should fail
                 //print(s.LoadData());
@@ -50,15 +50,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //print(s.LoadData());
 
                 //proper creation tests - all should work
-                print(s.Register(te3, tp3, tn3));
-                print(s.Login(te3, tp3));
+                //print(s.Register(te3, tp3, tn3));
+                //print(s.Login(te3, tp3));
                 print(s.GetBoard(te3).toString());
                 print(s.GetColumn(te3, 0).toString());
-                print(s.GetColumn(te3, 1).toString());
-                print(s.GetColumn(te3, 2).toString());      
-                print(s.AddColumn(te3, 3, "col3").toString());
-                print(s.GetColumn(te3, 3).toString());
-                print(s.AddTask(te3, "title1", "desc1", new DateTime(2200, 10, 10)));
+                //print(s.GetColumn(te3, 1).toString());
+                //print(s.GetColumn(te3, 2).toString());      
+                //print(s.AddColumn(te3, 3, "col3").toString());
+                //print(s.GetColumn(te3, 3).toString());
+                print(s.AddTask(te3, "title1", null, new DateTime(2200, 10, 10)));
                 print(s.GetColumn(te3, 0).toString());
                 print(s.Logout(te3));
 
