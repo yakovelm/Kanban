@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
     class User : IPersistentObject<DAL.User>
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private int UID;
         private String email;
         private String password;
         private String nickname;

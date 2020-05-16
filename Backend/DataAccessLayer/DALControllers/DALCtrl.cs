@@ -30,6 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
             using (var connection = new SQLiteConnection(connectionString))
             {
+                bool ex = false;
                 var command = new SQLiteCommand
                 {
                     Connection = connection,
@@ -43,6 +44,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 catch (Exception e)
                 {
                     log.Error("fail to delete from " + tableName);
+                    ex = true;
                     throw new Exception("fail to delete from " + tableName);
                 }
                 finally
@@ -56,6 +58,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         public bool Update(string Filter, string attributeName, string attributeValue)
         {
+            bool ex = false;
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -73,12 +76,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 catch
                 {
                     log.Error("fail to Update from " + tableName);
-                    throw new Exception("fail to Update from " + tableName);
+                    ex = true;
+                    
                 }
                 finally
                 {
                     command.Dispose();
                     connection.Close();
+                    if(ex) throw new Exception("fail to Update from " + tableName);
                 }
 
             }
@@ -87,6 +92,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         public bool Update(string Filter, string attributeName, long attributeValue)
         {
+            bool ex = false;
             int res = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -103,13 +109,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 }
                 catch (Exception e){
                     log.Error("fail to Update from " + tableName);
-                    throw new Exception("fail to Update from " + tableName);
+                    ex = true;
+                    
                 }
                 finally
                 {
                     command.Dispose();
                     connection.Close();
-
+                    if(ex) throw new Exception("fail to Update from " + tableName);
                 }
 
             }
@@ -118,6 +125,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         public List<T> Select(string Filter)
         {
+            bool ex = false;
             List<T> results = new List<T>();
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -128,16 +136,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 {
                     connection.Open();
                     dataReader = command.ExecuteReader();
-
                     while (dataReader.Read())
                     {
                         results.Add(ConvertReaderToObject(dataReader));
-
                     }
                 }
-                catch (Exception e){
+                catch (Exception e)
+                {
                     log.Error("fail to Select from " + tableName);
-                    throw new Exception("fail to Select from " + tableName);
+                    ex = true;
                 }
                 finally
                 {
@@ -148,6 +155,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
                     command.Dispose();
                     connection.Close();
+                    if(ex) throw new Exception("fail to Select from " + tableName);
                 }
 
             }

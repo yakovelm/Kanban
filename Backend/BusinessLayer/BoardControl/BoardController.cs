@@ -34,6 +34,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             {
                 BC.Add(b, new Board(b));
             }
+            log.Debug("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             Load = true;
             log.Debug("board list has been loaded.");
         }

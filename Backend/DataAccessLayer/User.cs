@@ -14,6 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string passwordAtt = DB.UserDBName2;
         public const string nicknameAtt = DB.UserDBName3;
 
+        public int UID;
         public string email;
         public string password;
         public string nickname;

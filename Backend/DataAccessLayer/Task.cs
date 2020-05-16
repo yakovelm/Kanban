@@ -46,9 +46,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
         }
 
-        public List<Task> GetAllTasks(string email,string Cname)
+        public List<Task> GetAllTasks(string Cname)
         {
-            List<Task> c= controller.Select($"WHERE {EmailAtt}='{email}' AND {ColumnAtt}='{Cname}'");
+            List<Task> c= controller.Select($"WHERE {EmailAtt}='{this.Email}' AND {ColumnAtt}='{Cname}'");
             log.Debug(c.Count());
             return c;
         }

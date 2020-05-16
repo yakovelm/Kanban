@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public List<Column> GetAllColumns(string email)
         {
             List<Column> output = controller.Select($"WHERE {EmailAtt}='{email}'");
-            foreach(Column c in output)
+            foreach (Column c in output)
             {
                 c.LoadTasks();
             }
@@ -53,7 +53,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void LoadTasks()
         {
             Task temp = new Task();
-            tasks = temp.GetAllTasks(Email, Cname);
+            tasks = temp.GetAllTasks(Cname);
         }
         public Column load()
         {
