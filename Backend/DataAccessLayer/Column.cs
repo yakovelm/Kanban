@@ -45,6 +45,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             foreach (Column c in output)
             {
                 c.LoadTasks();
+                log.Debug("loaded tasks for column: "+c.Cname+" "+c.getTasks().Count());
             }
             log.Debug("columns loaded for " + email + " with size: " + output.Count());
             return output;
@@ -53,7 +54,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void LoadTasks()
         {
             Task temp = new Task();
-            tasks = temp.GetAllTasks(Cname);
+            tasks = temp.GetAllTasks(Email,Cname);
         }
         public Column load()
         {

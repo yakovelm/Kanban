@@ -187,8 +187,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 name = DalObj.Cname;
                 ord = (int)DalObj.Ord;
                 limit = (int)DalObj.Limit;
-                log.Debug("post base values");
-                //DalObj.LoadTasks();
+                log.Debug(email+" "+name+" "+ord+" "+limit);
+                DalObj.LoadTasks();
                 log.Debug(DalObj.getTasks().Count());
                 foreach (DAL.Task t in DalObj.getTasks()) // convert each task in column individually
                 {
@@ -200,6 +200,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                     log.Debug(tasks.Count());
                 }
                 size = tasks.Count();
+                log.Debug("column: " + getName() + " size: " + getSize());
             }
             catch (Exception e)
             {

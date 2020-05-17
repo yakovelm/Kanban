@@ -34,8 +34,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
                 //proper login tests - all should work
                 //print(s.LoadData());
-                print(s.Register(te3, tp3, tn3));
+                //print(s.Register(te3, tp3, tn3));
                 print(s.Login(te3, tp3));
+                print(s.GetBoard(te3).toString());
+                print(s.AddColumn(te3, 2, "c85ol3").toString());
+
+                print(s.GetBoard(te3).toString());
+                print(s.GetColumn(te3, 0).toString());
+                print(s.GetColumn(te3, 1).toString());
+                print(s.GetColumn(te3, 2).toString());
+                print(s.GetColumn(te3, 3).toString());
+                print(s.GetColumn(te3, 4).toString());
                 //print(s.Logout(te));
 
                 //login edge cases - all should fail
@@ -52,15 +61,28 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //proper creation tests - all should work
                 //print(s.Register(te3, tp3, tn3));
                 //print(s.Login(te3, tp3));
-                print(s.GetBoard(te3).toString());
-                print(s.GetColumn(te3, 0).toString());
+                //print(s.GetBoard(te3).toString());
+                //for (int i = 1; i < 8; i++) print(s.AddTask(te3, "title" + i, "desc" + i, new DateTime(2200, 06, 22)));
+                //print(s.AdvanceTask(te3, 0, 2));
+                //print(s.AdvanceTask(te3, 0, 3));
+                //print(s.AdvanceTask(te3, 0, 6));
+                //print(s.UpdateTaskDescription(te3, 1, 2, "this is desc 2"));
+                //print(s.UpdateTaskDescription(te3, 0, 4, "this is desc 4"));
+                //print(s.UpdateTaskDescription(te3, 1, 2, "this is desc 2-2"));
+
+                //print(s.UpdateTaskTitle(te3, 1, 2, "title 2"));
+                //print(s.UpdateTaskTitle(te3, 0, 5, "title 5"));
+
+                //print(s.UpdateTaskDueDate(te3, 1, 2, new DateTime(2100,06,22)));
+
+                //print(s.GetColumn(te3, 0).toString());
                 //print(s.GetColumn(te3, 1).toString());
                 //print(s.GetColumn(te3, 2).toString());      
                 //print(s.AddColumn(te3, 3, "col3").toString());
                 //print(s.GetColumn(te3, 3).toString());
-                print(s.AddTask(te3, "title1", null, new DateTime(2200, 10, 10)));
-                print(s.GetColumn(te3, 0).toString());
-                print(s.Logout(te3));
+                //print(s.AddTask(te3, "title1", null, new DateTime(2200, 10, 10)));
+                //print(s.GetColumn(te3, 0).toString());
+                //print(s.Logout(te3));
 
                 //creation edge cases - all should fail
                 //print(s.AddColumn(te3, 4, "col4").toString());

@@ -46,7 +46,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             UpdateTheIdTask();
             log.Debug("task id's updated");
             UpdateTheSize();
-            log.Debug("LoadData Board of email: " + email+" seccess");
+            log.Debug("LoadData Board of email: " + email+" seccess. IDTask is: "+IDtask);
         }
         private void UpdateTheIdTask()
         {
@@ -54,6 +54,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             {
                 IDtask += c.getSize();
             }
+            IDtask++;
             if (IDtask == 0) { IDtask = 1; }
         }
         private void UpdateTheSize()
@@ -191,7 +192,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             if (taskID > this.IDtask | taskID < 1)
             {
-                log.Warn(email + " has entered an invalid task ID.");
+                log.Warn(email + " has entered an invalid task ID. max ID is: "+ IDtask);
                 throw new Exception("you entered an invalid ID.");
             }
         }

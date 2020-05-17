@@ -46,9 +46,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
         }
 
-        public List<Task> GetAllTasks(string Cname)
+        public List<Task> GetAllTasks(string email,string Cname)
         {
-            List<Task> c= controller.Select($"WHERE {EmailAtt}='{this.Email}' AND {ColumnAtt}='{Cname}'");
+            List<Task> c= controller.Select($"WHERE {EmailAtt}='{email}' AND {ColumnAtt}='{Cname}'");
             log.Debug(c.Count());
             return c;
         }
@@ -65,41 +65,40 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             if (!controller.Update(MakeFilter(), TitleAtt, t))
             {
-                log.Error("fail to updata the limit for column " + Cname + " on email " + Email);
-                throw new Exception("fail to updata the limit for column " + Cname + " on email " + Email);
+                log.Error("fail to updata the limit for task " + Cname + " on email " + Email);
+                throw new Exception("fail to updata the limit for task " + Cname + " on email " + Email);
             }
         }
         public void UpdateDesc(string d)
         {
             if (!controller.Update(MakeFilter(), DescAtt, d))
             {
-                log.Error("fail to updata the ordinal for column " + Cname + " on email " + Email);
-                throw new Exception("fail to updata the ordinal for column " + Cname + " on email " + Email);
+                log.Error("fail to updata the ordinal for task " + Cname + " on email " + Email);
+                throw new Exception("fail to updata the ordinal for task " + Cname + " on email " + Email);
             }
         }
         public void UpdateColumn(string c)
         {
             if (!controller.Update(MakeFilter(), ColumnAtt, c))
             {
-                log.Error("fail to updata the name for column " + Cname + " on email " + Email);
-                throw new Exception("fail to updata the name for column " + Cname + " on email " + Email);
+                log.Error("fail to updata the name for task " + Cname + " on email " + Email);
+                throw new Exception("fail to updata the name for task " + Cname + " on email " + Email);
             }
         }
         public void UpdateDue(long d)
         {
             if (!controller.Update(MakeFilter(), DueAtt, d))
             {
-                log.Error("fail to updata the name for column " + Cname + " on email " + Email);
-                throw new Exception("fail to updata the name for column " + Cname + " on email " + Email);
+                log.Error("fail to updata the name for task " + Cname + " on email " + Email);
+                throw new Exception("fail to updata the name for task " + Cname + " on email " + Email);
             }
         }
         public void Add()
         {
-
             if (!controller.Insert(this))
             {
-                log.Error("fail to add new column for email " + Email);
-                throw new Exception("fail to add new column for email " + Email);
+                log.Error("fail to add new task for email " + Email);
+                throw new Exception("fail to add new task for email " + Email);
             }
         }
         public void Delete()
@@ -107,16 +106,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
             if (!controller.Delete(MakeFilter()))
             {
-                log.Error("fail to add new column for email " + Email);
-                throw new Exception("fail to add new column for email " + Email);
+                log.Error("fail to add new task for email " + Email);
+                throw new Exception("fail to add new task for email " + Email);
             }
         }
         public void DeleteAllData()
         {
             if (!controller.Delete(""))
             {
-                log.Error("fail to add new column for email " + Email);
-                throw new Exception("fail to add new column for email " + Email);
+                log.Error("fail to add new task for email " + Email);
+                throw new Exception("fail to add new task for email " + Email);
             }
         }
         //public string Email { get; set; } // json serialiser requires all relevant fields be public with get/set attributes

@@ -53,10 +53,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                 }
-                catch (Exception ex)
-                {
-                    //log error
-                }
                 finally
                 {
                     command.Dispose();
@@ -71,8 +67,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         protected override Task ConvertReaderToObject(SQLiteDataReader reader)
         {
-            log.Debug("in reader with task: "+reader.GetString(0)+" "+ reader.GetInt64(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4));
-            Task result = new Task(reader.GetString(0), reader.GetInt64(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetInt64(5), reader.GetInt64(6));
+            log.Debug("in reader with task: "+reader.GetString(0)+" "+ reader.GetInt64(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetValue(4));
+            Task result = new Task(reader.GetString(0), reader.GetInt64(1), reader.GetString(2), reader.GetString(3), reader.IsDBNull(4) ? null : reader.GetString(4), reader.GetInt64(5), reader.GetInt64(6));
             return result;
         }
 
