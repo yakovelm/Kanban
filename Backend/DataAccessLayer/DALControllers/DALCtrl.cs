@@ -36,6 +36,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     Connection = connection,
                     CommandText = $"DELETE FROM {tableName} {Filter}"
                 };
+                log.Debug("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                log.Debug(command.CommandText);
+
                 try
                 {
                     connection.Open();
@@ -55,6 +58,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             }
             return res > 0;
         }
+
 
         public bool Update(string Filter, string attributeName, string attributeValue)
         {

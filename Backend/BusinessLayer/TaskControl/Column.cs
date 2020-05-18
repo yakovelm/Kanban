@@ -22,7 +22,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             log.Info("creating new empty " + name + " column for " + email+".");
             this.email = email;
-            if (name == null || name == "") throw new Exception("illegal name.");
+            if (name == null || name=="") throw new Exception("illegal name.");
             this.name = name;
             if (ord < 0) throw new Exception("ordinal illegal.");
             this.ord = ord;
@@ -241,10 +241,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             DAL.Column temp1 = new DAL.Column();
             Task temp2 = new Task();
-            temp2.DeleteAllData();
-            log.Info("delete all tasks");
-            temp1.DeleteAllData();
-            log.Info("delete all columns");
+            try
+            {
+                temp2.DeleteAllData();
+                log.Info("delete all tasks");
+            }
+            catch (Exception e)
+            { ////////////////////////////
+            }
+            try
+            {
+                temp1.DeleteAllData();
+                log.Info("delete all columns");
+            }
+            catch (Exception e) { ////////////////////////////
+            }
         }
         public void delete()
         {

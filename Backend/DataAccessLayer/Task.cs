@@ -44,6 +44,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public Task() : base(new TaskCtrl())
         {
+            log.Debug("creating DAL task");
         }
 
         public List<Task> GetAllTasks(string email,string Cname)
