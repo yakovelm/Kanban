@@ -29,13 +29,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string ColumnDBName3 = "Ord";
         public const string ColumnDBName4 = "lim";
         public const string database_name ="KanbanDB.db";
+        private string connection_string;
 
         public DB() 
         {
-            SQLiteConnection connection;
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), database_name));
-            string connetion_string = $"Data Source={path};Version=3;";
-            using (connection = new SQLiteConnection(connetion_string))
+            connection_string = $"Data Source={path};Version=3;";
+            
+        }
+        public void Build()
+        {
+            SQLiteConnection connection;
+            using (connection = new SQLiteConnection(connection_string))
             {
                 try
                 {
@@ -73,6 +78,52 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();
+        }
+        private void drop(string s)
+        {
+
+            using (var connection = new SQLiteConnection(connection_string))
+            {
+                bool ex = false;
+                var command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"DROP TABLE {s}"
+                };
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    log.Error("fail to delete from " + s);
+                    ex = true;
+                    throw new Exception("fail to delete from " + s);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+        public void DropAll()
+        {
+            log.Debug("DB DAL");
+            try { drop(FirstTableName);
+            }
+            catch(Exception e) { }
+
+            try { drop(SecondTableName);
+
+            }
+            catch (Exception e) { }
+            try { drop(ThirdTableName);
+            }
+            catch (Exception e) { }
+            Build();
         }
 
     }

@@ -12,9 +12,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private bool Load;
+        private DAL.DB db;
         public DB() 
         {
             Load = false;
+            db = new DAL.DB();
         }
 
         public void DBexist()
@@ -24,7 +26,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 if (!sqlfilexist())
                 {
                     log.Debug("create SQL file");
-                    DAL.DB db = new DAL.DB();
+                    db.Build();
                 }
             }
             catch (Exception e)
@@ -42,6 +44,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public bool IsLoad()
         {
             return Load;
+        }
+        public void DropAll()
+        {
+            log.Debug("DB BL");
+            db.DropAll();
         }
     }
 }
