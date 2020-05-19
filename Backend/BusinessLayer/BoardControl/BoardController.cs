@@ -203,6 +203,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckEmail(email);
             return Cur.MoveColumnLeft(columnOrdinal);
         }
+        public void Drop()
+        {
+            IsActive();
+            BC = new Dictionary<string, Board>();
+        }
 
     }
 }

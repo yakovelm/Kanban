@@ -215,5 +215,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw new Exception("email adress invalid.");
             }
         }
+        public void Drop()
+        {
+            if (ActiveUser != null)
+            {
+                log.Error("can not do drop when some user is active.");
+                throw new Exception("can not do drop when some user is active.");
+            }
+        }
     }
 }

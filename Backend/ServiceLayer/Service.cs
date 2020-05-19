@@ -206,22 +206,24 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response DeleteData()
         {
-            //try
-            //{
-            //    DataBase.DropAll();
-            //    return new Response();
-            //}
-            //catch(Exception e)
-            //{
-            //    log.Debug(e.Message+"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-            //    return new Response(e.Message);
-            //}
+
             if (DataBase.IsLoad())
             {
-                Response n = US.DeleteData();
-                if (n.ErrorOccured) { return n; }
-                n = BS.DeleteData();
-                if (n.ErrorOccured) { return n; }
+                try
+                {
+                    US.Drop();
+                    BS.Drop();
+                    DataBase.DropAll();
+                    return new Response();
+                }
+                catch (Exception e)
+                {
+                    return new Response(e.Message);
+                }
+                //Response n = US.DeleteData();
+                //if (n.ErrorOccured) { return n; }
+                //n = BS.DeleteData();
+                //if (n.ErrorOccured) { return n; }
             }
             return new Response();
 

@@ -140,6 +140,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return new Response<Board>(e.Message); }
         }
+        public Response Drop()
+        {
+            try
+            {
+                BC.Drop();
+                return new Response();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
         public Response DeleteData()
         {
             try
