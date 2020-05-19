@@ -17,14 +17,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string DescAtt = DB.TaskDBName5;
         public const string DueAtt = DB.TaskDBName6;
         public const string createAtt = DB.TaskDBName7;
-
         public long ID { get; }
         public string Cname { get; set; }
         public string Title { get; set; }
         public string Desc { get; set; }
         public long Due { get; set; }
         public long Create { get; set; }
-
         public Task(string Email, long ID, string Cname, string Title, string Desc, long Due, long Cre) : base(new TaskCtrl())
         {
             this.Email = Email;
@@ -35,32 +33,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.Due = Due;
             this.Create = Cre;
         }
-
         protected override string MakeFilter()
         {
             return $"WHERE {EmailAtt}='{Email}' AND {IDAtt}={ID}";
-              
         }
-
         public Task() : base(new TaskCtrl())
         {
             log.Debug("creating DAL task");
         }
-
         public List<Task> GetAllTasks(string email,string Cname)
         {
             List<Task> c= controller.Select($"WHERE {EmailAtt}='{email}' AND {ColumnAtt}='{Cname}'");
             log.Debug(c.Count());
             return c;
-        }
-
-        public Task load()
-        {
-            List<Task> res = controller.Select(MakeFilter());
-            if (res.Count > 1) throw new Exception("found 2 matching tasks.");
-            if (res.Count<0) throw new Exception("ok i have no idea. we fucked up.");
-            if (res.Count==0) throw new Exception("task failed to load task from DB.");
-            return res[0];
         }
         public void UpdateTitle(string t)
         {
@@ -102,49 +87,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new Exception("fail to add new task for email " + Email);
             }
         }
-        public void Delete()
-        {
-
-            if (!controller.Delete(MakeFilter()))
-            {
-                log.Error("fail to add new task for email " + Email);
-                throw new Exception("fail to add new task for email " + Email);
-            }
-        }
-        public void DeleteAllData()
-        {
-            if (!controller.Delete(""))
-            {
-                log.Error("fail to add new task for email " + Email);
-                throw new Exception("fail to add new task for email " + Email);
-            }
-        }
-        //public string Email { get; set; } // json serialiser requires all relevant fields be public with get/set attributes
-        //public string Title { get; set; }
-        //public string Desc { get; set; }
-        //public int ID { get; set; }
-        //public DateTime Due { get; set; }
-        //public DateTime Creation { get; set; }
-
-        //public Task(string email, string title, string desc, int id, DateTime due, DateTime creation) // regular constructor for saving tasks
-        //{
-        //    Email = email;
-        //    Title = title;
-        //    ID = id;
-        //    Desc = desc;
-        //    Due = due;
-        //    Creation = creation;
-        //}
-        //public Task() { } // json package requires an empty constructor
-        //// since tasks are never individually loaded there is no load spscific constructor
-        //public override string toJson() // convert this object to a json format string
-        //{
-        //    return JsonSerializer.Serialize(this, this.GetType());
-        //}
-
-        //public override Task fromJson(string filename) // empty function to implement DalObject, not relevant for task since it is saved alongside column
-        //{
-        //    return null;
-        //}
     }
-    }
+}

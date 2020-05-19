@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class DB
-    {
+    { // this class holds the majority of constants and creates the initial DB
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public const string FirstTableName = "users";
         public const string SecondTableName = "columns";
@@ -35,10 +35,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), database_name));
             connection_string = $"Data Source={path};Version=3;";
-            
         }
-        public void Build()
+        public void Build() // build a new DB
         {
+            bool ex = false;
             SQLiteConnection connection;
             using (connection = new SQLiteConnection(connection_string))
             {
@@ -50,38 +50,41 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     createTaskTable(connection);
                     connection.Close();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    log.Error("Failed to retrieve Data from the DataBase");
-                    throw new Exception(e.Message);
+                    log.Error("Failed to create new DataBase");
+                    ex = true;
                 }
-                finally { connection.Close(); }
+                finally 
+                { 
+                    if(ex) { throw new Exception("Failed to create new DataBase"); }
+                    connection.Close();
+                }
             }
         }
-        private void createUserTable(SQLiteConnection connection)
+        private void createUserTable(SQLiteConnection connection) // build user table
         {
             string createTableQuery = $@"CREATE TABLE [{FirstTableName}]([{UserDBName1}] TEXT NOT NULL ,[{UserDBName2}] TEXT NOT NULL,[{UserDBName3}] TEXT NOT NULL, PRIMARY KEY(`{UserDBName1}`))";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();
         }
-        private void createColumnTable(SQLiteConnection connection)
+        private void createColumnTable(SQLiteConnection connection) // build column table
         {
             string createTableQuery = $@"CREATE TABLE [{SecondTableName}]([{ColumnDBName1}] TEXT NOT NULL,[{ColumnDBName2}] TEXT NOT NULl,[{ColumnDBName3}] INTEGER NOT NULL,[{ColumnDBName4}] INTEGER NOT NULL,PRIMARY KEY(`{ColumnDBName1}`,`{ColumnDBName2}`))";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();
         }
-        private void createTaskTable(SQLiteConnection connection)
+        private void createTaskTable(SQLiteConnection connection) // build task table
         {
             string createTableQuery = $@"CREATE TABLE [{ThirdTableName}]([{TaskDBName1}] TEXT NOT NULL ,[{TaskDBName2}] INTEGER NOT NULL,[{TaskDBName3}] TEXT NOT NULL,[{TaskDBName4}] TEXT NOT NULL,[{TaskDBName5}] TEXT,[{TaskDBName6}] INTEGER NOT NULL,[{TaskDBName7}] INTEGER NOT NULL, PRIMARY KEY(`{TaskDBName1}`,`{TaskDBName2}`))";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();
         }
-        private void drop(string s)
+        private void drop(string s) // drop all tables and rebuild DataBase from nothing
         {
-
             using (var connection = new SQLiteConnection(connection_string))
             {
                 bool ex = false;
@@ -90,20 +93,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     Connection = connection,
                     CommandText = $"DROP TABLE {s}"
                 };
-
                 try
                 {
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     log.Error("fail to delete from " + s);
-                    ex = true;
-                    throw new Exception("fail to delete from " + s);
+                    ex = true;                    
                 }
                 finally
                 {
+                    if (ex) { throw new Exception("fail to delete from " + s); }
                     command.Dispose();
                     connection.Close();
                 }
@@ -114,15 +116,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             log.Debug("DB DAL");
             try { drop(FirstTableName);
             }
-            catch(Exception e) { }
+            catch(Exception) { }
 
             try { drop(SecondTableName);
 
             }
-            catch (Exception e) { }
+            catch (Exception) { }
             try { drop(ThirdTableName);
             }
-            catch (Exception e) { }
+            catch (Exception) { }
             Build();
         }
 

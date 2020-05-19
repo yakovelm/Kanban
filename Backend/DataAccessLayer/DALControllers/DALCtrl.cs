@@ -15,19 +15,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         protected readonly string connectionString;
         protected readonly string tableName;
         protected readonly string DB= DAL.DB.database_name;
-
-        public DALCtrl(string tableName)
+        public DALCtrl(string tableName) // constructor for each table
         {
             this.tableName = tableName;
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), DB));
             this.connectionString = $"Data Source={path}; Version=3;";
         }
-
-
-        public bool Delete(string Filter)
+        public bool Delete(string Filter) // delete all entries in this table matching given filter
         {
             int res = -1;
-
             using (var connection = new SQLiteConnection(connectionString))
             {
                 bool fail = false;
@@ -41,7 +37,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     fail = true;
                 }
@@ -51,16 +47,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     connection.Close();
                     if (fail)
                     {
-                        log.Error("fail to delete from " + tableName);
-                        throw new Exception("fail to delete from " + tableName);
+                        log.Error("failed to delete from " + tableName);
+                        throw new Exception("failed to delete from " + tableName);
                     }
                 }
             }
             return res > 0;
         }
-
-
-        public bool Update(string Filter, string attributeName, string attributeValue)
+        public bool Update(string Filter, string attributeName, string attributeValue) //update string values
         {
             bool ex = false;
             int res = -1;
@@ -79,7 +73,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 }
                 catch
                 {
-                    log.Error("fail to Update from " + tableName);
+                    log.Error("failed to Update in " + tableName);
                     ex = true;
                     
                 }
@@ -87,14 +81,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 {
                     command.Dispose();
                     connection.Close();
-                    if(ex) throw new Exception("fail to Update from " + tableName);
+                    if(ex) throw new Exception("failed to Update in " + tableName);
                 }
 
             }
             return res > 0;
         }
-
-        public bool Update(string Filter, string attributeName, long attributeValue)
+        public bool Update(string Filter, string attributeName, long attributeValue) // update int values
         {
             bool ex = false;
             int res = -1;
@@ -111,8 +104,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     connection.Open();
                     res=command.ExecuteNonQuery();
                 }
-                catch (Exception e){
-                    log.Error("fail to Update from " + tableName);
+                catch (Exception){
+                    log.Error("failed to Update in " + tableName);
                     ex = true;
                     
                 }
@@ -120,14 +113,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 {
                     command.Dispose();
                     connection.Close();
-                    if(ex) throw new Exception("fail to Update from " + tableName);
+                    if(ex) throw new Exception("failed to Update in " + tableName);
                 }
-
             }
             return res > 0;
         }
-
-        public List<T> Select(string Filter)
+        public List<T> Select(string Filter) // return all entries in this table matching given table
         {
             bool ex = false;
             List<T> results = new List<T>();
@@ -145,9 +136,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                         results.Add(ConvertReaderToObject(dataReader));
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    log.Error("fail to Select from " + tableName);
+                    log.Error("failed to Select from " + tableName);
                     ex = true;
                 }
                 finally
@@ -159,14 +150,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
                     command.Dispose();
                     connection.Close();
-                    if(ex) throw new Exception("fail to Select from " + tableName);
+                    if(ex) throw new Exception("failed to Select from " + tableName);
                 }
 
             }
             return results;
         }
-        protected abstract T ConvertReaderToObject(SQLiteDataReader reader);
-        public abstract bool Insert(T obj);
+        protected abstract T ConvertReaderToObject(SQLiteDataReader reader); // convert a quary result into a DAL object
+        public abstract bool Insert(T obj); // insert a new DAL object into table
 
     }
 }

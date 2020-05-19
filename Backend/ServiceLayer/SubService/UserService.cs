@@ -12,7 +12,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BusinessLayer.UserControl.UserController uc;
-        private bool load=false;
 
         public UserService() 
         {
@@ -45,24 +44,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
-        public Response Drop()
+        public Response Drop() //drop all user data 
         {
             try
             {
+                log.Info("dropping all user data.");
                 uc.Drop();
-                return new Response();
-            }
-            catch (Exception e)
-            {
-                return new Response(e.Message);
-            }
-        }
-        public Response DeleteData()
-        {
-            try
-            {
-                log.Info("attempting to Delete Data.");
-                uc.DeleteData();
                 return new Response();
             }
             catch (Exception e)
@@ -90,7 +77,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             {
                 log.Info("attempting to load user list.");
                 uc.LoadData();
-                load = true;
                 return new Response();
             }
             catch (Exception e) { return new Response(e.Message); }

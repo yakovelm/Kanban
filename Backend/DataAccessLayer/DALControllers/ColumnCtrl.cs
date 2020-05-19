@@ -11,28 +11,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
     internal class ColumnCtrl : DALCtrl<Column>
     {
         private const string ColumnTableName = DAL.DB.SecondTableName;
-
-        public ColumnCtrl() : base(ColumnTableName)
-        {
-        }
-        public List<Column> SelectAllColumn(string Filter)
-        {
-            List<Column> result = Select(Filter).Cast<Column>().ToList();
-            return result;
-        }
-
-
+        public ColumnCtrl() : base(ColumnTableName) { }
         protected override Column ConvertReaderToObject(SQLiteDataReader reader)
         {
             Column result = new Column(reader.GetString(0), reader.GetString(1), reader.GetInt64(2), reader.GetInt64(3));
             return result;
         }
-        public override bool Insert(Column c)
+        public override bool Insert(Column c) // insert given DAL colum into DB
         {
             bool fail = false;
             using (var connection = new SQLiteConnection(connectionString))
             {
-                //log.Debug("insert to DB with: "+c.Email +" "+ c.Cname + " " + c.Ord + " " + c.Limit);
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 int res = -1;
                 try
@@ -53,7 +42,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     fail = true;
                 }

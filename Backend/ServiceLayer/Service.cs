@@ -206,27 +206,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         public Response DeleteData()
         {
-
-            if (DataBase.IsLoad())
+            try
             {
-                try
-                {
-                    US.Drop();
-                    BS.Drop();
-                    DataBase.DropAll();
-                    return new Response();
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
-                //Response n = US.DeleteData();
-                //if (n.ErrorOccured) { return n; }
-                //n = BS.DeleteData();
-                //if (n.ErrorOccured) { return n; }
+                Response res=US.Drop();
+                if (res.ErrorOccured) return res;
+                res=BS.Drop();
+                if (res.ErrorOccured) return res;
+                DataBase.DropAll();
+                return new Response();
             }
-            return new Response();
-
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
         }
 
         public Response RemoveColumn(string email, int columnOrdinal)

@@ -18,7 +18,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private List<Task> tasks;
         private int limit;
         private int size;
-
         public Column(string email, string name,int ord)
         {
             log.Info("creating new empty " + name + " column for " + email+".");
@@ -36,12 +35,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public Column()
         {
             tasks = new List<Task>();
-        }
-        public Column(string email, string name)
-        {
-            this.email = email;
-            this.name = name;
-            tasks= new List<Task>();
         }
         public int getSize()
         {
@@ -71,13 +64,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Column Dcol = ToDalObject();
             Dcol.UpdateOrd(ord);
         }
-        public void setName(string name)
-        {
-            if (name == null || name == "" | name.Length > 15) throw new Exception("name illegal.");
-            this.name = name;
-            DAL.Column Dcol = ToDalObject();
-            Dcol.UpdateName(name);
-        }
         public void setLimit(int limit) // set the limit of this column
         {
             log.Info("changing task limit for column: " + name + " in " + email + " from: " + this.limit + " to: " + limit + ".");
@@ -90,7 +76,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Column Dcol = ToDalObject();
             Dcol.UpdateLimit(limit);
         }
-        public void addTasks(List<Task> ts)
+        public void addTasks(List<Task> ts) // append a list of tasks to the end of this column
         {
             if (limit > 0 & size + ts.Count() > limit)
             {
@@ -101,7 +87,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             tasks.AddRange(ts);
             size = size + ts.Count;
         }
-
         public void addTask(Task task) // add a new task to this column
         {
             log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email+".");
@@ -115,7 +100,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             tasks.Add(task);
             size++;
         }
-
         public Task deleteTask(Task task) // delete a task from this column (if exists) and return it
         {
             log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + email+".");
@@ -140,8 +124,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             log.Info("task does not exist in " + name + " column.");
             return null;
         }
-
-
         public DAL.Column ToDalObject() // convert this column to a DataAccessLayer object
         {
             log.Debug("column " + name + " converting to DAL obj in " + email + ".");
@@ -164,7 +146,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 throw e;
             }
         }
-
         public void FromDalObject(DAL.Column DalObj) // convert a DataAccessLayer object to a BuisnessLayer column and set this to corresponding values
         {
             log.Debug("column " + DalObj.Cname + " converting from DAL obj in " + DalObj.Email + ".");
@@ -195,7 +176,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 throw e;
             }
         }
-
         public void editTitle(int ID, string title) // update title of this task
         {
             Task t = getTask(ID);
@@ -222,27 +202,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 throw new Exception("task does not exist in this columm.");
             }
             t.editDue(due);
-        }
-
-        public void DeleteAllData()
-        {
-            DAL.Column temp1 = new DAL.Column();
-            Task temp2 = new Task();
-            try
-            {
-                temp2.DeleteAllData();
-                log.Info("delete all tasks");
-            }
-            catch (Exception e)
-            { ////////////////////////////
-            }
-            try
-            {
-                temp1.DeleteAllData();
-                log.Info("delete all columns");
-            }
-            catch (Exception e) { ////////////////////////////
-            }
         }
         public void delete()
         {

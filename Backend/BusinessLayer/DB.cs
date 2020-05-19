@@ -11,15 +11,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     class DB
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private bool Load;
         private DAL.DB db;
         public DB() 
         {
-            Load = false;
             db = new DAL.DB();
         }
-
-        public void DBexist()
+        public void DBexist() // make sure DB exists during startup
         {
             try
             {
@@ -34,20 +31,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Error("fail to create SQL file: " + e.Message);
                 throw new Exception(e.Message);
             }
-            Load = true;
         }
         private bool sqlfilexist()
         {
             string check =Path.Combine( Directory.GetCurrentDirectory(),DAL.DB.database_name);
             return File.Exists(check);
         }
-        public bool IsLoad()
-        {
-            return Load;
-        }
         public void DropAll()
         {
-            log.Debug("DB BL");
             db.DropAll();
         }
     }

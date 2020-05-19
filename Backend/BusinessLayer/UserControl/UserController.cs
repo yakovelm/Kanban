@@ -19,27 +19,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private const int MinLength = 5;
         private User ActiveUser;
         private List<User> list;
-        private bool Load;
 
         public UserController()
         {
             log.Debug("createing user controller.");
             this.ActiveUser = null;
-            this.Load = false;
         }
         public User get_active() { return ActiveUser; }
         public void register(string email, string password, string nickname) // register a new user
         {
-            if (Load)
-            {
-                NullCheck(email, password, nickname);
-                email = email.ToLower();
-                checkEmail(email);
-                checkUser(email, nickname);
-                checkPassword(password);
-                log.Debug("register values are legal.");
-                save(email, password, nickname);
-            }
+            NullCheck(email, password, nickname);
+            email = email.ToLower();
+            checkEmail(email);
+            checkUser(email, nickname);
+            checkPassword(password);
+            log.Debug("register values are legal.");
+            save(email, password, nickname);
         }
         private void NullCheck(params object[] s) // checks if any of the given parameters are null or empty
         {
@@ -64,8 +59,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             var hasLowerChar = new Regex(@"[a-z]+");
             if (!hasNumber.IsMatch(password) | !hasUpperChar.IsMatch(password) | password.Length < MinLength | password.Length > MaxLength | !hasLowerChar.IsMatch(password))
             {
-                log.Warn("password too weak. must include at least one uppercase letter, one lowercase letter and a number and be between 4 and 20 characters.");
-                throw new Exception("must include at least one uppercase letter, one lowercase letter and a number and be between 4 and 20 characters.");
+                log.Warn("password too weak. must include at least one uppercase letter, one lowercase letter and a number and be between 5 and 25 characters.");
+                throw new Exception("must include at least one uppercase letter, one lowercase letter and a number and be between 5 and 25 characters.");
             }
         }
         private void save(string email, string password, string nickname) // saves newly registered user
@@ -77,32 +72,29 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void login(string email, string password) // login an existing user
         {
-            if (Load)
+            if (ActiveUser != null)
+            { // cant log in if a user is already logged in
+                log.Warn("a login was attempted while a user is already logged in.");
+                throw new Exception("a user is already logged in.");
+            }
+            NullCheck(email, password);
+            email = email.ToLower();
+            checkEmail(email);
+            foreach (User u in list) // run on user list to find correct user to login
             {
-                if (ActiveUser != null)
-                { // cant log in if a user is already logged in
-                    log.Warn("a login was attempted while a user is already logged in.");
-                    throw new Exception("user already login.");
-                }
-                NullCheck(email, password);
-                email = email.ToLower();
-                checkEmail(email);
-                foreach (User u in list) // run on user list to fint correct user to login
+                if (u.isMatchEmail(email))
                 {
-                    if (u.isMatchEmail(email))
+                    log.Debug("email " + email + " exists in the system.");
+                    if (u.isMatchPassword(password))
                     {
-                        log.Debug("email " + email + " exists in the system.");
-                        if (u.isMatchPassword(password))
-                        {
-                            log.Debug("given password matches.");
-                            ActiveUser = u;
-                            log.Info(ActiveUser.getemail() + " has successfully logged in.");
-                        }
-                        else
-                        {
-                            log.Warn(u.getemail() + " tried to login with incorrect password.");
-                            throw new Exception("invaild password.");
-                        }
+                        log.Debug("given password matches.");
+                        ActiveUser = u;
+                        log.Info(ActiveUser.getemail() + " has successfully logged in.");
+                    }
+                    else
+                    {
+                        log.Warn(u.getemail() + " tried to login with incorrect password.");
+                        throw new Exception("invaild password.");
                     }
                 }
                 if (ActiveUser == null)
@@ -111,28 +103,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                     throw new Exception(email + " user not yet registered.");
                 }
             }
-
         }
         public void logout(string email) // log out active user
         {
-            if (Load)
+            if (ActiveUser == null) // if no active user no one can log out
             {
-                if (ActiveUser == null) // if no active user no one can log out
-                {
-                    log.Warn("no user logged in. logout failed.");
-                    throw new Exception("no user logged in.");
-                }
-                email = email.ToLower();
-                if (!email.Equals(ActiveUser.getemail()))
-                {
-                    log.Warn("a user that is not logged in attempted to log out. logout failed.");
-                    throw new Exception("given email is invalid.");
-                }
-                else
-                {
-                    log.Debug(ActiveUser.getemail() + " logged out.");
-                    ActiveUser = null;
-                }
+                log.Warn("no user logged in. logout failed.");
+                throw new Exception("no user logged in.");
+            }
+            email = email.ToLower();
+            if (!email.Equals(ActiveUser.getemail()))
+            {
+                log.Warn("a user that is not logged in attempted to log out. logout failed.");
+                throw new Exception("given email is invalid.");
+            }
+            else
+            {
+                log.Debug(ActiveUser.getemail() + " logged out.");
+                ActiveUser = null;
             }
         }
         private void checkUser(string email, string nickname) // checks that an email is not taken upon registration
@@ -148,44 +136,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void LoadData() // load userlist from json files
         {
-            if (!Load)
+            try
             {
-                try
+                list = new List<User>();
+                DC.UserCtrl DUC = new DC.UserCtrl();
+                foreach (DAL.User run in DUC.Select(""))
                 {
-                    list = new List<User>();
-                    DC.UserCtrl DUC = new DC.UserCtrl();
-                    foreach (DAL.User run in DUC.Select(""))
-                    {
-                        User u = new User();
-                        u.FromDalObject(run);
-                        list.Add(u);
-                    }
-                    Load = true;
-                }
-                catch (Exception e)
-                {
-                    log.Error("faild to load data");
-                    throw new Exception("faild to load data: "+e.Message);
+                    User u = new User();
+                    u.FromDalObject(run);
+                    list.Add(u);
                 }
             }
-            else 
+            catch (Exception e)
             {
-                log.Warn("User attempt repeat LoadData");
-                throw new Exception("Can't double loadDate");
-            }
-        }
-        public void DeleteData()
-        {
-            if (Load)
-            {
-                if (ActiveUser == null)
-                {
-                    if (list.Count() != 0)
-                    {
-                        list[0].DeleteData();
-                    }
-                    list = new List<User>();
-                }
+                log.Error("faild to load data");
+                throw new Exception("faild to load data: "+e.Message);
             }
         }
         private void checkEmail(string s) // check that email adress matches standard email format
@@ -219,9 +184,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             if (ActiveUser != null)
             {
-                log.Error("can not do drop when some user is active.");
-                throw new Exception("can not do drop when some user is active.");
+                log.Error("can't drop user data while a user is logged in.");
+                throw new Exception("can't drop user data while a user is logged in.");
             }
+            list = new List<User>();
         }
     }
 }

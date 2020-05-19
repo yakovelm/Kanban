@@ -24,8 +24,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.password = password;
             this.nickname = nickname;
         }
-        public User(): base(new UserCtrl()) { }
-        protected override string MakeFilter()
+        protected override string MakeFilter() //make a filter for specific user
         {
             return $"WHERE {EmailAtt}='{email}'";
         }
@@ -35,23 +34,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             {
                 log.Error("fail to save user for email " + Email);
                 throw new Exception("fail to save user for email " + Email);
-            }
-        }
-        public void Delete()
-        {
-
-            if (!controller.Delete(MakeFilter()))
-            {
-                log.Error("fail to delete user " + Email);
-                throw new Exception("fail to delete user " + Email);
-            }
-        }
-        public void DeleteAllData()
-        {
-            if (!controller.Delete(""))
-            {
-                log.Error("fail to detele alldata");
-                throw new Exception("fail to add new column for email " + Email);
             }
         }
     }

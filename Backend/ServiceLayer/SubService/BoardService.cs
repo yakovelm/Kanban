@@ -15,12 +15,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         public BoardService()
         {
             BC = new BL.BoardController();
-            log.Debug("BoardService created.");
+            log.Debug("Board Service created.");
         }
 
         public Response LoadData() // load all data in board controller
         {
-            log.Info("Loading BoardController and list of boards.");
+            log.Info("Loading Board Controller and list of boards.");
             try
             {
                 BC.LoadData();
@@ -145,19 +145,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 BC.Drop();
-                return new Response();
-            }
-            catch(Exception e)
-            {
-                return new Response(e.Message);
-            }
-        }
-        public Response DeleteData()
-        {
-            try
-            {
-                log.Info("attempting to Delete Data.");
-                BC.DeleteData();
                 return new Response();
             }
             catch(Exception e)

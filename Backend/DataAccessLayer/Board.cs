@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class Board
+    class Board // mainly just a small transitional class to load the tasks an columns
     {
         public List<Column> columns { get; set; }
         public string Email { get; set; }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
-using System.IO;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
@@ -16,8 +15,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private String password;
         private String nickname;
 
-        public User() { } // json package requires an empty constructor
-        public User(string email) { this.email = email; } // load data constructor, needs only email
+        public User() { }
         public User(string email, string password, string nickname) // new user creation (register) constructor
         {
             this.email = email;
@@ -44,11 +42,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             log.Debug("converting user to DAL obj for " + email + ".");
             return new DAL.User(email, password, nickname);
-        }
-        public void DeleteData()
-        {
-            DAL.User DU = ToDalObject();
-            DU.DeleteAllData();
         }
 
         public void FromDalObject(DAL.User DalObj) // converts a DataAccessLayer object to an object of this type and sets this to the corresponding values

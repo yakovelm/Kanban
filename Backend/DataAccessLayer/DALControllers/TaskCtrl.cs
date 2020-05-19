@@ -11,18 +11,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
      class TaskCtrl : DALCtrl<Task>
     {
         private const string TaskTableName = DAL.DB.ThirdTableName;
-        public TaskCtrl(): base(TaskTableName)
-        {
-
-        }
-        //public List<Task> SelectAllTasks(string Filter)
-        //{
-        //    List<Task> result = Select(Filter).Cast<Task>().ToList();
-        //    return result;
-        //}
-
-
-        public override bool Insert(Task obj)
+        public TaskCtrl(): base(TaskTableName) { }
+        public override bool Insert(Task obj) // insert given DAL task into DB
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -54,7 +44,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                 }
-                catch(Exception e) { fail = true; }
+                catch (Exception) { fail = true; }
                 finally
                 {
                     command.Dispose();
@@ -68,20 +58,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 return res > 0;
             }
         }
-
-
-
         protected override Task ConvertReaderToObject(SQLiteDataReader reader)
         {
             log.Debug("in reader with task: "+reader.GetString(0)+" "+ reader.GetInt64(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetValue(4));
             Task result = new Task(reader.GetString(0), reader.GetInt64(1), reader.GetString(2), reader.GetString(3), reader.IsDBNull(4) ? null : reader.GetString(4), reader.GetInt64(5), reader.GetInt64(6));
             return result;
         }
-
-        //--SELECT--
-        //select will need to pull the task data using:
-        //SELECT * FROM tasks WHERE {CID}={thisColumnID}
-        //should be only 1 and return it
-
     }
 }

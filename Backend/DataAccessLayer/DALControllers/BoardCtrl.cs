@@ -8,7 +8,7 @@ using System.IO;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
-    class BoardCtrl
+    class BoardCtrl // this calss is used to load the initial board list upon startup
     {
         protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected readonly string connectionString;

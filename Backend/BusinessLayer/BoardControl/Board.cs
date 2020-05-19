@@ -17,7 +17,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         private int size;
         private int IDtask;
         private string email;
-        public Board(string email)
+        public Board(string email) 
         {
             this.email = email;
             size = 0;
@@ -25,30 +25,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             LoadData();
             log.Debug("a board for " + email + " has been made.");        
         }
-        public Board() { }
-
-        public void Login()
-        {
-            if (columns.Count() == 0)
-            {
-                NewBoard();
-                IDtask = 1;
-            }
-        }
         public void LoadData()
         {
-            log.Debug("LoadData Board of email: " + email);
             DAL.Board b = new DAL.Board(email);
             b.LoadData();
-            log.Debug("data loaded "+b.columns.Count());
             OrdinaltheList(ColumnsToBT(b.columns));
-            log.Debug("list ordered");
             UpdateTheIdTask();
-            log.Debug("task id's updated");
             UpdateTheSize();
             log.Debug("LoadData Board of email: " + email+" seccess. IDTask is: "+IDtask);
         }
-        private void UpdateTheIdTask()
+        private void UpdateTheIdTask() // make sure that his board has the correct next task ID
         {
             foreach(TC.Column c in columns)
             {
@@ -57,17 +43,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             IDtask++;
             if (IDtask == 0) { IDtask = 1; }
         }
-        private void UpdateTheSize()
+        private void UpdateTheSize() // make sure this board has the correct size (number of columns)
         {
             foreach (TC.Column c in columns)
             {
                 size += 1;
             }
-            log.Debug("columns loaded: " + columns.Count());
             if (columns.Count() == 0) {
                 NewBoard(); }
         }
-        private void NewBoard()
+        private void NewBoard() // make a new board with 3 columns
         {
             columns.Add(new TC.Column(email, "backlog", 0));
             columns.Add(new TC.Column(email, "in progress", 1));
@@ -75,9 +60,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             size = 3;
             log.Debug("a new board for " + email + " has been made.");
         }
-        private void OrdinaltheList(List<TC.Column> list)
+        private void OrdinaltheList(List<TC.Column> list) // make sure all columns are syncronized with their place in the column list
         {
-            log.Debug("Ordinal the columns of email: " + email);
+            log.Debug("Order the columns of email: " + email);
             List<TC.Column> output = new List<TC.Column>();
             for(int i=0; i<list.Count(); i++)
             {
@@ -90,13 +75,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 }
                 if (output.Count() != i + 1)
                 {
-                    log.Warn("there are not a column with ord " + i );
-                    throw new Exception("there are not a column with ord " + i);
+                    log.Warn("there is no column with ord " + i );
+                    throw new Exception("there is no column with ord " + i);
                 }
             }
             columns = output;
         }
-        private List<TC.Column> ColumnsToBT(List<DAL.Column> list)
+        private List<TC.Column> ColumnsToBT(List<DAL.Column> list) // convert DAL columns to BL columns
         {
             List<TC.Column> output = new List<TC.Column>();
             foreach (DAL.Column a in list)
@@ -187,7 +172,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             return columns;
         }
-
         private void CheckTaskID(int taskID) // check if given task id is legal
         {
             if (taskID > this.IDtask | taskID < 1)
@@ -217,25 +201,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             return false;
         }
 
-        private int ChengeToInt(string s) // get the munber of the column with the given name
+        private int ChengeToInt(string s) // get the number of the column with the given name
         {
             for (int i = 0; i < size; i++)
             {
-                if (s.Equals(columns[i].getName()))
-                {
-                    return i;
-                }
+                if (s.Equals(columns[i].getName())) {return i;}
             }
             log.Debug(s+" does not exist in columns.");
             throw new Exception(s + " does not exist in columns.");
         }
-        public void DeleteAllData()
-        {
-            TC.Column temp = new TC.Column();
-            temp.DeleteAllData();
-        }
 
-        public void RemoveColumn(int columnOrdinal)
+        public void RemoveColumn(int columnOrdinal) // remove column in the given position from column list
         {
             CheckColumnOrdinal(columnOrdinal);
             checkSize();
@@ -245,13 +221,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             else {  columns[columnOrdinal - 1].addTasks(c); }
             columns[columnOrdinal].delete();
             MoveColumns(columnOrdinal);
-            
             setOrdColumns();
-
             log.Debug(email + " removed column number #" + columnOrdinal + " succses");
         }
 
-        public TC.Column AddColumn(int columnOrdinal, string Name)
+        public TC.Column AddColumn(int columnOrdinal, string Name)// add column in the given position of column list
         {
             checkrColumnNumber(columnOrdinal);
             if (CheckColumnName(Name))
@@ -265,14 +239,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             log.Debug(email + " added column number #" + columnOrdinal + " succses");
             return columns[columnOrdinal];
         }
-        private void setOrdColumns()
+        private void setOrdColumns() // set each column to hold his ordinal position
         {
-            for(int i=0;i<size;i++)
-            {
-                columns[i].setOrd(i);
-            }
+            for(int i=0;i<size;i++) {columns[i].setOrd(i);}
         }
-        private void checkrColumnNumber(int ord)
+        private void checkrColumnNumber(int ord) // check if column number is legal
         {
             if (ord < 0 | ord > size)
             {
@@ -298,7 +269,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             log.Debug(email + " Moved left column was number #" + columnOrdinal + " succses");
             return columns[columnOrdinal - 1];
         }
-        private void ExchangeColumns(int num1, int num2)
+        private void ExchangeColumns(int num1, int num2) // change the position of 2 columns in the list
         {
             TC.Column temp = columns[num1];
             columns[num1] = columns[num2];
@@ -307,16 +278,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             columns[num2].setOrd(num2);
             log.Debug("the columns #" + num1 + " #" + num2 + " chenge place.");
         }
-        private void MoveColumns(int num)
+        private void MoveColumns(int num) // cascade down all columns in the list starting at num by 1
         {
-            for(int i=num; i<size-1; i++)
-            {
-                columns[i] = columns[i+1];
-            }
-            if (columns[size - 1] != null)
-            {
-                columns.Remove(columns[size - 1]);
-            }
+            for(int i=num; i<size-1; i++) {columns[i] = columns[i+1];}
+            if (columns[size - 1] != null) {columns.Remove(columns[size - 1]);}
             size--;
         }
         private void ColumnIsNotFirstColumn(int num)
@@ -327,7 +292,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("user try to Move left a first column.");
             }
         }
-        private void checkSize()
+        private void checkSize() // check if minimum board size reached
         {
             if (size == minColumn)
             {
@@ -335,7 +300,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("user attempted to remove column when the minmum columns is 2.");
             }
         }
-        
-        
     }
 }
