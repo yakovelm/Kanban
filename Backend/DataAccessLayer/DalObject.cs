@@ -20,45 +20,5 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.controller = controller;
         }
         protected abstract string MakeFilter();
-
-
-        //public abstract string toJson();
-        //public abstract T fromJson(string filename);
-
-        //public void Write(string filename, string toJson) //writes a json file with given string
-        //{
-        //    string path= Directory.GetCurrentDirectory();
-        //    path = path + "\\" + filename;
-        //    File.Delete(path);
-        //    log.Debug("JSON file deleted at "+path);
-        //    FileStream file = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-        //    StreamWriter sw = new StreamWriter(file);
-        //    sw.Write(toJson);
-        //    log.Debug("JSON file written at " + path);
-        //    sw.Close();
-        //    file.Close();
-
-        //}
-
-        //public string read(string filename) // reads from json file
-        //{
-        //    string path = Directory.GetCurrentDirectory();
-        //    path = path + "\\" + filename;
-        //    log.Debug("reading file at " + path);
-        //    FileStream file = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-        //    StreamReader sr = new StreamReader(file);
-        //    string ret=sr.ReadToEnd();
-        //    file.Close();
-        //    return ret;
-        //}
-
-        //public void Delete(string fileName)
-        //{
-        //    string path = Directory.GetCurrentDirectory();
-        //    path = path + "\\" + fileName;
-        //        File.Delete(path);
-        //        log.Debug("JSON file deleted at " + path);
-        //}
-
     }
 }

@@ -10,6 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
     class BoardCtrl
     {
+        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected readonly string connectionString;
         protected readonly string tableName="users";
         protected readonly string EmailAtt = "email";
@@ -21,6 +22,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
         public List<string> LoadData()
         {
+            bool fail = false;
             List<string> results = new List<string>();
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -37,6 +39,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                         results.Add(dataReader.GetString(0));
                     }
                 }
+                catch(Exception e)
+                {
+                    fail = true;
+                }
                 finally
                 {
                     if (dataReader != null)
@@ -46,6 +52,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
                     command.Dispose();
                     connection.Close();
+                    if (fail)
+                    {
+                        log.Error("fail to delete from " + tableName);
+                        throw new Exception("fail to delete from " + tableName);
+                    }
                 }
 
             }

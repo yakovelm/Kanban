@@ -29,6 +29,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.Limit = Limit;
             tasks = new List<Task>();
         }
+        public Column(string Email, string Cname): base(new ColumnCtrl())
+        {
+            this.Email = Email;
+            this.Cname = Cname;
+        }
 
         protected override string MakeFilter()
         {

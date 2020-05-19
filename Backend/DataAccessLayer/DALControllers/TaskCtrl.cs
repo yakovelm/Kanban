@@ -26,6 +26,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
+                bool fail = false;
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 int res = -1;
                 try
@@ -53,11 +54,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                 }
+                catch(Exception e) { fail = true; }
                 finally
                 {
                     command.Dispose();
                     connection.Close();
-
+                    if (fail)
+                    {
+                        log.Error("fail to insert a user in TaskCtrl");
+                        throw new Exception("fail to insert a user in TaskCtrl");
+                    }
                 }
                 return res > 0;
             }

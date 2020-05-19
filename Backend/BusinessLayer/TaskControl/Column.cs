@@ -13,6 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string email;
         private int ord;
+        private const int maxname= 15;
         private string name;
         private List<Task> tasks;
         private int limit;
@@ -22,7 +23,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             log.Info("creating new empty " + name + " column for " + email+".");
             this.email = email;
-            if (name == null || name=="") throw new Exception("illegal name.");
+            if (name == null || name=="" || name.Length>maxname) throw new Exception("illegal name.");
             this.name = name;
             if (ord < 0) throw new Exception("ordinal illegal.");
             this.ord = ord;
@@ -91,7 +92,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void addTasks(List<Task> ts)
         {
-            if (limit != -1 & size + ts.Count() > limit)
+            if (limit > 0 & size + ts.Count() > limit)
             {
                 log.Warn("task limit reached, tasks not added.");
                 throw new Exception("task limit reached, tasks not added.");
@@ -101,10 +102,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             size = size + ts.Count;
         }
 
-        public void addTask(Task task) // add a new task to this column/////////////////////////////////////////////////////////////////////////////////////////////////////
+        public void addTask(Task task) // add a new task to this column
         {
             log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email+".");
-            if (limit != -1 & limit <= size)
+            if (limit > 0 & limit <= size)
             {
                 log.Warn("task limit reached, task not added.");
                 throw new Exception("task limit reached, task not added.");
@@ -114,21 +115,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             tasks.Add(task);
             size++;
         }
-        //public Task addTask(int ID, string title, string desc, DateTime due, string email) // add a new task to this column
-        //{
-        //    Task task= new Task(ID,name, title, desc, due, this.email);
-        //    log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email + ".");
-        //    if (limit != -1 & limit <= size)
-        //    {
-        //        log.Warn("task limit reached, task not added.");
-        //        throw new Exception("task limit reached, task not added.");
-        //    }
-        //    task.insert();
-        //    task.editColumn(name);
-        //    tasks.Add(task);
-        //    size++;
-        //    return task;//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //}
+
         public Task deleteTask(Task task) // delete a task from this column (if exists) and return it
         {
             log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + email+".");
@@ -259,7 +246,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void delete()
         {
-            DAL.Column c = ToDalObject();
+            DAL.Column c = new DAL.Column(email,name);
             c.Delete();
         }
     }

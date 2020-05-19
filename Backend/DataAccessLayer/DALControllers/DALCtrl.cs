@@ -30,15 +30,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
             using (var connection = new SQLiteConnection(connectionString))
             {
-                bool ex = false;
+                bool fail = false;
                 var command = new SQLiteCommand
                 {
                     Connection = connection,
                     CommandText = $"DELETE FROM {tableName} {Filter}"
                 };
-                log.Debug("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-                log.Debug(command.CommandText);
-
                 try
                 {
                     connection.Open();
@@ -46,14 +43,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 }
                 catch (Exception e)
                 {
-                    log.Error("fail to delete from " + tableName);
-                    ex = true;
-                    throw new Exception("fail to delete from " + tableName);
+                    fail = true;
                 }
                 finally
                 {
                     command.Dispose();
                     connection.Close();
+                    if (fail)
+                    {
+                        log.Error("fail to delete from " + tableName);
+                        throw new Exception("fail to delete from " + tableName);
+                    }
                 }
             }
             return res > 0;

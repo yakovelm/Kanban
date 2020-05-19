@@ -14,6 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         public UserCtrl(): base (UserTableName) { }
         public override bool Insert(User obj)
         {
+            bool fail = false;
             using (var connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -37,13 +38,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 }
                 catch (Exception e)
                 {
-                    
+                    fail = true;
                 }
                 finally
                 {
                     command.Dispose();
                     connection.Close();
-
+                    if (fail) { log.Error("fail to insert a user in UserCtrl");
+                        throw new Exception("fail to insert a user in UserCtrl");
+                    }
                 }
                 return res > 0;
             }

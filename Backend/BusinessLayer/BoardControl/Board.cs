@@ -206,7 +206,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         private bool CheckColumnName(string name) // check if given column name is a legal name (is either 'backlog', 'in progress' or 'done')
         {
-            if (name == null) return false;
+            if (name == null) return true;
             foreach(TC.Column c in columns)
             {
                 if (name.Equals(c.getName()))
@@ -226,7 +226,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                     return i;
                 }
             }
-            return -1;
+            log.Debug(s+" does not exist in columns.");
+            throw new Exception(s + " does not exist in columns.");
         }
         public void DeleteAllData()
         {
@@ -244,7 +245,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             else {  columns[columnOrdinal - 1].addTasks(c); }
             columns[columnOrdinal].delete();
             MoveColumns(columnOrdinal);
-            size--;
+            
             setOrdColumns();
 
             log.Debug(email + " removed column number #" + columnOrdinal + " succses");
@@ -316,6 +317,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             {
                 columns.Remove(columns[size - 1]);
             }
+            size--;
         }
         private void ColumnIsNotFirstColumn(int num)
         {

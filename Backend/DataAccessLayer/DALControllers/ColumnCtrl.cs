@@ -29,6 +29,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         }
         public override bool Insert(Column c)
         {
+            bool fail = false;
             using (var connection = new SQLiteConnection(connectionString))
             {
                 //log.Debug("insert to DB with: "+c.Email +" "+ c.Cname + " " + c.Ord + " " + c.Limit);
@@ -54,26 +55,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 }
                 catch (Exception ex)
                 {
-                    //log error
+                    fail = true;
                 }
                 finally
                 {
                     command.Dispose();
                     connection.Close();
-
+                    if (fail)
+                    {
+                        log.Error("fail to delete from " + tableName);
+                        throw new Exception("fail to delete from " + tableName);
+                    }
                 }
                 return res > 0;
             }
         }
-
-
-        //--SELECT--
-        //select will need to first pull the column data using:
-        //SELECT * FROM columns WHERE {CID}={thisColumnID}
-        //should be only 1 and return it
-        //it will then need to pull the task data using:
-        //SELECT * FROM tasks WHERE {CID}={thisColumnID}
-        //should be a list and return it
-        //issue is differentiatin between the 2 pulls
     }
 }
