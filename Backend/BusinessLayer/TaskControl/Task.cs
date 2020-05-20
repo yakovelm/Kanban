@@ -110,11 +110,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             log.Debug("task #" + ID + "converting to DAL obj in " + email + ".");
             return new DAL.Task(email,ID,Cname,title,desc,due.Ticks,creation.Ticks);
         }
-        public DAL.Task ForDelete() // convert this task to a DataAccessLayer object
-        {
-            log.Debug("task #" + ID + "converting to DAL obj in " + email + ".");
-            return new DAL.Task();
-        }
+
         public void FromDalObject(DAL.Task DalObj)// convert a DataAccessLayer object to a BuisnessLayer task and set this to corresponding values
         {
             log.Debug("task #" + DalObj.ID + " converting from DAL obj.");

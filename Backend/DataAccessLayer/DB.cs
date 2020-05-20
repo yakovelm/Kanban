@@ -71,18 +71,18 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
         private void createColumnTable(SQLiteConnection connection) // build column table
         {
-            string createTableQuery = $@"CREATE TABLE [{SecondTableName}]([{ColumnDBName1}] TEXT NOT NULL,[{ColumnDBName2}] TEXT NOT NULl,[{ColumnDBName3}] INTEGER NOT NULL,[{ColumnDBName4}] INTEGER NOT NULL,PRIMARY KEY(`{ColumnDBName1}`,`{ColumnDBName2}`))";
+            string createTableQuery = $@"CREATE TABLE [{SecondTableName}]([{ColumnDBName1}] TEXT NOT NULL,[{ColumnDBName2}] TEXT NOT NULl,[{ColumnDBName3}] INTEGER NOT NULL,[{ColumnDBName4}] INTEGER NOT NULL,PRIMARY KEY(`{ColumnDBName1}`,`{ColumnDBName2}`),FOREIGN KEY('{ColumnDBName1}') REFERENCES '{FirstTableName}'({UserDBName1}))";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();
         }
         private void createTaskTable(SQLiteConnection connection) // build task table
         {
-            string createTableQuery = $@"CREATE TABLE [{ThirdTableName}]([{TaskDBName1}] TEXT NOT NULL ,[{TaskDBName2}] INTEGER NOT NULL,[{TaskDBName3}] TEXT NOT NULL,[{TaskDBName4}] TEXT NOT NULL,[{TaskDBName5}] TEXT,[{TaskDBName6}] INTEGER NOT NULL,[{TaskDBName7}] INTEGER NOT NULL, PRIMARY KEY(`{TaskDBName1}`,`{TaskDBName2}`))";
+            string createTableQuery = $@"CREATE TABLE [{ThirdTableName}]([{TaskDBName1}] TEXT NOT NULL ,[{TaskDBName2}] INTEGER NOT NULL,[{TaskDBName3}] TEXT NOT NULL,[{TaskDBName4}] TEXT NOT NULL,[{TaskDBName5}] TEXT,[{TaskDBName6}] INTEGER NOT NULL,[{TaskDBName7}] INTEGER NOT NULL, PRIMARY KEY(`{TaskDBName1}`,`{TaskDBName2}`),FOREIGN KEY('{TaskDBName1}') REFERENCES '{SecondTableName}'('{ColumnDBName1}'),FOREIGN KEY('{TaskDBName3}') REFERENCES '{SecondTableName}'('{ColumnDBName2}') )";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();
-        }
+        }	
         private void drop(string s) // drop all tables and rebuild DataBase from nothing
         {
             using (var connection = new SQLiteConnection(connection_string))

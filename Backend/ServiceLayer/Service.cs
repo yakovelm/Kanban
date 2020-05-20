@@ -3,9 +3,12 @@ using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 using UC = IntroSE.Kanban.Backend.BusinessLayer.UserControl;
 using SS = IntroSE.Kanban.Backend.ServiceLayer.SubService;
 using IntroSE.Kanban.Backend.BusinessLayer;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("UnitTests"), InternalsVisibleTo("Tests")]
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
+   
     /// <summary>
     /// The service for using the Kanban board.
     /// It allows executing all of the required behaviors by the Kanban board.
@@ -17,6 +20,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     /// </summary>
     public class Service : IService
     {
+
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private SS.BoardService BS;
         private SS.UserService US;
@@ -35,7 +39,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             DataBase = new DB();
             LoadData();
         }
-
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
         /// </summary>
