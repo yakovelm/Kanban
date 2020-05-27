@@ -18,6 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private const int MaxLength = 25;
         private const int MinLength = 5;
         private User ActiveUser;
+        private int emailHost = 0;
         private List<User> list;
 
         public UserController()
@@ -35,6 +36,29 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             checkPassword(password);
             log.Debug("register values are legal.");
             save(email, password, nickname);
+        }
+        public void register(string email, string password, string nickname,string emailHost) 
+        {
+            NullCheck(email, password, nickname,emailHost);
+            email = email.ToLower();
+            checkEmail(email);
+            checkUser(email, nickname);
+            checkPassword(password);
+            emailHostCheck(emailHost);
+            log.Debug("register values are legal.");
+            save(email, password, nickname);
+        }
+        private void emailHostCheck(string emailHost) 
+        {
+            for(int i = 0; i < list.Count()&this.emailHost==0; i++) 
+            {
+                if (list[i].isMatchEmail(emailHost)) this.emailHost = i + 1; 
+            }
+            if (this.emailHost == 0) 
+            {
+                log.Warn("emailHost given invaule");
+                throw new Exception("emailHost given invaule");
+            }
         }
         private void NullCheck(params object[] s) // checks if any of the given parameters are null or empty
         {
@@ -65,7 +89,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         private void save(string email, string password, string nickname) // saves newly registered user
         {
-            User NU = new User(email, password, nickname);
+            User NU = new User(email, password, nickname,this.emailHost,list.Count()+1);
             NU.Insert();
             log.Info("user created for "+ NU.getemail());
             list.Add(NU);

@@ -17,14 +17,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string UserDBName1 = "email";
         public const string UserDBName2 = "password";
         public const string UserDBName3 = "nickname";
-        public const string TaskDBName1 = "email";
+        public const string UserDBName4 = "emailHost";
+        public const string UserDBName5 = "UID";
+        public const string TaskDBName1 = "boardHost";
         public const string TaskDBName2 = "TID";
-        public const string TaskDBName3 = "Cname";
-        public const string TaskDBName4 = "title";
-        public const string TaskDBName5 = "description";
-        public const string TaskDBName6 = "dueDate";
-        public const string TaskDBName7 = "creationDate";
-        public const string ColumnDBName1 = "email";
+        public const string TaskDBName3 = "assignee";
+        public const string TaskDBName4 = "Cname";
+        public const string TaskDBName5 = "title";
+        public const string TaskDBName6 = "description";
+        public const string TaskDBName7 = "dueDate";
+        public const string TaskDBName8 = "creationDate";
+        public const string ColumnDBName1 = "emailHost";
         public const string ColumnDBName2 = "Cname";
         public const string ColumnDBName3 = "Ord";
         public const string ColumnDBName4 = "lim";
@@ -46,8 +49,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
                     createUserTable(connection);
+                    log.Debug("created UserTable");
                     createColumnTable(connection);
+                    log.Debug("created ColumnTable");
                     createTaskTable(connection);
+                    log.Debug("created TaskTable");
                     connection.Close();
                 }
                 catch (Exception)
@@ -64,21 +70,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
         private void createUserTable(SQLiteConnection connection) // build user table
         {
-            string createTableQuery = $@"CREATE TABLE [{FirstTableName}]([{UserDBName1}] TEXT NOT NULL ,[{UserDBName2}] TEXT NOT NULL,[{UserDBName3}] TEXT NOT NULL, PRIMARY KEY(`{UserDBName1}`))";
+            string createTableQuery = $@"CREATE TABLE [{FirstTableName}]([{UserDBName1}] TEXT NOT NULL UNIQUE ,[{UserDBName2}] TEXT NOT NULL,[{UserDBName3}] TEXT NOT NULL,[{UserDBName4}] INTEGER NOT NULL,[{UserDBName5}] INTEGER NOT NULL,PRIMARY KEY(`{UserDBName5}`,`{UserDBName1}`))";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();
         }
         private void createColumnTable(SQLiteConnection connection) // build column table
         {
-            string createTableQuery = $@"CREATE TABLE [{SecondTableName}]([{ColumnDBName1}] TEXT NOT NULL,[{ColumnDBName2}] TEXT NOT NULl,[{ColumnDBName3}] INTEGER NOT NULL,[{ColumnDBName4}] INTEGER NOT NULL,PRIMARY KEY(`{ColumnDBName1}`,`{ColumnDBName2}`),FOREIGN KEY('{ColumnDBName1}') REFERENCES '{FirstTableName}'({UserDBName1}))";
+            string createTableQuery = $@"CREATE TABLE [{SecondTableName}]([{ColumnDBName1}] INTEGER NOT NULL,[{ColumnDBName2}] TEXT NOT NULL,[{ColumnDBName3}] INTEGER NOT NULL,[{ColumnDBName4}] INTEGER NOT NULL,PRIMARY KEY(`{ColumnDBName1}`,`{ColumnDBName2}`), FOREIGN KEY('{ColumnDBName1}') REFERENCES '{FirstTableName}'('{UserDBName4}'))";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();
         }
         private void createTaskTable(SQLiteConnection connection) // build task table
         {
-            string createTableQuery = $@"CREATE TABLE [{ThirdTableName}]([{TaskDBName1}] TEXT NOT NULL ,[{TaskDBName2}] INTEGER NOT NULL,[{TaskDBName3}] TEXT NOT NULL,[{TaskDBName4}] TEXT NOT NULL,[{TaskDBName5}] TEXT,[{TaskDBName6}] INTEGER NOT NULL,[{TaskDBName7}] INTEGER NOT NULL, PRIMARY KEY(`{TaskDBName1}`,`{TaskDBName2}`),FOREIGN KEY('{TaskDBName1}') REFERENCES '{SecondTableName}'('{ColumnDBName1}'),FOREIGN KEY('{TaskDBName3}') REFERENCES '{SecondTableName}'('{ColumnDBName2}') )";
+            string createTableQuery = $@"CREATE TABLE [{ThirdTableName}]([{TaskDBName1}] INTEGER NOT NULL ,[{TaskDBName2}] INTEGER NOT NULL,[{TaskDBName3}] TEXT NOT NULL,[{TaskDBName4}] TEXT NOT NULL,[{TaskDBName5}] TEXT NOT NULL,[{TaskDBName6}] TEXT,[{TaskDBName7}] INTEGER NOT NULL,[{TaskDBName8}] INTEGER NOT NULL, PRIMARY KEY(`{TaskDBName1}`,`{TaskDBName2}`),FOREIGN KEY('{TaskDBName1}') REFERENCES '{SecondTableName}'('{ColumnDBName1}'),FOREIGN KEY('{TaskDBName3}') REFERENCES '{FirstTableName}'('{UserDBName1}'),FOREIGN KEY('{TaskDBName1}') REFERENCES '{SecondTableName}'('{ColumnDBName1}') )";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();

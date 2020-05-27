@@ -64,7 +64,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 TC.Task task = BC.AddTask(email, title, desciption, dueTime);
-                return new Response<Task>(new Task(task.getID(), task.getCreation(), task.GetDue(), title, desciption));
+                return new Response<Task>(new Task(task.getID(), task.getCreation(), task.GetDue(), title, desciption,null));
             }
             catch (Exception e) { return (new Response<Task>(e.Message)); }
         }
@@ -136,7 +136,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 List<TC.Column> listColumnBL = BC.getColumns(email);
                 List<string> listNames = new List<string>();
                 foreach (TC.Column a in listColumnBL) { listNames.Add(a.getName()); }
-                return new Response<Board>(new Board(listNames));
+                return new Response<Board>(new Board(listNames,null));
             }
             catch (Exception e) { return new Response<Board>(e.Message); }
         }
@@ -199,7 +199,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 
         private Task chengeType(TC.Task taskBL) // convert a BuisnessLayer task to a ServiceLayer task
         {
-            return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.GetDue(), taskBL.getTitle(), taskBL.getDesc());
+            return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.GetDue(), taskBL.getTitle(), taskBL.getDesc(),null);
         }
         private Column chengeType(TC.Column columnBL)// convert a BuisnessLayer column to a ServiceLayer column
         {

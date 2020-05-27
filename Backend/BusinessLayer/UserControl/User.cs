@@ -10,17 +10,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
     class User : IPersistentObject<DAL.User>
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private int UID;
         private String email;
         private String password;
         private String nickname;
+        private int emailHost=0;
+        private int UID;
 
         public User() { }
-        public User(string email, string password, string nickname) // new user creation (register) constructor
+        public User(string email, string password, string nickname,int emailHost,int UID) // new user creation (register) constructor
         {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
+            this.emailHost = emailHost;
+            this.UID = UID;
         }
         public string getemail()
         {
@@ -41,7 +44,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public DAL.User ToDalObject() // converts this object to a DataAccessLayer object
         {
             log.Debug("converting user to DAL obj for " + email + ".");
-            return new DAL.User(email, password, nickname);
+            return new DAL.User(email, password, nickname,emailHost,UID);
         }
 
         public void FromDalObject(DAL.User DalObj) // converts a DataAccessLayer object to an object of this type and sets this to the corresponding values
@@ -52,6 +55,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 this.email = DalObj.email;
                 this.password = DalObj.password;
                 this.nickname = DalObj.nickname;
+                this.emailHost = (int)DalObj.emailHost;
+                this.UID =(int) DalObj.UID;
             }
             catch (Exception e)
             {

@@ -44,6 +44,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
+        public Response register(string email, string password, string nickname,string emailHost) 
+        {
+            try
+            {
+                log.Info("registering user " + email + ".");
+                uc.register(email, password, nickname,emailHost);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                log.Info("register failed. due to " + e.Message); // can fail due to many reasons, added catch all.
+                return new Response(e.Message);
+            }
+        }
         public Response Drop() //drop all user data 
         {
             try

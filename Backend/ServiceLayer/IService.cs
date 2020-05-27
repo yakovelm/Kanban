@@ -17,6 +17,38 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<returns cref="Response">The response of the action</returns>
         Response Register(string email, string password, string nickname);
 
+
+		/// <summary>
+		/// Registers a new user and joins the user to an existing board.
+		/// </summary>
+		/// <param name="email">The email address of the user to register</param>
+		/// <param name="password">The password of the user to register</param>
+		/// <param name="nickname">The nickname of the user to register</param>
+		/// <param name="emailHost">The email address of the host user which owns the board</param>
+		/// <returns>A response object. The response should contain a error message in case of an error<returns>
+		Response Register(string email, string password, string nickname, string emailHost);
+				
+
+		
+		/// <summary>
+        /// Assigns a task to a user
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        
+		/// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee);	
+		
+		/// <summary>
+        /// Delete a task
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        		
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        Response DeleteTask(string email, int columnOrdinal, int taskId);
+
         /// <summary>
         /// Log in an existing user
         /// </summary>

@@ -33,27 +33,27 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string tn3 = "aleks";
 
                 //proper login tests - all should work
-                //print(s.LoadData());
+                print(s.LoadData());
                 print(s.Register(te3, tp3, tn3));
-                print(s.Login(te3, tp3));
-                print(s.GetBoard(te3).toString());
-                print(s.AddColumn(te3, 0, "ADD1").toString());
-                print(s.GetBoard(te3).toString());
-                print(s.AddColumn(te3, 1, "ADD2").toString());
-                print(s.GetBoard(te3).toString());
-                print(s.Logout(te3));
-                print(s.DeleteData());
-                print(s.Register(te3, tp3, tn3));
-                print(s.Login(te3, tp3));
-                print(s.AddColumn(te3, 1, "ADD2").toString());
-                print(s.GetBoard(te3).toString());
-                print(s.AddColumn(te3, 1, "ADD$").toString());
-                print(s.GetBoard(te3).toString());
-                print(s.GetColumn(te3, 0).toString());
-                print(s.GetColumn(te3, 1).toString());
-                print(s.GetColumn(te3, 2).toString());
-                print(s.GetColumn(te3, 3).toString());
-                print(s.GetColumn(te3, 4).toString());
+                //print(s.Login(te3, tp3));
+                //print(s.GetBoard(te3).toString());
+                //print(s.AddColumn(te3, 0, "ADD1").toString());
+                //print(s.GetBoard(te3).toString());
+                //print(s.AddColumn(te3, 1, "ADD2").toString());
+                //print(s.GetBoard(te3).toString());
+                //print(s.Logout(te3));
+                //print(s.DeleteData());
+                //print(s.Register(te3, tp3, tn3));
+                //print(s.Login(te3, tp3));
+                //print(s.AddColumn(te3, 1, "ADD2").toString());
+                //print(s.GetBoard(te3).toString());
+                //print(s.AddColumn(te3, 1, "ADD$").toString());
+                //print(s.GetBoard(te3).toString());
+                //print(s.GetColumn(te3, 0).toString());
+                //print(s.GetColumn(te3, 1).toString());
+                //print(s.GetColumn(te3, 2).toString());
+                //print(s.GetColumn(te3, 3).toString());
+                //print(s.GetColumn(te3, 4).toString());
 
                 //print(s.Logout(te));
 

@@ -23,16 +23,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 {
                     connection.Open();
                     command.CommandText = $"INSERT INTO {tableName} ({User.EmailAtt} ,{User.passwordAtt}," +
-                        $"{User.nicknameAtt}) " +
-                        $"VALUES (@emailVal,@passwordVal,@nicknameVal);";
+                        $"{User.nicknameAtt},{User.emailHostAtt},{User.UIDAtt}) " +
+                        $"VALUES (@emailVal,@passVal,@nickVal,@emailHostVal,@UIDVal);";
 
-                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", obj.email);
-                    SQLiteParameter passwordParam = new SQLiteParameter(@"passwordVal", obj.password);
-                    SQLiteParameter nicknameParam = new SQLiteParameter(@"nicknameVal", obj.nickname);
+                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", obj.Email);
+                    SQLiteParameter passParam = new SQLiteParameter(@"passVal", obj.password);
+                    SQLiteParameter nickParam = new SQLiteParameter(@"nickVal", obj.nickname);
+                    SQLiteParameter emailHostParam = new SQLiteParameter(@"emailHostVal", obj.emailHost);
+                    SQLiteParameter UIDParam = new SQLiteParameter(@"UIDVal", obj.UID);
+
+
                     command.Parameters.Add(emailParam);
-                    command.Parameters.Add(passwordParam);
-                    command.Parameters.Add(nicknameParam);
-
+                    command.Parameters.Add(passParam);
+                    command.Parameters.Add(nickParam);
+                    command.Parameters.Add(emailHostParam);
+                    command.Parameters.Add(UIDParam);
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                 }
@@ -53,7 +58,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         }
         protected override User ConvertReaderToObject(SQLiteDataReader reader)
         {
-            User result = new User(reader.GetString(0), reader.GetString(1), reader.GetString(2));
+            User result = new User(reader.GetString(0), reader.GetString(1), reader.GetString(2),reader.GetInt64(3),reader.GetInt64(4));
             return result;
         }
     }
