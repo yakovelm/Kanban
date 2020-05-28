@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private const int MaxLength = 25;
         private const int MinLength = 5;
         private User ActiveUser;
-        private int emailHost = 0;
+        private int emailHost;
         private List<User> list;
 
         public UserController()
@@ -35,6 +35,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             checkUser(email, nickname);
             checkPassword(password);
             log.Debug("register values are legal.");
+            this.emailHost = list.Count() + 1;
             save(email, password, nickname);
         }
         public void register(string email, string password, string nickname,string emailHost) 

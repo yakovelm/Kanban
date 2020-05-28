@@ -35,6 +35,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //proper login tests - all should work
                 print(s.LoadData());
                 print(s.Register(te3, tp3, tn3));
+                print(s.Register(te2,tp2,tn2,te3));
+                print(s.Register(te,tp,tn));
                 //print(s.Login(te3, tp3));
                 //print(s.GetBoard(te3).toString());
                 //print(s.AddColumn(te3, 0, "ADD1").toString());
