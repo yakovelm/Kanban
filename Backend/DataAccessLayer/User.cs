@@ -16,14 +16,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string emailHostAtt = DB.UserDBName4;
         public const string UIDAtt = DB.UserDBName5;
 
-        public string email { get; }
         public string password;
         public string nickname { get; }
         public long emailHost { get; }
         public long UID { get; }
         public User(string email, string password, string nickname,long emailHost,long UID):base(new UserCtrl())
         {
-            this.email = email;
+            Email = email;
             this.password = password;
             this.nickname = nickname;
             this.emailHost = emailHost;
@@ -31,7 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
         protected override string MakeFilter() //make a filter for specific user
         {
-            return $"WHERE {EmailAtt}='{email}'";
+            return $"WHERE {EmailAtt}='{Email}'";
         }
         public void Insert()
         {
