@@ -19,11 +19,53 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
             connectionString = $"Data Source={path}; Version=3;";
         }
-
-        public List<string> LoadData()
+        public int FindBoard(string s)
         {
             bool fail = false;
-            List<string> results = new List<string>();
+            int result=-1;
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"SELECT {EmailAtt} FROM {tableName} WHERE { EmailAtt}= '{s}'";
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        result =(int) dataReader.GetInt64(4);
+                    }
+                }
+                catch (Exception e)
+                {
+                    fail = true;
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+
+                    command.Dispose();
+                    connection.Close();
+                    if (fail)
+                    {
+                        log.Error("fail to delete from " + tableName);
+                        throw new Exception("fail to delete from " + tableName);
+                    }
+                }
+
+            }
+            return result;
+        }
+
+        public List<Tuple<string,long,long>> LoadData()
+        {
+            bool fail = false;
+            List<Tuple<string, long, long>> results = new List<Tuple<string, long, long>>();
             using (var connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -36,7 +78,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
                     while (dataReader.Read())
                     {
-                        results.Add(dataReader.GetString(0));
+                        results.Add(Tuple.Create(dataReader.GetString(0), dataReader.GetInt64(3), dataReader.GetInt64(4)));
                     }
                 }
                 catch(Exception e)

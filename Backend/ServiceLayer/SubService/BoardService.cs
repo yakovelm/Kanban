@@ -28,6 +28,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             }
             catch (Exception e) { return new Response(e.Message); }
         }
+        public Response Register(string email, string emailhost)
+        {
+            try
+            {
+                BC.Register(email, emailhost);
+                return new Response();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
         public Response Login(string email) // log a user to be the current board holder
         {
             log.Info(email + " Logging in to the board.");
@@ -207,6 +219,33 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             foreach (TC.Task taskBL in columnBL.getAll())
             { TaskListSL.Add(chengeType(taskBL)); }
             return new Column(TaskListSL, columnBL.getName(), columnBL.getLimit());
+        }
+        public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            try
+            {
+                log.Info(email + " attempting to move to left, column number #" + columnOrdinal);
+                BC.AssignTask(email, columnOrdinal, taskId, emailAssignee);
+                return new Response();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+        public Response DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+
+            try
+            {
+                log.Info($"{email} attempting to Delete task #{taskId} from column #{columnOrdinal}");
+                BC.DeleteTask(email, columnOrdinal, taskId);
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
         }
     }
 }
