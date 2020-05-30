@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Task : DalObject<Task>
     {
-
+        public const string HostAtt=DB.TaskDBName1;
         public const string IDAtt = DB.TaskDBName2;
         public const string ColumnAtt = DB.TaskDBName3;
         public const string TitleAtt = DB.TaskDBName4;
@@ -23,7 +23,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string Desc { get; set; }
         public long Due { get; set; }
         public long Create { get; set; }
-        public Task(string Email, long ID, string Cname, string Title, string Desc, long Due, long Cre) : base(new TaskCtrl())
+        public long HostID { get; set; }
+        public Task(string Email,long ID, int HostID, string Cname, string Title, string Desc, long Due, long Cre) : base(new TaskCtrl())
         {
             this.Email = Email;
             this.ID = ID;
@@ -32,18 +33,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.Desc = Desc;
             this.Due = Due;
             this.Create = Cre;
+            this.HostID = HostID;
         }
         protected override string MakeFilter()
         {
-            return $"WHERE {EmailAtt}='{Email}' AND {IDAtt}={ID}";
+            return $"WHERE {HostAtt}={HostID} AND {IDAtt}={ID}";
         }
         public Task() : base(new TaskCtrl())
         {
             log.Debug("creating DAL task");
         }
-        public List<Task> GetAllTasks(string email,string Cname)
+        public List<Task> GetAllTasks(int host,string Cname)
         {
-            List<Task> c= controller.Select($"WHERE {EmailAtt}='{email}' AND {ColumnAtt}='{Cname}'");
+            List<Task> c= controller.Select($"WHERE {HostAtt}={host} AND {ColumnAtt}='{Cname}'");
             log.Debug(c.Count());
             return c;
         }

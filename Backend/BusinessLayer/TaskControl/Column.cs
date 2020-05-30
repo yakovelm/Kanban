@@ -11,24 +11,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
     class Column : IPersistentObject<DAL.Column>
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private string email;
+        private string creator;
         private int ord;
         private const int maxname= 15;
+        private const int defLimit = 100;
         private string name;
         private List<Task> tasks;
         private int limit;
         private int size;
-        public Column(string email, string name,int ord)
+        public Column(string creator, string name,int ord)
         {
-            log.Info("creating new empty " + name + " column for " + email+".");
-            this.email = email;
+            log.Info("creating new empty " + name + " column for " + creator + ".");
+            this.creator = creator;
             if (name == null || name=="" || name.Length>maxname) throw new Exception("illegal name.");
             this.name = name;
             if (ord < 0) throw new Exception("ordinal illegal.");
             this.ord = ord;
             tasks = new List<Task>();
             size = 0;
-            limit = -1;
+            limit = defLimit;
             DAL.Column Dcol = ToDalObject();
             Dcol.Add();
         }
@@ -66,7 +67,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void setLimit(int limit) // set the limit of this column
         {
-            log.Info("changing task limit for column: " + name + " in " + email + " from: " + this.limit + " to: " + limit + ".");
+            log.Info("changing task limit for column: " + name + " in " + creator + " from: " + this.limit + " to: " + limit + ".");
             if (limit < size & limit > 0)
             {
                 log.Warn("limit cannot be lower than current amount of tasks. limit not changed.");
@@ -89,7 +90,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void addTask(Task task) // add a new task to this column
         {
-            log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + email+".");
+            log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + creator + ".");
             if (limit > 0 & limit <= size)
             {
                 log.Warn("task limit reached, task not added.");
@@ -102,7 +103,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public Task deleteTask(Task task) // delete a task from this column (if exists) and return it
         {
-            log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + email+".");
+            log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + creator + ".");
             if (tasks.Remove(task))
             {
                 size--;
@@ -113,7 +114,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public Task getTask(int ID) // get a task from this column by ID
         {
-            log.Debug("retrieving task with ID: " + ID + " from column: " + name + " in " + email + ".");
+            log.Debug("retrieving task with ID: " + ID + " from column: " + name + " in " + creator + ".");
             foreach (Task task in tasks)
             {
                 if (task.getID() == ID)
@@ -126,7 +127,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public DAL.Column ToDalObject() // convert this column to a DataAccessLayer object
         {
-            log.Debug("column " + name + " converting to DAL obj in " + email + ".");
+            log.Debug("column " + name + " converting to DAL obj in " + creator + ".");
             try
             {
                 List<DAL.Task> Dtasks = new List<DAL.Task>();
@@ -136,7 +137,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                     Dtasks.Add(t.ToDalObject()); 
                 }
                 log.Debug("post foreach");
-                DAL.Column c= new DAL.Column(email, name, ord, limit);
+                DAL.Column c= new DAL.Column(creator, name, ord, limit);
                 log.Debug("made dal column.");
                 return c;
             }
@@ -151,11 +152,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             log.Debug("column " + DalObj.Cname + " converting from DAL obj in " + DalObj.Email + ".");
             try
             {
-                email = DalObj.Email;
+                creator = DalObj.Email;
                 name = DalObj.Cname;
                 ord = (int)DalObj.Ord;
                 limit = (int)DalObj.Limit;
-                log.Debug(email+" "+name+" "+ord+" "+limit);
+                log.Debug(creator + " "+name+" "+ord+" "+limit);
                 DalObj.LoadTasks();
                 log.Debug(DalObj.getTasks().Count());
                 foreach (DAL.Task t in DalObj.getTasks()) // convert each task in column individually
@@ -176,36 +177,36 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 throw e;
             }
         }
-        public void editTitle(int ID, string title) // update title of this task
+        public void editTitle(int ID, string title, string assig) // update title of this task
         {
             Task t = getTask(ID);
             if (t == null)
             {
                 throw new Exception("task does not exist in this columm.");
             }
-            t.editTitle(title);
+            t.editTitle(assig,title);
         }
-        public void editDesc(int ID, string desc)// update description of this task
+        public void editDesc(int ID, string desc, string assig)// update description of this task
         {
             Task t = getTask(ID);
             if (t == null)
             {
                 throw new Exception("task does not exist in this columm.");
             }
-            t.editDesc(desc);
+            t.editDesc(assig,desc);
         }
-        public void editDue(int ID, DateTime due)// update due date of this task
+        public void editDue(int ID, DateTime due, string assig)// update due date of this task
         {
             Task t = getTask(ID);
             if (t == null)
             {
                 throw new Exception("task does not exist in this columm.");
             }
-            t.editDue(due);
+            t.editDue(assig, due);
         }
         public void delete()
         {
-            DAL.Column c = new DAL.Column(email,name);
+            DAL.Column c = new DAL.Column(creator,name);
             c.Delete();
         }
     }
