@@ -19,8 +19,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private DateTime due;
         private DateTime creation;
         private string email;
+        private int hostID;
         public Task() { log.Debug("new empty task obj created for " + email); } // empty constructor for loading whole columns from json
-        public Task(int ID,string Cname, string title, string desc, DateTime due, string email)
+        public Task(int ID, int hostID, string Cname, string title, string desc, DateTime due, string email)
         {
             log.Info("creating new task: #" + ID + " title: " + title + " for " + email);
             if(title==null || title.Equals(""))
@@ -43,6 +44,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Warn("Description too long");
                 throw new Exception("Description too long.");
             }
+            this.hostID = hostID;
             this.ID = ID;
             this.Cname = Cname;
             this.title = title;
@@ -61,6 +63,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public DateTime getCreation() { return creation;}
         public int getID() { return ID;}
         public DateTime GetDue() { return due; }
+
+        private void checkAssig(string assig)
+        {
+            if (assig != email) throw new Exception("non assigned user tried to chane task.");
+        }
+        public void assignEmail(string assig)
+        {
+            log.Info("task #" + ID + "asignee changing from " + email + " to " + assig+".");
+            email = assig;
+        }
         public void editColumn(string Cname) // update title of this task
         {
             log.Info("task #" + ID + "column changing from " + this.Cname + " to " + Cname + " for " + email + ".");
@@ -68,8 +80,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Task Dtask = ToDalObject();
             Dtask.UpdateColumn(Cname);
         }
-        public void editTitle(string title) // update title of this task
+        public void editTitle(string assig,string title) // update title of this task
         {
+            checkAssig(assig);
             log.Info("task #" + ID + "title changing from " + this.title + " to " + title + " for " + email + ".");
             if (title == null || title.Length > Tmax |title.Equals(""))
             {
@@ -80,8 +93,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Task Dtask = ToDalObject();
             Dtask.UpdateTitle(title);
         }
-        public void editDesc(string desc) // update description of this task
+        public void editDesc(string assig, string desc) // update description of this task
         {
+            checkAssig(assig);
             log.Info("task #" + ID + "description changing from " + this.desc + " to " + desc + " for " + email + ".");
             if (desc != null && desc.Length > Dmax)
             {
@@ -92,8 +106,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Task Dtask = ToDalObject();
             Dtask.UpdateDesc(desc);
         }
-        public void editDue(DateTime due) // update due date of this task
+        public void editDue(string assig, DateTime due) // update due date of this task
         {
+            checkAssig(assig);
             log.Info("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email + ".");
             if (due==null || due < DateTime.Now)
             {
@@ -108,7 +123,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public DAL.Task ToDalObject() // convert this task to a DataAccessLayer object
         {
             log.Debug("task #" + ID + "converting to DAL obj in " + email + ".");
-            return new DAL.Task(email,ID,Cname,title,desc,due.Ticks,creation.Ticks);
+            return new DAL.Task(email,ID,hostID,Cname,title,desc,due.Ticks,creation.Ticks);
         }
 
         public void FromDalObject(DAL.Task DalObj)// convert a DataAccessLayer object to a BuisnessLayer task and set this to corresponding values
@@ -117,6 +132,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             try
             {
                 email = DalObj.Email;
+                hostID = (int)DalObj.HostID;
                 Cname = DalObj.Cname;
                 title = DalObj.Title;
                 ID = (int)DalObj.ID;
