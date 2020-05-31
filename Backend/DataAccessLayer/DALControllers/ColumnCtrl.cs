@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         public ColumnCtrl() : base(ColumnTableName) { }
         protected override Column ConvertReaderToObject(SQLiteDataReader reader)
         {
-            Column result = new Column(reader.GetString(0), reader.GetString(1), reader.GetInt64(2), reader.GetInt64(3));
+            Column result = new Column(reader.GetInt64(0), reader.GetString(1), reader.GetInt64(2), reader.GetInt64(3));
             return result;
         }
         public override bool Insert(Column c) // insert given DAL colum into DB
@@ -27,15 +27,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {tableName} ({Column.EmailAtt} ,{Column.NameAtt}," +
+                    command.CommandText = $"INSERT INTO {tableName} ({Column.HostAtt} ,{Column.NameAtt}," +
                         $"{Column.OrdAtt},{Column.LimitAtt}) " +
-                        $"VALUES (@emailVal,@nameVal,@ordVal,@limitVal)";
-                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", c.Email);
+                        $"VALUES (@hostVal,@nameVal,@ordVal,@limitVal)";
+                    SQLiteParameter hostParam = new SQLiteParameter(@"hostVal", c.Host);
                     SQLiteParameter CnameParam = new SQLiteParameter(@"nameVal", c.Cname);
                     SQLiteParameter OrdParam = new SQLiteParameter(@"ordVal", c.Ord);
                     SQLiteParameter LimitParam = new SQLiteParameter(@"limitVal", c.Limit);
 
-                    command.Parameters.Add(emailParam);
+                    command.Parameters.Add(hostParam);
                     command.Parameters.Add(CnameParam);
                     command.Parameters.Add(OrdParam);
                     command.Parameters.Add(LimitParam);

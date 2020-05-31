@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public long Due { get; set; }
         public long Create { get; set; }
         public long HostID { get; set; }
-        public Task(string Email,long ID, int HostID, string Cname, string Title, string Desc, long Due, long Cre) : base(new TaskCtrl())
+        public Task(long HostID, long ID, string Email, string Cname, string Title, string Desc, long Due, long Cre) : base(new TaskCtrl())
         {
             this.Email = Email;
             this.ID = ID;
@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             log.Debug("creating DAL task");
         }
-        public List<Task> GetAllTasks(int host,string Cname)
+        public List<Task> GetAllTasks(long host,string Cname)
         {
             List<Task> c= controller.Select($"WHERE {HostAtt}={host} AND {ColumnAtt}='{Cname}'");
             log.Debug(c.Count());

@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
     class Column : IPersistentObject<DAL.Column>
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private string creator;
+        private int host;
         private int ord;
         private const int maxname= 15;
         private const int defLimit = 100;
@@ -19,10 +19,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private List<Task> tasks;
         private int limit;
         private int size;
-        public Column(string creator, string name,int ord)
+        public Column(int host, string name,int ord)
         {
-            log.Info("creating new empty " + name + " column for " + creator + ".");
-            this.creator = creator;
+            log.Info("creating new empty " + name + " column for " + host + ".");
+            this.host = host;
             if (name == null || name=="" || name.Length>maxname) throw new Exception("illegal name.");
             this.name = name;
             if (ord < 0) throw new Exception("ordinal illegal.");
@@ -67,7 +67,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void setLimit(int limit) // set the limit of this column
         {
-            log.Info("changing task limit for column: " + name + " in " + creator + " from: " + this.limit + " to: " + limit + ".");
+            log.Info("changing task limit for column: " + name + " in " + host + " from: " + this.limit + " to: " + limit + ".");
             if (limit < size & limit > 0)
             {
                 log.Warn("limit cannot be lower than current amount of tasks. limit not changed.");
@@ -90,7 +90,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void addTask(Task task) // add a new task to this column
         {
-            log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + creator + ".");
+            log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + host + ".");
             if (limit > 0 & limit <= size)
             {
                 log.Warn("task limit reached, task not added.");
@@ -103,7 +103,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public Task deleteTask(Task task) // delete a task from this column (if exists) and return it
         {
-            log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + creator + ".");
+            log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + host + ".");
             if (tasks.Remove(task))
             {
                 size--;
@@ -114,7 +114,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public Task getTask(int ID) // get a task from this column by ID
         {
-            log.Debug("retrieving task with ID: " + ID + " from column: " + name + " in " + creator + ".");
+            log.Debug("retrieving task with ID: " + ID + " from column: " + name + " in " + host + ".");
             foreach (Task task in tasks)
             {
                 if (task.getID() == ID)
@@ -127,7 +127,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public DAL.Column ToDalObject() // convert this column to a DataAccessLayer object
         {
-            log.Debug("column " + name + " converting to DAL obj in " + creator + ".");
+            log.Debug("column " + name + " converting to DAL obj in " + host + ".");
             try
             {
                 List<DAL.Task> Dtasks = new List<DAL.Task>();
@@ -137,7 +137,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                     Dtasks.Add(t.ToDalObject()); 
                 }
                 log.Debug("post foreach");
-                DAL.Column c= new DAL.Column(creator, name, ord, limit);
+                DAL.Column c= new DAL.Column(host, name, ord, limit);
                 log.Debug("made dal column.");
                 return c;
             }
@@ -152,11 +152,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             log.Debug("column " + DalObj.Cname + " converting from DAL obj in " + DalObj.Email + ".");
             try
             {
-                creator = DalObj.Email;
+                host = (int)DalObj.Host;
                 name = DalObj.Cname;
                 ord = (int)DalObj.Ord;
                 limit = (int)DalObj.Limit;
-                log.Debug(creator + " "+name+" "+ord+" "+limit);
+                log.Debug(host + " "+name+" "+ord+" "+limit);
                 DalObj.LoadTasks();
                 log.Debug(DalObj.getTasks().Count());
                 foreach (DAL.Task t in DalObj.getTasks()) // convert each task in column individually
@@ -206,7 +206,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void delete()
         {
-            DAL.Column c = new DAL.Column(creator,name);
+            DAL.Column c = new DAL.Column(host, name);
             c.Delete();
         }
         public void ChangeColumnName(string cur,int columnOrdinal, string newName)

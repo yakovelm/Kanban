@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string TaskDBName6 = "description";
         public const string TaskDBName7 = "dueDate";
         public const string TaskDBName8 = "creationDate";
-        public const string ColumnDBName1 = "emailHost";
+        public const string ColumnDBName1 = "Host";
         public const string ColumnDBName2 = "Cname";
         public const string ColumnDBName3 = "Ord";
         public const string ColumnDBName4 = "lim";

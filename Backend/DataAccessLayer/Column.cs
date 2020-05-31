@@ -11,48 +11,50 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Column : DalObject<Column>
     {
+        public const string HostAtt = DB.ColumnDBName1;
         public const string NameAtt = DB.ColumnDBName2;
         public const string OrdAtt = DB.ColumnDBName3;
         public const string LimitAtt = DB.ColumnDBName4;
         private List<Task> tasks;
+        public long Host { get; set; }
         public string Cname { get; set; }
         public long Ord { get; set; }
         public long Limit { get; set; }
-        public Column(string Email, string Cname, long Ord, long Limit) : base(new ColumnCtrl())
+        public Column(long Host, string Cname, long Ord, long Limit) : base(new ColumnCtrl())
         {
-            this.Email = Email;
+            this.Host = Host;
             this.Cname = Cname;
             this.Ord = Ord;
             this.Limit = Limit;
             tasks = new List<Task>();
         }
-        public Column(string Email, string Cname): base(new ColumnCtrl()) //filter only constructor for loading a single column
+        public Column(long Host, string Cname): base(new ColumnCtrl()) //filter only constructor for loading a single column
         {
-            this.Email = Email;
+            this.Host = Host;
             this.Cname = Cname;
         }
 
         protected override string MakeFilter()
         {
-            return $"WHERE {EmailAtt}='{Email}' AND {NameAtt}='{Cname}'";
+            return $"WHERE {HostAtt}={Host} AND {NameAtt}='{Cname}'";
         }
 
         public Column() : base(new ColumnCtrl()) { } //empty constructor for loading all column data
-        public List<Column> GetAllColumns(string email)
+        public List<Column> GetAllColumns(string Host)
         {
-            List<Column> output = controller.Select($"WHERE {EmailAtt}='{email}'");
+            List<Column> output = controller.Select($"WHERE {HostAtt}='{Host}'");
             foreach (Column c in output)
             {
                 c.LoadTasks();
                 log.Debug("loaded tasks for column: "+c.Cname+" "+c.getTasks().Count());
             }
-            log.Debug("columns loaded for " + email + " with size: " + output.Count());
+            //log.Debug("columns loaded for " + email + " with size: " + output.Count());
             return output;
         }
         public void LoadTasks()
         {
             Task temp = new Task();
-            tasks = temp.GetAllTasks(Email,Cname);
+            tasks = temp.GetAllTasks(Host,Cname);
         }
         public List<Task> getTasks() { return tasks; }
         public void UpdateLimit(long limit)
