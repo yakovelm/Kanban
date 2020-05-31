@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string SecondTableName = "columns";
         public const string ThirdTableName = "tasks";
         public const string UserDBName1 = "email";
-        public const string UserDBName2 = "password";
+        public const string UserDBName2 = "pw";
         public const string UserDBName3 = "nickname";
         public const string UserDBName4 = "emailHost";
         public const string UserDBName5 = "UID";
@@ -54,6 +54,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     log.Debug("created ColumnTable");
                     createTaskTable(connection);
                     log.Debug("created TaskTable");
+                    //UNIQUEVal(connection);
                     connection.Close();
                 }
                 catch (Exception)
@@ -68,9 +69,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
             }
         }
+
+        
         private void createUserTable(SQLiteConnection connection) // build user table
         {
-            string createTableQuery = $@"CREATE TABLE [{FirstTableName}]([{UserDBName1}] TEXT NOT NULL UNIQUE ,[{UserDBName2}] TEXT NOT NULL,[{UserDBName3}] TEXT NOT NULL,[{UserDBName4}] INTEGER NOT NULL,[{UserDBName5}] INTEGER NOT NULL,PRIMARY KEY(`{UserDBName5}`,`{UserDBName1}`))";
+            string createTableQuery = $@"CREATE TABLE [{FirstTableName}]([{UserDBName5}] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [{UserDBName1}] TEXT NOT NULL UNIQUE, [{UserDBName2}] TEXT NOT NULL,[{UserDBName3}] TEXT NOT NULL,[{UserDBName4}] INTEGER NOT NULL)";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();

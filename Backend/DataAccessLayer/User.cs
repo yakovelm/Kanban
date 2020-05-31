@@ -20,7 +20,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string nickname { get; }
         public long emailHost { get; }
         public long UID { get; }
-        public User(string email, string password, string nickname,long emailHost,long UID):base(new UserCtrl())
+        public User(long UID,string email, string password, string nickname,long emailHost):base(new UserCtrl())
         {
             Email = email;
             this.password = password;
