@@ -43,9 +43,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public void Register()
         {
-            columns.Add(new TC.Column(email, "backlog", 0));
-            columns.Add(new TC.Column(email, "in progress", 1));
-            columns.Add(new TC.Column(email, "done", 2));
+            columns.Add(new TC.Column(host, "backlog", 0));
+            columns.Add(new TC.Column(host, "in progress", 1));
+            columns.Add(new TC.Column(host, "done", 2));
             size = 3;
             log.Debug("a new board for " + email + " has been made.");
         }
@@ -253,7 +253,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 log.Warn(email + " has entered exist column name.");
                 throw new Exception("The column name you searched for is invalid.");
             }
-            columns.Insert(columnOrdinal,new TC.Column(email, Name,columnOrdinal));
+            columns.Insert(columnOrdinal,new TC.Column(host, Name,columnOrdinal));
             size++;
             setOrdColumns();
             log.Debug(email + " added column number #" + columnOrdinal + " succses");
