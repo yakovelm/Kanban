@@ -81,6 +81,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         Response LimitColumnTasks(string email, int columnOrdinal, int limit);
 
         /// <summary>
+        /// Change the name of a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="newName">The new name.</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        Response ChangeColumnName(string email, int columnOrdinal, string newName);
+
+
+        /// <summary>
         /// Add a new task.
         /// </summary>
         /// <param name="email">Email of the user. The user must be logged in.</param>

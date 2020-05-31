@@ -209,5 +209,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Column c = new DAL.Column(creator,name);
             c.Delete();
         }
+        public void ChangeColumnName(string cur,int columnOrdinal, string newName)
+        {
+            throw new Exception("/////////////////////////////////////////////////////////////////////");
+        }
     }
 }

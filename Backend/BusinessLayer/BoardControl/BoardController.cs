@@ -14,46 +14,137 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private Dictionary<string, Board> BC;
+        private Dictionary<string, int> hosts;
+        private Dictionary<int, string> IdToEmail;
         private Board Cur;
+        private string CurEmail;
+        private DC.BoardCtrl DBC;
 
         public BoardController()
         {
             BC = new Dictionary<string, Board>();
+            hosts = new Dictionary<string, int>();
+            IdToEmail = new Dictionary<int, string>();
             Cur = null;
+            CurEmail = null;
+            DBC = new DC.BoardCtrl();
             log.Debug("BoardController created.");
         }
 
         public void LoadData() // load board dictionary (boards keyd by email) of all saved boards
         {
-            DC.BoardCtrl DBC = new DC.BoardCtrl();
-            List<string> temp = DBC.LoadData();
-            foreach(string b in temp)
-            {
-                BC.Add(b, new Board(b));
-            }
+            List<Tuple<string, long, long>> temp = DBC.LoadData();
+            temp.ForEach(x => { IdToEmail.Add((int)x.Item3, x.Item1); });
+            temp.ForEach(x => { hosts.Add(x.Item1, (int)x.Item3); });
+            temp.Where(x => x.Item2 == x.Item3).ToList().ForEach(x => { BC.Add(x.Item1, new Board(x.Item1, (int)x.Item3)); BC[x.Item1].LoadData(); });
+            temp.Where(x => x.Item2 != x.Item3).ToList().ForEach(x => { BC[IdToEmail[(int)x.Item2]].Join(x.Item1); });
             log.Debug("board list has been loaded.");
+        }
+        public void Register(string email)
+        {
+            email = email.ToLower();
+            int ID = FindID(email);// we can ussome that the length of IDtoEmail +1 is the ID...
+            if (ExistBoardForThisID(ID))
+            {
+                log.Warn($"for this id #{ID} already exist a Board.");
+                throw new Exception($"for this id #{ID} already exist a Board.");
+            }
+            IdToEmail.Add(ID, email);
+            hosts.Add(email, ID);
+            BC.Add(email, new Board(email, ID));
+            BC[email].Register();
+            log.Debug($"the Board of {email} is ready.");
+        }
+        public void Register(string email, string emailhost)
+        {
+            email = email.ToLower();
+            emailhost = emailhost.ToLower();
+            int ID = FindID(email);// we can ussome that the length of IDtoEmail +1 is the ID...
+            if (ExistBoardForThisID(ID))
+            {
+                log.Warn($"for this id #{ID} already exist a Board.");
+                throw new Exception($"for this id #{ID} already exist a Board.");
+            }
+            
+            IdToEmail.Add(ID, email);
+            if (email.Equals(emailhost))
+            {
+                log.Info($"{email} try to join to his Board({email} could to Register with right fanction)");
+                hosts.Add(email, ID);
+                BC.Add(email, new Board(email, ID));
+                BC[email].Register();
+            }
+            else
+            {
+                int IDhost = CheckHost(emailhost);
+                if(IDhost!= hosts[emailhost])
+                {
+                    log.Warn($"user with email #{emailhost} is not host Board so {email} can not to join him.");
+                    throw new Exception($"user with email #{emailhost} is not host Board so {email} can not to join him.");
+                }
+                if (!ExistBoardForThisID(ID))
+                {
+                    log.Warn($"user with email #{emailhost} no host of Board.");
+                    throw new Exception($"for this email #{emailhost} already exist a Board.");
+                }
+                hosts.Add(email, IDhost);
+                BC.Add(email, BC[emailhost]);
+                BC[emailhost].Join(email);
+            }
+
+            log.Debug($"the Board of {email} is ready and his Host is {emailhost}.");
+        }
+        private bool ExistBoardForThisID(int id)
+        {
+            if(IdToEmail[id] == null) { return false; }
+            return true;
+        }
+        private int CheckHost(string email)
+        {
+            int check = FindID(email);
+            if (check == -1)
+            {
+                log.Warn($"the User try to join to {email} board but is email is illegal.");
+                throw new Exception($"the User try to join to {email} board but is email is illegal.");
+            }
+            return check;
+        }
+        private int EmailToId(string email)
+        {
+            return IdToEmail.FirstOrDefault(x => x.Value.Equals(email)).Key;
         }
 
         public void Login(string email) // log in currend board holder
         {
             IsActive();
             email = email.ToLower();
-            if (BC.ContainsKey(email))
+            if (!BC.ContainsKey(email))
             {
-                Cur = BC[email];
-                log.Debug("successfully opened board for " + email + ".");
+                log.Warn($"{email} try to login to system but he is not register to the system.");
+                throw new Exception($"{email} try to login to system but he is not register to the system.");
             }
-            else
-            {
-                log.Info(email + " does not have a board yet, creating new empty board.");
-                BC.Add(email, new Board(email));
-                Cur = BC[email];
-            }
+            log.Debug("successfully opened board for " + email + ".");
+            Cur = BC[email];
+            CurEmail = email;
+            BC[email].Login(email);
         }
+        private int FindID(string email)
+        {
+            int temp = DBC.FindBoard(email);
+            if (temp < 0)
+            {
+                log.Warn($"{email} try to do action  with email Illegal");
+                throw new Exception($"{email} try to do action  with email Illegal");
+            }
+            return temp;
+        }
+
         public void Logout(string email) // log out current board holder
         {
             CheckEmail(email);
+            Cur.Logout();
             Cur = null;
+            CurEmail = null;
             log.Debug(email + " has logged out.");
         }
 
@@ -71,7 +162,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("you need to login to system.");
             }
             string s = email.ToLower();
-            if (Cur==null || !s.Equals(Cur.GetEmail()))
+            if (Cur==null || !s.Equals(CurEmail))
             {
                 log.Warn(email + " does not match the email connected to the system.");
                 throw new Exception("The email you entered does not match the email connected to the system.");
@@ -154,6 +245,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             IsActive();
             BC = new Dictionary<string, Board>();
         }
+        public void DeleteTask(string email, int columnOrdinal, int taskId)
+        {
+            CheckEmail(email);
+            Cur.DeleteTask(columnOrdinal, taskId);
+        }
+        public void AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            CheckEmail(email);
+            Cur.AssignTask(columnOrdinal, taskId, emailAssignee);
+        }
+        public void ChangeColumnName(string email, int columnOrdinal, string newName)
+        {
+            CheckEmail(email);
+            Cur.ChangeColumnName(columnOrdinal, newName);
+        }
+
 
     }
 }
