@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public DAL.User ToDalObject() // converts this object to a DataAccessLayer object
         {
             log.Debug("converting user to DAL obj for " + email + ".");
-            return new DAL.User(email, password, nickname,emailHost,UID);
+            return new DAL.User(UID,email, password, nickname,emailHost);
         }
 
         public void FromDalObject(DAL.User DalObj) // converts a DataAccessLayer object to an object of this type and sets this to the corresponding values
