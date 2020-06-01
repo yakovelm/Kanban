@@ -65,8 +65,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Column Dcol = ToDalObject();
             Dcol.UpdateOrd(ord);
         }
-        public void setLimit(int limit) // set the limit of this column
+        public void setLimit(int host,int limit) // set the limit of this column
         {
+            if(host!=this.host) throw new Exception("non host user tried to change column limit.");
             log.Info("changing task limit for column: " + name + " in " + host + " from: " + this.limit + " to: " + limit + ".");
             if (limit < size & limit > 0)
             {
@@ -198,14 +199,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             t.editDue(assig, due);
         }
-        public void delete()
+        public void delete(int host)
         {
+            if (host != this.host) throw new Exception("non host user tried to delete a column.");
             DAL.Column c = new DAL.Column(host, name);
             c.Delete();
         }
-        public void ChangeColumnName(string cur,int columnOrdinal, string newName)
+        public void ChangeColumnName(int host, string newName)
         {
-            throw new Exception("/////////////////////////////////////////////////////////////////////");
+            if (host != this.host) throw new Exception("non host user tried to change column name.");
+            name = newName;
         }
     }
 }

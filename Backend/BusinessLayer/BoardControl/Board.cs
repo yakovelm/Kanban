@@ -115,7 +115,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             CheckHost();
             CheckColumnOrdinal(ColumnOrdinal);
-            columns[ColumnOrdinal].setLimit(limit);
+            columns[ColumnOrdinal].setLimit(host,limit);
         }
         private void CheckColumnOrdinal(int num) // check if the given column number is legal
         {
@@ -239,7 +239,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             if (columnOrdinal == 0){columns[1].addTasks(c);
             }
             else {  columns[columnOrdinal - 1].addTasks(c); }
-            columns[columnOrdinal].delete();
+            columns[columnOrdinal].delete(host);
             MoveColumns(columnOrdinal);
             setOrdColumns();
             log.Debug(email + " removed column number #" + columnOrdinal + " succses");
@@ -363,7 +363,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 log.Warn($"{newName} is illegal name for column.");
                 throw new Exception($"{newName} is illegal name for column.");
             }
-            columns[columnOrdinal].ChangeColumnName(cur, columnOrdinal, newName);
+            columns[columnOrdinal].ChangeColumnName(host, newName);
         }
     }
 }
