@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="BusinessLayer\BoardControl\Board.cs" />
     <Compile Include="BusinessLayer\BoardControl\BoardController.cs" />
+    <Compile Include="BusinessLayer\UBLink.cs" />
     <Compile Include="BusinessLayer\DB.cs" />
     <Compile Include="BusinessLayer\TaskControl\Column.cs" />
     <Compile Include="BusinessLayer\IPersistentObject.cs" />

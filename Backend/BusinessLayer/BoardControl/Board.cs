@@ -34,7 +34,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public void LoadData()
         {
-            DAL.Board b = new DAL.Board(email);
+            DAL.Board b = new DAL.Board(host);
             b.LoadData();
             OrdinaltheList(ColumnsToBT(b.columns));
             UpdateTheIdTask();
@@ -43,6 +43,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public void Register()
         {
+            log.Debug($"creating the board for {email}");
             columns.Add(new TC.Column(host, "backlog", 0));
             columns.Add(new TC.Column(host, "in progress", 1));
             columns.Add(new TC.Column(host, "done", 2));
@@ -169,7 +170,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("task does not exist in this columm.");
             }
             columns[columnOrdinal + 1].addTask(advTask);
-            columns[columnOrdinal].deleteTask(advTask);
+            columns[columnOrdinal].deleteTask(cur,advTask);
             log.Debug("task #" + taskId + " advanced successfully.");
         }
         public TC.Column GetColumn(string columnName) // get column data of a specific column (by name)
@@ -326,7 +327,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             checkrColumnNumber(columnOrdinal);
             CheckTaskID(taskId);
-            columns[columnOrdinal].deleteTask(columns[columnOrdinal].getTask(taskId));
+            columns[columnOrdinal].deleteTask(cur,columns[columnOrdinal].getTask(taskId));
             log.Debug($"{email} accsses to Delete Task #{taskId}");
         }
         private void CheckHost()
@@ -354,6 +355,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public void ChangeColumnName(int columnOrdinal, string newName)
         {
+            CheckHost();
             CheckColumnOrdinal(columnOrdinal);
             CheckColumnName(newName);
             if(newName==null || CheckColumnName(newName))

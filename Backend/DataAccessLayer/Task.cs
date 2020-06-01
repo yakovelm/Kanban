@@ -12,11 +12,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     {
         public const string HostAtt=DB.TaskDBName1;
         public const string IDAtt = DB.TaskDBName2;
-        public const string ColumnAtt = DB.TaskDBName3;
-        public const string TitleAtt = DB.TaskDBName4;
-        public const string DescAtt = DB.TaskDBName5;
-        public const string DueAtt = DB.TaskDBName6;
-        public const string createAtt = DB.TaskDBName7;
+        public const string EmailAtt = DB.TaskDBName3;
+        public const string ColumnAtt = DB.TaskDBName4;
+        public const string TitleAtt = DB.TaskDBName5;
+        public const string DescAtt = DB.TaskDBName6;
+        public const string DueAtt = DB.TaskDBName7;
+        public const string createAtt = DB.TaskDBName8;
         public long ID { get; }
         public string Cname { get; set; }
         public string Title { get; set; }
@@ -46,7 +47,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public List<Task> GetAllTasks(long host,string Cname)
         {
             List<Task> c= controller.Select($"WHERE {HostAtt}={host} AND {ColumnAtt}='{Cname}'");
-            log.Debug(c.Count());
             return c;
         }
         public void UpdateTitle(string t)

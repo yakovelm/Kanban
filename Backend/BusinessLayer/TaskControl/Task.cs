@@ -64,7 +64,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public int getID() { return ID;}
         public DateTime GetDue() { return due; }
 
-        private void checkAssig(string assig)
+        public void checkAssig(string assig)
         {
             if (assig != email) throw new Exception("non assigned user tried to chane task.");
         }

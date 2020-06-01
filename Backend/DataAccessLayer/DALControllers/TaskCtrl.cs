@@ -25,7 +25,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     command.CommandText = $"INSERT INTO {tableName} ({Task.HostAtt} ,{Task.IDAtt}," +
                         $"{Task.EmailAtt},{Task.ColumnAtt},{Task.TitleAtt},{Task.DescAtt},{Task.DueAtt},{Task.createAtt}) " +
                         $"VALUES (@HostVal,@IDVal,@emailVal,@CnameVal,@TitleVal,@DescVal,@DueVal,@CreVal);";
-
                     SQLiteParameter hostParam = new SQLiteParameter(@"HostVal", obj.HostID);
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", obj.Email);
                     SQLiteParameter IDParam = new SQLiteParameter(@"IDVal", obj.ID);

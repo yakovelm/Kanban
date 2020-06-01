@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BL = IntroSE.Kanban.Backend.BusinessLayer.BoardControl;
 using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
+using IntroSE.Kanban.Backend.BusinessLayer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
@@ -12,9 +13,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BL.BoardController BC;
-        public BoardService()
+        public BoardService(UBlink lnk)
         {
-            BC = new BL.BoardController();
+            BC = new BL.BoardController(lnk);
             log.Debug("Board Service created.");
         }
 
@@ -251,6 +252,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
+                log.Debug("attempting to create a board for new User : " + email);
                 BC.Register(email);
                 return new Response();
             }

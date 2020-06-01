@@ -54,7 +54,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     log.Debug("created ColumnTable");
                     createTaskTable(connection);
                     log.Debug("created TaskTable");
-                    //UNIQUEVal(connection);
                     connection.Close();
                 }
                 catch (Exception)
@@ -87,7 +86,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
         private void createTaskTable(SQLiteConnection connection) // build task table
         {
-            string createTableQuery = $@"CREATE TABLE [{ThirdTableName}]([{TaskDBName1}] INTEGER NOT NULL ,[{TaskDBName2}] INTEGER NOT NULL,[{TaskDBName3}] TEXT NOT NULL,[{TaskDBName4}] TEXT NOT NULL,[{TaskDBName5}] TEXT NOT NULL,[{TaskDBName6}] TEXT,[{TaskDBName7}] INTEGER NOT NULL,[{TaskDBName8}] INTEGER NOT NULL, PRIMARY KEY(`{TaskDBName1}`,`{TaskDBName2}`),FOREIGN KEY('{TaskDBName1}') REFERENCES '{SecondTableName}'('{ColumnDBName1}'),FOREIGN KEY('{TaskDBName3}') REFERENCES '{FirstTableName}'('{UserDBName1}'),FOREIGN KEY('{TaskDBName1}') REFERENCES '{SecondTableName}'('{ColumnDBName1}') )";
+            string createTableQuery = $@"CREATE TABLE [{ThirdTableName}]([{TaskDBName1}] INTEGER NOT NULL ,[{TaskDBName2}] INTEGER NOT NULL,[{TaskDBName3}] TEXT NOT NULL,[{TaskDBName4}] TEXT NOT NULL,[{TaskDBName5}] TEXT NOT NULL,[{TaskDBName6}] TEXT,[{TaskDBName7}] INTEGER NOT NULL,[{TaskDBName8}] INTEGER NOT NULL,
+            PRIMARY KEY(`{TaskDBName1}`,`{TaskDBName2}`),FOREIGN KEY('{TaskDBName3}') REFERENCES '{FirstTableName}'('{UserDBName1}'),FOREIGN KEY('{TaskDBName1}') REFERENCES '{SecondTableName}'('{ColumnDBName1}') )";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();

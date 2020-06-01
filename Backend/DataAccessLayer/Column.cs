@@ -40,15 +40,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         public Column() : base(new ColumnCtrl()) { } //empty constructor for loading all column data
-        public List<Column> GetAllColumns(string Host)
+        public List<Column> GetAllColumns(int Host)
         {
-            List<Column> output = controller.Select($"WHERE {HostAtt}='{Host}'");
+            List<Column> output = controller.Select($"WHERE {HostAtt}={Host}");
             foreach (Column c in output)
             {
                 c.LoadTasks();
                 log.Debug("loaded tasks for column: "+c.Cname+" "+c.getTasks().Count());
             }
-            //log.Debug("columns loaded for " + email + " with size: " + output.Count());
+            log.Debug("columns loaded for " + Host + " with size: " + output.Count());
             return output;
         }
         public void LoadTasks()

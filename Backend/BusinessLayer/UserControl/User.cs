@@ -17,18 +17,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private int UID;
 
         public User() { }
-        public User(string email, string password, string nickname,int emailHost,int UID) // new user creation (register) constructor
+        public User(string email, string password, string nickname,int emailHost) // new user creation (register) constructor
         {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
             this.emailHost = emailHost;
-            this.UID = UID;
         }
         public string getemail()
         {
             return this.email;
         }
+        public Boolean isMatchEmailHost() { return UID.Equals(emailHost); }
         public Boolean isMatchPassword(string password)
         {
             return this.password.Equals(password);

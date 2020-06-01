@@ -11,6 +11,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class User : DalObject<User>
     {
+        public const string EmailAtt = DB.UserDBName1;
         public const string passwordAtt = DB.UserDBName2;
         public const string nicknameAtt = DB.UserDBName3;
         public const string emailHostAtt = DB.UserDBName4;

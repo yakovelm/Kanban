@@ -13,64 +13,64 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected readonly string connectionString;
         protected readonly string tableName="users";
-        protected readonly string EmailAtt = "email";
+        protected readonly string need = "*";
         public BoardCtrl()
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
             connectionString = $"Data Source={path}; Version=3;";
         }
-        public int FindBoard(string s)
-        {
-            bool fail = false;
-            List<long> result = new List<long>();
-            using (var connection = new SQLiteConnection(connectionString))
-            {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"SELECT {EmailAtt} FROM {tableName} WHERE { EmailAtt}= '{s}'";
-                SQLiteDataReader dataReader = null;
-                try
-                {
-                    connection.Open();
-                    dataReader = command.ExecuteReader();
+        //public int FindBoard(string s)
+        //{
+        //    bool fail = false;
+        //    List<long> result = new List<long>();
+        //    using (var connection = new SQLiteConnection(connectionString))
+        //    {
+        //        SQLiteCommand command = new SQLiteCommand(null, connection);
+        //        command.CommandText = $"SELECT {EmailAtt} FROM {tableName} WHERE { EmailAtt}= '{s}'";
+        //        SQLiteDataReader dataReader = null;
+        //        try
+        //        {
+        //            connection.Open();
+        //            dataReader = command.ExecuteReader();
 
-                    while (dataReader.Read())
-                    {
-                        result.Add(dataReader.GetInt64(4));
-                    }
-                }
-                catch (Exception e)
-                {
-                    fail = true;
-                }
-                finally
-                {
-                    if (dataReader != null)
-                    {
-                        dataReader.Close();
-                    }
+        //            while (dataReader.Read())
+        //            {
+        //                result.Add(dataReader.GetInt64(4));
+        //            }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            fail = true;
+        //        }
+        //        finally
+        //        {
+        //            if (dataReader != null)
+        //            {
+        //                dataReader.Close();
+        //            }
 
-                    command.Dispose();
-                    connection.Close();
-                    if (fail)
-                    {
-                        log.Error("fail to delete from " + tableName);
-                        throw new Exception("fail to delete from " + tableName);
-                    }
-                }
+        //            command.Dispose();
+        //            connection.Close();
+        //            if (fail)
+        //            {
+        //                log.Error("fail to delete from " + tableName);
+        //                throw new Exception("fail to delete from " + tableName);
+        //            }
+        //        }
 
-            }
-            if(result.Count > 1)
-            {
-                log.Error($"Find 2 email ({s}) with same Id or not Find ID for ");
-                throw new Exception($"Find 2 email ({s}) with same Id or not Find ID for ");
-            }
-            else if (result.Count == 0)
-            {
-                log.Error($"Not found ID for this email: ({s})");
-                throw new Exception($"Not found ID for this email: ({s})");
-            }
-            return (int)result[0];
-        }
+        //    }
+        //    if(result.Count > 1)
+        //    {
+        //        log.Error($"Find 2 email ({s}) with same Id or not Find ID for ");
+        //        throw new Exception($"Find 2 email ({s}) with same Id or not Find ID for ");
+        //    }
+        //    else if (result.Count == 0)
+        //    {
+        //        log.Error($"Not found ID for this email: ({s})");
+        //        throw new Exception($"Not found ID for this email: ({s})");
+        //    }
+        //    return (int)result[0];
+        //}
 
         public List<Tuple<string, long, long>> LoadData()
         {
@@ -79,7 +79,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             using (var connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"SELECT {EmailAtt} FROM {tableName}";
+                command.CommandText = $"SELECT {need} FROM {tableName}";
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -88,7 +88,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
                     while (dataReader.Read())
                     {
-                        results.Add(Tuple.Create(dataReader.GetString(0), dataReader.GetInt64(3), dataReader.GetInt64(4)));
+                        results.Add(Tuple.Create(dataReader.GetString(1), dataReader.GetInt64(4), dataReader.GetInt64(0)));
                     }
                 }
                 catch(Exception e)
@@ -110,7 +110,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                         throw new Exception("fail to delete from " + tableName);
                     }
                 }
-
+                log.Debug("acsses to LoadData From DataBase.");
             }
             return results;
         }

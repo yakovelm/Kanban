@@ -101,8 +101,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             tasks.Add(task);
             size++;
         }
-        public Task deleteTask(Task task) // delete a task from this column (if exists) and return it
+        public Task deleteTask(string email,Task task) // delete a task from this column (if exists) and return it
         {
+            task.checkAssig(email);
             log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + host + ".");
             if (tasks.Remove(task))
             {
@@ -131,14 +132,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             try
             {
                 List<DAL.Task> Dtasks = new List<DAL.Task>();
-                log.Debug("list made");
                 foreach (Task t in tasks) {
-                    //log.Debug("converting "+t.getTitle()+" to dal object.");
                     Dtasks.Add(t.ToDalObject()); 
                 }
-                log.Debug("post foreach");
                 DAL.Column c= new DAL.Column(host, name, ord, limit);
-                log.Debug("made dal column.");
                 return c;
             }
             catch (Exception e)
@@ -158,18 +155,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 limit = (int)DalObj.Limit;
                 log.Debug(host + " "+name+" "+ord+" "+limit);
                 DalObj.LoadTasks();
-                log.Debug(DalObj.getTasks().Count());
                 foreach (DAL.Task t in DalObj.getTasks()) // convert each task in column individually
                 {
-                    log.Debug("in foreach with: " + t.ID);
                     Task BT = new Task(); 
                     BT.FromDalObject(t);
                     log.Debug("made task: " + BT.getID()+ " with title: "+BT.getTitle());
                     tasks.Add(BT);
-                    log.Debug(tasks.Count());
                 }
                 size = tasks.Count();
-                log.Debug("column: " + getName() + " size: " + getSize());
+                //log.Debug("column: " + getName() + " size: " + getSize());
             }
             catch (Exception e)
             {

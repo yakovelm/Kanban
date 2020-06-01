@@ -31,8 +31,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Service()
         {
             log.Info("create service.");
-            US = new SS.UserService();
-            BS = new SS.BoardService();
+            UBlink lnk = new UBlink();
+            US = new SS.UserService(lnk);
+            BS = new SS.BoardService(lnk);
             DataBase = new DB();
             LoadData();
         }

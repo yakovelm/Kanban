@@ -20,9 +20,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private User ActiveUser;
         private int emailHost;
         private List<User> list;
+        private UBlink lnk;
 
-        public UserController()
+        public UserController(UBlink u)
         {
+            lnk = u;
             log.Debug("createing user controller.");
             this.ActiveUser = null;
         }
@@ -36,6 +38,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             checkPassword(password);
             log.Debug("register values are legal.");
             this.emailHost = list.Count() + 1;
+            lnk.Lastemail = email;
+            lnk.LastId = emailHost;
             save(email, password, nickname);
         }
         public void register(string email, string password, string nickname,string emailHost) 
@@ -46,19 +50,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             checkUser(email, nickname);
             checkPassword(password);
             emailHostCheck(emailHost);
+            lnk.Lastemail = email;
+            lnk.LastId = list.Count() + 1;
+            lnk.HostId = this.emailHost;
             log.Debug("register values are legal.");
             save(email, password, nickname);
         }
-        private void emailHostCheck(string emailHost) 
+        private void emailHostCheck(string emailHost)
         {
-            for(int i = 0; i < list.Count()&this.emailHost==0; i++) 
+            for (int i = 0; i < list.Count() & this.emailHost == 0; i++)
             {
-                if (list[i].isMatchEmail(emailHost)) this.emailHost = i + 1; 
+                if (list[i].isMatchEmail(emailHost) & list[i].isMatchEmailHost()) this.emailHost = i + 1;
+                else
+                {
+                    log.Warn("emailHost given invaule");
+                    throw new Exception("emailHost given invaule");
+                }
             }
-            if (this.emailHost == 0) 
+            if (this.emailHost == 0)
             {
-                log.Warn("emailHost given invaule");
-                throw new Exception("emailHost given invaule");
+                log.Warn("emailHost given not exist");
+                throw new Exception("emailHost given not exist");
             }
         }
         private void NullCheck(params object[] s) // checks if any of the given parameters are null or empty
@@ -90,7 +102,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         private void save(string email, string password, string nickname) // saves newly registered user
         {
-            User NU = new User(email, password, nickname,this.emailHost,list.Count()+1);
+            User NU = new User(email, password, nickname,this.emailHost);
             NU.Insert();
             log.Info("user created for "+ NU.getemail());
             list.Add(NU);
@@ -122,11 +134,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                         throw new Exception("invaild password.");
                     }
                 }
-                if (ActiveUser == null)
-                {
-                    log.Warn("user not yet registered.");
-                    throw new Exception(email + " user not yet registered.");
-                }
+            }
+            if (ActiveUser == null)
+            {
+                log.Warn("user not yet registered.");
+                throw new Exception(email + " user not yet registered.");
             }
         }
         public void logout(string email) // log out active user
@@ -163,6 +175,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         {
             try
             {
+                if (lnk.Load) { log.Warn("Data already loaded."); throw new Exception("Data already loaded."); }
                 list = new List<User>();
                 DC.UserCtrl DUC = new DC.UserCtrl();
                 foreach (DAL.User run in DUC.Select(""))

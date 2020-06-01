@@ -19,9 +19,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         private Board Cur;
         private string CurEmail;
         private DC.BoardCtrl DBC;
+        private UBlink lnk;
 
-        public BoardController()
+        public BoardController(UBlink lnk)
         {
+            this.lnk = lnk;
             BC = new Dictionary<string, Board>();
             hosts = new Dictionary<string, int>();
             IdToEmail = new Dictionary<int, string>();
@@ -33,18 +35,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         public void LoadData() // load board dictionary (boards keyd by email) of all saved boards
         {
+            if (lnk.Load) { log.Warn("Data already loaded."); throw new Exception("Data already loaded."); }
             List<Tuple<string, long, long>> temp = DBC.LoadData();
-            temp.ForEach(x => { IdToEmail.Add((int)x.Item3, x.Item1); });
+            temp.ForEach(x => {IdToEmail.Add((int)x.Item3, x.Item1); });
             temp.ForEach(x => { hosts.Add(x.Item1, (int)x.Item3); });
             temp.Where(x => x.Item2 == x.Item3).ToList().ForEach(x => { BC.Add(x.Item1, new Board(x.Item1, (int)x.Item3)); BC[x.Item1].LoadData(); });
             temp.Where(x => x.Item2 != x.Item3).ToList().ForEach(x => { BC[IdToEmail[(int)x.Item2]].Join(x.Item1); });
             log.Debug("board list has been loaded.");
+            lnk.Load = true;
         }
         public void Register(string email)
         {
             email = email.ToLower();
-            int ID = FindID(email);// we can ussome that the length of IDtoEmail +1 is the ID...
-            if (ExistBoardForThisID(ID))
+            int ID = lnk.LastId;
+            string emailcheck = lnk.Lastemail;
+            ResetLnk();
+            if (!email.Equals(emailcheck) | ID == -1 | ExistBoardForThisID(ID))
             {
                 log.Warn($"for this id #{ID} already exist a Board.");
                 throw new Exception($"for this id #{ID} already exist a Board.");
@@ -55,12 +61,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             BC[email].Register();
             log.Debug($"the Board of {email} is ready.");
         }
+        public void ResetLnk()
+        {
+            lnk.LastId = -1;
+            lnk.Lastemail = null;
+            lnk.HostId = -1;
+        }
         public void Register(string email, string emailhost)
         {
             email = email.ToLower();
             emailhost = emailhost.ToLower();
-            int ID = FindID(email);// we can ussome that the length of IDtoEmail +1 is the ID...
-            if (ExistBoardForThisID(ID))
+            int ID = lnk.LastId;
+            int HostID = lnk.HostId;
+            string emailcheck = lnk.Lastemail;
+            ResetLnk();
+            if (!email.Equals(emailcheck) | ID == -1 || ExistBoardForThisID(ID))
             {
                 log.Warn($"for this id #{ID} already exist a Board.");
                 throw new Exception($"for this id #{ID} already exist a Board.");
@@ -76,8 +91,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             }
             else
             {
-                int IDhost = CheckHost(emailhost);
-                if(IDhost!= hosts[emailhost])
+                int IDhost = CheckHost(HostID);
+                lnk.HostId = -1;
+                if (IDhost!= hosts[emailhost])
                 {
                     log.Warn($"user with email #{emailhost} is not host Board so {email} can not to join him.");
                     throw new Exception($"user with email #{emailhost} is not host Board so {email} can not to join him.");
@@ -96,18 +112,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         private bool ExistBoardForThisID(int id)
         {
-            if(IdToEmail[id] == null) { return false; }
+            if(!IdToEmail.ContainsKey(id)) { return false; }
             return true;
         }
-        private int CheckHost(string email)
+        private int CheckHost(int Id)
         {
-            int check = FindID(email);
-            if (check == -1)
+            if (Id == -1)
             {
-                log.Warn($"the User try to join to {email} board but is email is illegal.");
-                throw new Exception($"the User try to join to {email} board but is email is illegal.");
+                log.Warn($"the User try to join to userID {Id} board but is email is illegal.");
+                throw new Exception($"the User try to join to userID {Id} board but is email is illegal.");
             }
-            return check;
+            return Id;
         }
         private int EmailToId(string email)
         {
@@ -127,16 +142,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             Cur = BC[email];
             CurEmail = email;
             BC[email].Login(email);
-        }
-        private int FindID(string email)
-        {
-            int temp = DBC.FindBoard(email);
-            if (temp < 0)
-            {
-                log.Warn($"{email} try to do action  with email Illegal");
-                throw new Exception($"{email} try to do action  with email Illegal");
-            }
-            return temp;
         }
 
         public void Logout(string email) // log out current board holder
@@ -244,6 +249,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             IsActive();
             BC = new Dictionary<string, Board>();
+            IdToEmail = new Dictionary<int, string>();
+            hosts = new Dictionary<string, int>();
         }
         public void DeleteTask(string email, int columnOrdinal, int taskId)
         {

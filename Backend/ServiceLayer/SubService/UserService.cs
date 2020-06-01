@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using UC = IntroSE.Kanban.Backend.BusinessLayer.UserControl;
-
+using IntroSE.Kanban.Backend.BusinessLayer;
 namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
     class UserService
@@ -13,9 +13,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BusinessLayer.UserControl.UserController uc;
 
-        public UserService() 
+        public UserService(UBlink u) 
         {
-            uc = new BusinessLayer.UserControl.UserController();
+            uc = new BusinessLayer.UserControl.UserController(u);
         }
         public Response<User> login(string email, string password) // login an existing user
         {
