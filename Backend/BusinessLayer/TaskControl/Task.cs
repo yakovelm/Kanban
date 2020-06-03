@@ -12,6 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const int Tmax = 50;
         private const int Dmax = 300;
+        private const int Orange = 75;
         private int ID;
         private string Cname;
         private string title;
@@ -145,6 +146,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Error("issue converting task Dal object to task BL object due to " + e.Message);
                 throw e;
             }
+        }
+
+        public Boolean isOrange()
+        {
+            return (DateTime.Now.Subtract(creation).Ticks / due.Subtract(creation).Ticks) > 75;
+        }
+        public Boolean isRed()
+        {
+            return DateTime.Now>due;
+        }
+        public Boolean isBlue(string email)
+        {
+            return email.Equals(this.email);
+        }
+        public Boolean match(string filter)
+        {
+            return title.Contains(filter) || desc.Contains(filter);
         }
     }
 }

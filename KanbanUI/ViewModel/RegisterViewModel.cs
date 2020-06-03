@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace KanbanUI.ViewModel
 {
-    class RegisterViewModel: NotifiableModelObject
+    class RegisterViewModel: NotifiableObject
     {
-        public RegisterViewModel(BackendController controller): base(controller) { }
+        BackendController controller;
+        public RegisterViewModel(BackendController controller)
+        {
+            this.controller = controller;
+        }
     }
 }

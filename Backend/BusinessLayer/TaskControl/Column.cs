@@ -210,5 +210,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             if (host != this.host) throw new Exception("non host user tried to change column name.");
             name = newName;
         }
+        public void sortByDue()
+        {
+            tasks.Sort((x, y) =>x.GetDue().CompareTo(y.GetDue()));
+        }
+        public List<Task> filter(string filter)
+        {
+            List<Task> output = new List<Task>();
+            foreach(Task t in tasks)
+            {
+                if (t.match(filter)) output.Add(t);
+            }
+            return output;
+        }
     }
 }

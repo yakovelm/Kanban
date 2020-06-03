@@ -89,16 +89,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BackendController.cs" />
+    <Compile Include="Model\TaskModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="NotifiableObject.cs" />
     <Compile Include="Model\NotifiableModelObject.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="View\BoardWindow.xaml.cs">
       <DependentUpon>BoardWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskWindow.xaml.cs">
+      <DependentUpon>TaskWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="View\BoardWindow.xaml">
       <SubType>Designer</SubType>
@@ -117,6 +122,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\RegisterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
