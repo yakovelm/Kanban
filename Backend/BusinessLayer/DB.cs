@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             catch (Exception e)
             {
                 log.Error("fail to create SQL file: " + e.Message);
-                throw new Exception(e.Message);
+          //      throw new Exception(e.Message);
             }
         }
         private bool sqlfilexist()
