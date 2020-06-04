@@ -11,6 +11,6 @@
         <TextBlock x:Name="Desc" TextWrapping="Wrap" Height="232" Margin="10,0"><Run Text="{Binding Path=Desc, Mode=TwoWay}"/></TextBlock>
         <Label Content="{Binding Path=Assignee, Mode=TwoWay}" HorizontalAlignment="Right" FontSize="15" FontWeight="Bold" Margin="0,0,365,0" Width="178"/>
             <Label Content="{Binding Path=Due, Mode=TwoWay}" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="306,0,365,0" Width="178" Height="38"/>
-        <Label Content="Cre" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="278,0,337,0" Width="177"/>
+        <Label Content="{Binding Path=Cre, Mode=TwoWay}" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="278,0,337,0" Width="177"/>
     </StackPanel>
 </Window>

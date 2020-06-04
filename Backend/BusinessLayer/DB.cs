@@ -16,8 +16,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             db = new DAL.DB();
         }
+
         public void DBexist() // make sure DB exists during startup
         {
+            
             try
             {
                 if (!sqlfilexist())
@@ -26,10 +28,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                     db.Build();
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                log.Error("fail to create SQL file: " + e.Message);
-          //      throw new Exception(e.Message);
+                log.Error("fail to create SQL file   "+ sqlfilexist());
+                throw new Exception("fail to create SQL file: " +e.Message);
             }
         }
         private bool sqlfilexist()
