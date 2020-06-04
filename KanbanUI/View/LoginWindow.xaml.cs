@@ -45,8 +45,6 @@ namespace KanbanUI.View
                 this.Close();
             }
         }
-
-
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             RegisterWindow reg = new RegisterWindow(LM.Controller);
@@ -62,6 +60,11 @@ namespace KanbanUI.View
         private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void Reset_click(object sender, RoutedEventArgs e)
+        {
+            LM.Reset();
         }
     }
 }

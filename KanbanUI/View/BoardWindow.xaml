@@ -7,6 +7,17 @@
         mc:Ignorable="d"
         Title="BoardWindow" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel Orientation="Horizontal">
+            <Grid>
+                <Label Content="{Binding Path=Name, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
+                <ListBox ItemsSource="{Binding Path=ColumnList, Mode=TwoWay}" SelectedItem="{Binding Path=DataContext.SelectedColumn, Mode=TwoWay}" Width="200">
+                    
+                </ListBox>
+            </Grid>
+            <Grid>
+
+            </Grid>
+            
+        </StackPanel>
     </Grid>
 </Window>

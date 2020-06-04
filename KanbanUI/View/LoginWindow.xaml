@@ -27,6 +27,9 @@
                 <Button Content="Login" Name="Login" Click="Login_Click" Margin="20" FontSize="16" Width="100" IsDefault="True"/>
                 <Button Content="Register" Name="Register" Click="Register_Click" Margin="20" FontSize="16" Width="100"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Reset System" x:Name="Reset" Click="Reset_click" Margin="20" FontSize="16" Width="100" IsDefault="True"/>
+            </StackPanel>
             <Label Content="{Binding Path=Message, Mode=TwoWay}" Foreground="Red" HorizontalAlignment="Center" Height="40"/>
         </StackPanel>
     </Grid>

@@ -24,7 +24,23 @@ namespace KanbanUI
             return new UserModel(this, email);
             
         }
-
-        
+        public void register(string email,string password,string nickname,string host)
+        {
+            Response res;
+            if (host == null||host=="")
+            {
+                res=s.Register(email, password, nickname);
+            }
+            else
+            {
+                res = s.Register(email, password, nickname, host);
+            }
+            if (res.ErrorOccured) throw new Exception(res.ErrorMessage);
+        }
+        public void Reset()
+        {
+            Response res = s.DeleteData();
+            if (res.ErrorOccured) throw new Exception(res.ErrorMessage);
+        }
     }
 }

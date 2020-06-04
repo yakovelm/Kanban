@@ -19,6 +19,7 @@ namespace KanbanUI.ViewModel
         public string Due { get => _due; set { _due = value; RaisePropertyChanged("Due"); } }
         string _cre;
         public string Cre { get => _cre; set { _cre = value; RaisePropertyChanged("Cre"); } }
+
         TaskModel TM;
         public TaskViewModel(TaskModel tm)
         {

@@ -39,5 +39,18 @@ namespace KanbanUI.ViewModel
                 return null;
             }
         }
+        public void Reset()
+        {
+            Message = "";
+            try
+            {
+                Controller.Reset();
+                Message = "all data successfully deleted.";
+            }
+            catch(Exception e)
+            {
+                Message = e.Message;
+            }
+        }
     }
 }

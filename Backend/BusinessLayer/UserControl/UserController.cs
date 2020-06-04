@@ -31,6 +31,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public User get_active() { return ActiveUser; }
         public void register(string email, string password, string nickname) // register a new user
         {
+            log.Debug("Email: " + email + " Password: " + password + " nickname: " + nickname);
             NullCheck(email, password, nickname);
             email = email.ToLower();
             checkEmail(email);
@@ -44,6 +45,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void register(string email, string password, string nickname,string emailHost) 
         {
+            log.Debug("Email: " + email + " Password: " + password + " nickname: " + nickname + " Host: " + emailHost);
             NullCheck(email, password, nickname,emailHost);
             email = email.ToLower();
             checkEmail(email);

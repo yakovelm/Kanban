@@ -31,7 +31,7 @@ namespace KanbanUI.View
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-
+            RVM.register();
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
