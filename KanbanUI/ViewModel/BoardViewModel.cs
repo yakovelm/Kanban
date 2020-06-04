@@ -7,14 +7,21 @@ using System.Threading.Tasks;
 
 namespace KanbanUI.ViewModel
 {
-    class BoardViewModel: NotifiableObject
+    public class BoardViewModel: NotifiableObject
     {
         BoardModel BM;
         UserModel UM;
-        BoardViewModel(UserModel um)
+
+        private string _name;
+        public string Name { get => _name;set {  _name = value; RaisePropertyChanged("Name"); } }
+
+        
+
+        public BoardViewModel(UserModel um)
         {
             UM = um;
             BM = new BoardModel(UM.Controller);
+            Name = UM.email;
         }
     }
 }

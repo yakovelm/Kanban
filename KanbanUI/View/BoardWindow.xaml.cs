@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using KanbanUI.Model;
+using KanbanUI.ViewModel;
 
 namespace KanbanUI.View
 {
@@ -20,12 +21,12 @@ namespace KanbanUI.View
     /// </summary>
     public partial class BoardWindow : Window
     {
-        private UserModel UM;
-        public BoardWindow(UserModel User)
+        private BoardViewModel BVM;
+        public BoardWindow(UserModel u)
         {
             InitializeComponent();
-            UM = User;
-            DataContext = UM;
+            BVM = new BoardViewModel(u);
+            DataContext = BVM;
         }
     }
 }

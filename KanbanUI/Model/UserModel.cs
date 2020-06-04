@@ -12,7 +12,7 @@ namespace KanbanUI.Model
         public string email { get=> _email; set { _email = value; RaisePropertyChanged("email"); } }
 
         public UserModel(BackendController controller, string email) : base(controller) {
-           _email = email;
+           this.email = email;
         }
     }
 }

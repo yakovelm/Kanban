@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace KanbanUI.Model
 {
-    class ColumnModel: NotifiableModelObject
+    public class ColumnModel: NotifiableModelObject
     {
-        ColumnModel(BackendController c): base(c)
+        public ColumnModel(BackendController c): base(c)
         {
 
         }
