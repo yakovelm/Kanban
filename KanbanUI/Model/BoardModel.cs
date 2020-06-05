@@ -8,8 +8,13 @@ namespace KanbanUI.Model
 {
     class BoardModel: NotifiableModelObject
     {
-        public BoardModel(BackendController c): base(c)
+        public string host;
+        IReadOnlyCollection<string> columnNames;
+        public BoardModel(BackendController c,string email): base(c)
         {
+            Tuple<string, IReadOnlyCollection<string>> board=Controller.getBoard(email);
+            host = board.Item1;
+            columnNames = board.Item2;
         }
     }
 }

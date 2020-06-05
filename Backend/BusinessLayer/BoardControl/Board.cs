@@ -126,7 +126,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             }
         }
         public string GetEmail() { return email; }
-
         public TC.Task AddTask(string title, string desciption, DateTime dueTime) // add a new task for this user
         {
             TC.Task output=new TC.Task(IDtask, host, columns[0].getName(), title, desciption, dueTime, cur);  

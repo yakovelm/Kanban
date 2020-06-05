@@ -27,8 +27,8 @@ namespace KanbanUI.ViewModel
             Assignee = TM.Assignee;
             Title = TM.Title;
             Desc = TM.Desc;
-            Due = TM.Due;
-            Cre = TM.Cre;
+            Due = TM.Due.ToString();
+            Cre = TM.Cre.ToString();
         }
     }
 }

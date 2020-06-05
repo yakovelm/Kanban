@@ -8,8 +8,7 @@ namespace KanbanUI.Model
 {
     public class UserModel: NotifiableModelObject
     {
-         private string _email;
-        public string email { get=> _email; set { _email = value; RaisePropertyChanged("email"); } }
+        public string email { get; set; }
 
         public UserModel(BackendController controller, string email) : base(controller) {
            this.email = email;
