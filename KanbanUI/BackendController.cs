@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +16,11 @@ namespace KanbanUI
             s = new Service();
         }
 
-        public Tuple<string,int, List<TaskModel>> getColumn(string email,string name)
+        public Tuple<string,int, ObservableCollection<TaskModel>> getColumn(string email,string name)
         {
             Response<Column> res = s.GetColumn(email,name);
             isErr(res);
-            List<TaskModel> tasks=new List<TaskModel>();
+            ObservableCollection<TaskModel> tasks= new ObservableCollection<TaskModel>();
             foreach(IntroSE.Kanban.Backend.ServiceLayer.Task t in res.Value.Tasks){
                 tasks.Add(taskToModel(t,email));
             }

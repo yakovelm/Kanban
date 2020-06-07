@@ -11,16 +11,23 @@
             <Label Content="{Binding Path=Name, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
             <Label Content="{Binding Path=Host, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Grid>
-                <ListBox ItemsSource="{Binding Path=ColumnList, Mode=TwoWay}" SelectedItem="{Binding Path=DataContext.SelectedColumn, Mode=TwoWay}" Width="200" Margin="0,40,0,0">
+        <Grid>
+            <ListBox ItemsSource="{Binding Path=Columns, Mode=TwoWay}" Margin="0,108,-0.4,0" >
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" VerticalAlignment="Top"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                              <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" Name="CN" TextChanged="CNfunction"/>
+                                <TextBox Text="{Binding Path=ColumnLimit, Mode=TwoWay}"/>
+                          </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
 
-                </ListBox>
-            </Grid>
-            <Grid>
-
-            </Grid>
-            
-        </StackPanel>
     </Grid>
 </Window>

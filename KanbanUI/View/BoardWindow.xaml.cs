@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,12 +22,16 @@ namespace KanbanUI.View
     /// </summary>
     public partial class BoardWindow : Window
     {
-        private BoardViewModel BVM;
+        public BoardViewModel BVM;
         public BoardWindow(UserModel u)
         {
             InitializeComponent();
             BVM = new BoardViewModel(u);
             DataContext = BVM;
+        }
+        private void CNfunction(object sender, TextChangedEventArgs e)
+        {
+           
         }
     }
 }
