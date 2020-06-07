@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -31,7 +30,8 @@ namespace KanbanUI.View
         }
         private void CNfunction(object sender, TextChangedEventArgs e)
         {
-           
+            TextBox CN = sender as TextBox;
+            CN.DataContext=BVM.BM.host==BVM.UM.email? CN.Text : CN.DataContext;
         }
     }
 }
