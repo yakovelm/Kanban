@@ -137,7 +137,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 List<TC.Column> listColumnBL = BC.getColumns(email);
                 List<string> listNames = new List<string>();
                 foreach (TC.Column a in listColumnBL) { listNames.Add(a.getName()); }
-                return new Response<Board>(new Board(listNames,null));
+                return new Response<Board>(new Board(listNames,BC.getHost()));
             }
             catch (Exception e) { return new Response<Board>(e.Message); }
         }

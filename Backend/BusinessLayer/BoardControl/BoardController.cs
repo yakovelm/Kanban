@@ -32,6 +32,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             DBC = new DC.BoardCtrl();
             log.Debug("BoardController created.");
         }
+        public string getHost() { return Cur.GetEmail(); }
 
         public void LoadData() // load board dictionary (boards keyd by email) of all saved boards
         {
