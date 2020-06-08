@@ -42,7 +42,7 @@ namespace KanbanUI.View
             if (u != null) {
                 BoardWindow boardView = new BoardWindow(u);
                 boardView.Show();
-                boardView.BVM.LoadColumns();
+                //boardView.BVM.LoadColumns();
                 this.Close();
             }
         }

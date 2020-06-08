@@ -12,7 +12,7 @@ namespace KanbanUI.ViewModel
     {
         public BoardModel BM;
         public UserModel UM;
-        public ObservableCollection<ColumnModel> Columns { get; set; } 
+        public ObservableCollection<ColumnModel> Columns { get => BM.columns; set { BM.columns = value; } } 
         
 
         private string _name;
@@ -24,11 +24,11 @@ namespace KanbanUI.ViewModel
         public BoardViewModel(UserModel um)
         {
             UM = um;
-            BM = new BoardModel(UM.Controller,um.email);
+            BM = new BoardModel(um);
             Name = "Logged in as: "+UM.email;
             Host = "Board hosted by: " + ((BM.host==UM.email) ? "you" : BM.host);
-            Columns = new ObservableCollection<ColumnModel>();
-            Columns.Clear();
+            //Columns = new ObservableCollection<ColumnModel>();
+            //Columns.Clear();
         }
 
         internal void changeName(object text)
@@ -36,14 +36,13 @@ namespace KanbanUI.ViewModel
             throw new NotImplementedException();
         }
 
-        public void LoadColumns()
-        {
-            foreach (string s in BM.columnNames)
-            {
-                Columns.Add(new ColumnModel(UM.Controller, UM.email,s, _host));
-            }
-        }
+        //public void LoadColumns()
+        //{
+        //    foreach (string s in BM.columnNames)
+        //    {
+        //        Columns.Add(new ColumnModel(UM.Controller, UM.email,s, _host));
+        //    }
+        //}
    
-
     }
 }

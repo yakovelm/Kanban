@@ -13,14 +13,12 @@ namespace KanbanUI.Model
         public string ColumnName { get=>_name; set {  _name = value; RaisePropertyChanged("ColumnName"); }  }
         private int _limit;
         public int ColumnLimit { get => _limit; set { _limit = value; RaisePropertyChanged("ColumnLimit"); } }
-        private string email;
-        private string host;
+        public UserModel UM;
         public ObservableCollection<TaskModel> tasks;
-        public ColumnModel(BackendController c,string email,string Name,string Host): base(c)
+        public ColumnModel(BackendController c,string Name,UserModel um): base(c)
         {
-            this.email = email;
-            host = Host;
-            Tuple<string,int, ObservableCollection<TaskModel>> col = Controller.getColumn(email,Name);
+            UM = um;
+            Tuple<string,int, ObservableCollection<TaskModel>> col = Controller.getColumn(UM.email,Name);
             ColumnName = col.Item1;
             ColumnLimit = col.Item2;
             tasks = col.Item3;

@@ -30,12 +30,21 @@ namespace KanbanUI
         {
             return new TaskModel(this,email,t.Title,t.Description,t.DueDate,t.CreationTime);
         }
-        public Tuple<string, IReadOnlyCollection<string>> getBoard(string email)
+        public Tuple<string, ObservableCollection<ColumnModel>> getBoard(UserModel um)
         {
-            Response<Board> res = s.GetBoard(email);
+            Response<Board> res = s.GetBoard(um.email);
             isErr(res);
-            return Tuple.Create(res.Value.emailCreator, res.Value.ColumnsNames);
+            ObservableCollection<ColumnModel> temp = new ObservableCollection<ColumnModel>();
+            foreach (string s in res.Value.ColumnsNames) 
+            {
+                temp.Add(ColumnToModel(s,um));
+            }
+            return Tuple.Create(res.Value.emailCreator, temp);
         } 
+        private ColumnModel ColumnToModel(string s,UserModel um) 
+        {
+            return new ColumnModel(this,s, um);
+        }
 
         public UserModel Login(string email, string password)
         {
