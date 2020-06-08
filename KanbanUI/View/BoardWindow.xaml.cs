@@ -31,7 +31,7 @@ namespace KanbanUI.View
         private void CNfunction(object sender, TextChangedEventArgs e)
         {
             TextBox CN = sender as TextBox;
-            CN.DataContext=BVM.BM.host==BVM.UM.email? CN.Text : CN.DataContext;
+            BVM.changeName(CN.Text);
         }
     }
 }

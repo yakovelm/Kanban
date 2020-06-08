@@ -38,10 +38,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             if (lnk.Load) { log.Warn("Data already loaded."); throw new Exception("Data already loaded."); }
             List<Tuple<string, long, long>> temp = DBC.LoadData();
-            temp.ForEach(x => {IdToEmail.Add((int)x.Item3, x.Item1); });
-            temp.ForEach(x => { hosts.Add(x.Item1, (int)x.Item3); });
+            temp.ForEach(x => { IdToEmail.Add((int)x.Item3, x.Item1);});
+            temp.ForEach(x => { hosts.Add(x.Item1, (int)x.Item2); });
+
             temp.Where(x => x.Item2 == x.Item3).ToList().ForEach(x => { BC.Add(x.Item1, new Board(x.Item1, (int)x.Item3)); BC[x.Item1].LoadData(); });
-            temp.Where(x => x.Item2 != x.Item3).ToList().ForEach(x => { BC[IdToEmail[(int)x.Item2]].Join(x.Item1); });
+            temp.Where(x => x.Item2 != x.Item3).ToList().ForEach(x => { BC[IdToEmail[(int)x.Item2]].Join(x.Item1);});
             log.Debug("board list has been loaded.");
             lnk.Load = true;
         }
@@ -134,15 +135,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             IsActive();
             email = email.ToLower();
-            if (!BC.ContainsKey(email))
+            if (!hosts.ContainsKey(email))
             {
                 log.Warn($"{email} try to login to system but he is not register to the system.");
                 throw new Exception($"{email} try to login to system but he is not register to the system.");
             }
             log.Debug("successfully opened board for " + email + ".");
-            Cur = BC[email];
+            String h = IdToEmail[hosts[email]];
+            Cur = BC[h];
             CurEmail = email;
-            BC[email].Login(email);
+            BC[h].Login(email);
         }
 
         public void Logout(string email) // log out current board holder
@@ -213,6 +215,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         {
             CheckEmail(email);
             return Cur.getColumns();
+        }
+        public Tuple<List<TC.Column>, string> GetBoard(string email)
+        {
+            CheckEmail(email);
+            return Cur.GetBoard();
         }
         private void IsActive()
         {

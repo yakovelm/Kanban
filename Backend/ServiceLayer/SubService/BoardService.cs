@@ -37,7 +37,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 BC.Login(email);
                 return new Response();
             }
-            catch (Exception e) { return (new Response(e.Message)); }
+            catch (Exception e) {return (new Response(e.Message));}
         }
         public Response Logout(string email) // log out the current board holder
         {
@@ -134,10 +134,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             log.Debug(email + " attempting to get the board.");
             try
             {
-                List<TC.Column> listColumnBL = BC.getColumns(email);
+                var temp = BC.GetBoard(email);
+                List<TC.Column> listColumnBL = temp.Item1;
                 List<string> listNames = new List<string>();
                 foreach (TC.Column a in listColumnBL) { listNames.Add(a.getName()); }
-                return new Response<Board>(new Board(listNames,BC.getHost()));
+                return new Response<Board>(new Board(listNames,temp.Item2));
             }
             catch (Exception e) { return new Response<Board>(e.Message); }
         }

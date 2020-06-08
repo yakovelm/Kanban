@@ -59,6 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             Contains(cur);
             this.cur = cur;
         }
+
         public void Contains(string cur)
         {
             if (!License.Contains(cur))
@@ -189,6 +190,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         public List<TC.Column> getColumns() // gets all columns of current board holder
         {
             return columns;
+        }
+        public Tuple<List<TC.Column>, string> GetBoard()
+        {
+            return Tuple.Create(getColumns(), email);
         }
         private void CheckTaskID(int taskID) // check if given task id is legal
         {

@@ -26,7 +26,7 @@ namespace KanbanUI.ViewModel
             UM = um;
             BM = new BoardModel(UM.Controller,um.email);
             Name = "Logged in as: "+UM.email;
-            Host = "Board hosted by: " + ((BM.host==null) ? "you" : BM.host);
+            Host = "Board hosted by: " + ((BM.host==UM.email) ? "you" : BM.host);
             Columns = new ObservableCollection<ColumnModel>();
             Columns.Clear();
         }
