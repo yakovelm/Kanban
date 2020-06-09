@@ -11,7 +11,7 @@ namespace KanbanUI.Model
     {
         public UserModel UM;
         public string host;
-        public ObservableCollection<ColumnModel> columns;
+        public ObservableCollection<ColumnModel> columns { get; set; }
         public BoardModel(UserModel um): base(um.Controller)
         {
             UM = um;

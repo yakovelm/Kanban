@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,10 +29,16 @@ namespace KanbanUI.View
             BVM = new BoardViewModel(u);
             DataContext = BVM;
         }
-        private void CNfunction(object sender, TextChangedEventArgs e)
+
+        private void left_Click(object sender, RoutedEventArgs e)
         {
-            TextBox CN = sender as TextBox;
-            BVM.changeName(CN.Text);
+            ColumnModel col=(ColumnModel)((Button)sender).DataContext;
+            col.moveLeft();
+        }
+
+        private void right_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

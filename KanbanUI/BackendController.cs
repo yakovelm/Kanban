@@ -35,7 +35,7 @@ namespace KanbanUI
             Response<Board> res = s.GetBoard(um.email);
             isErr(res);
             ObservableCollection<ColumnModel> temp = new ObservableCollection<ColumnModel>();
-            int i = 1;
+            int i = 0;
             foreach (string s in res.Value.ColumnsNames) 
             {
                 temp.Add(ColumnToModel(s,um,i,res.Value.emailCreator));
@@ -83,6 +83,21 @@ namespace KanbanUI
         public void changeColumnName (int index,string newname,string email) 
         {
             Response res = s.ChangeColumnName(email,index,newname);
+            isErr(res);
+        }
+        public void changeColumnLimit(int index, int newLimit, string email)
+        {
+            Response res = s.LimitColumnTasks(email, index, newLimit);
+            isErr(res);
+        }
+        public void MoveLeft(string email,int ind)
+        {
+            Response res = s.MoveColumnLeft(email, ind);
+            isErr(res);
+        }
+        public void MoveRight(string email, int ind)
+        {
+            Response res = s.MoveColumnRight(email, ind);
             isErr(res);
         }
     }

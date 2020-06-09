@@ -65,6 +65,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new Exception("failed to update the limit for column " + Cname + " on email "+Email);
             }
         }
+        public void UpdateName(string name)
+        {
+            if (!controller.Update(MakeFilter(), NameAtt, name))
+            {
+                log.Error("failed to update the name for column " + Cname + " on email " + Email);
+                throw new Exception("failed to name the limit for column " + Cname + " on email " + Email);
+            }
+        }
         public void UpdateOrd(long ord)
         {
             if (!controller.Update(MakeFilter(), OrdAtt, ord))

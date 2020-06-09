@@ -20,7 +20,17 @@ namespace KanbanUI.Model
                 RaisePropertyChanged("ColumnName");
             }  }
         private int _limit;
-        public int ColumnLimit { get => _limit; set { _limit = value; RaisePropertyChanged("ColumnLimit"); } }
+        public int ColumnLimit
+        {
+            get => _limit; set
+            {
+                if (changeLimit(value))
+                {
+                    _limit = value;
+                }
+                RaisePropertyChanged("ColumnName");
+            }
+        }
         public UserModel UM;
         public ObservableCollection<TaskModel> tasks;
        
@@ -28,8 +38,8 @@ namespace KanbanUI.Model
         {
             UM = um;
             Tuple<string,int, ObservableCollection<TaskModel>> col = Controller.getColumn(UM.email,Name);
-            ColumnName = col.Item1;
-            ColumnLimit = col.Item2;
+            _name = col.Item1;
+            _limit = col.Item2;
             tasks = col.Item3;
             Index = n;
             isHost = UM.email == host;
@@ -42,6 +52,35 @@ namespace KanbanUI.Model
                 return true;
             }
             catch { return false; }
+        }
+        private Boolean changeLimit(int newLimit)
+        {
+            try
+            {
+                Controller.changeColumnLimit(Index, newLimit, UM.email);
+                return true;
+            }
+            catch { return false; }
+        }
+
+        public void moveLeft()
+        {
+            Console.WriteLine("in moveLeft");
+            try
+            {
+                Controller.MoveLeft(UM.email,Index);
+                Index = Index - 1;
+            }
+            catch {  }
+        }
+        public void moveRight()
+        {
+            try
+            {
+                Controller.MoveRight(UM.email, Index);
+                Index = Index + 1;
+            }
+            catch { }
         }
     }
 }

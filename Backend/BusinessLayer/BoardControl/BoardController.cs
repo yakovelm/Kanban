@@ -272,6 +272,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public void ChangeColumnName(string email, int columnOrdinal, string newName)
         {
+            log.Debug("in BoardController with " + email+" and "+this.CurEmail);
             CheckEmail(email);
             Cur.ChangeColumnName(columnOrdinal, newName);
         }

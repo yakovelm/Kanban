@@ -12,7 +12,7 @@
             <Label Content="{Binding Path=Host, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
         </StackPanel>
         <Grid>
-            <ListBox ItemsSource="{Binding Path=Columns, Mode=TwoWay}" Margin="0,108,-0.4,0" >
+            <ListBox ItemsSource="{Binding Path=BM.columns, Mode=TwoWay}" Margin="0,108,-0.4,0" >
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" VerticalAlignment="Top"/>
@@ -21,10 +21,15 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
-                            <Label Content="{Binding Path=Index, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
-                                <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" IsEnabled="{Binding Path=isHost}"/>
-                                <TextBox Text="{Binding Path=ColumnLimit, Mode=TwoWay}"/>
-                          </StackPanel>
+                            <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" IsEnabled="{Binding Path=isHost}"/>
+                            <TextBox Text="{Binding Path=ColumnLimit, Mode=TwoWay}" IsEnabled="{Binding Path=isHost}"/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="left" Name="left" Click="left_Click" Margin="0" FontSize="12" Width="50" IsDefault="True"/>
+                                <Label Content="{Binding Path=Index, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
+                                <Button Content="right" Name="right" Click="right_Click" Margin="0" FontSize="12" Width="50" IsDefault="True"/>
+                            </StackPanel>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

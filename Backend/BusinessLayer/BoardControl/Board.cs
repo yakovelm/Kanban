@@ -359,6 +359,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public void ChangeColumnName(int columnOrdinal, string newName)
         {
+            log.Debug("in Board with " + email + " and " + cur);
             CheckHost();
             CheckColumnOrdinal(columnOrdinal);
             CheckColumnName(newName);

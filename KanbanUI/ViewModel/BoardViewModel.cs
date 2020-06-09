@@ -10,11 +10,8 @@ namespace KanbanUI.ViewModel
 {
     public class BoardViewModel: NotifiableObject
     {
-        //public Boolean isHost { get=> _ishost; set { _ishost = value; RaisePropertyChanged("isHost"); } }
-        //private Boolean _ishost;
-        public BoardModel BM;
+        public BoardModel BM { get; set; }
         public UserModel UM;
-        public ObservableCollection<ColumnModel> Columns { get => BM.columns; set { BM.columns = value; } } 
         
 
         private string _name;
@@ -29,28 +26,7 @@ namespace KanbanUI.ViewModel
             BM = new BoardModel(um);
             Name = "Logged in as: "+UM.email;
             Host = "Board hosted by: " + ((BM.host==UM.email) ? "you" : BM.host);
-            //Columns = new ObservableCollection<ColumnModel>();
-            //Columns.Clear();
-            //isHost = UM.email == BM.host;
-            //Console.WriteLine(isHost);
         }
 
-        internal void changeName(string text)
-        {
-            //if (UM.email.Equals(Host))
-            //{ 
-            //     = text;
-
-            //}
-        }
-
-        //public void LoadColumns()
-        //{
-        //    foreach (string s in BM.columnNames)
-        //    {
-        //        Columns.Add(new ColumnModel(UM.Controller, UM.email,s, _host));
-        //    }
-        //}
-   
     }
 }
