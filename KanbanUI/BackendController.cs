@@ -35,15 +35,17 @@ namespace KanbanUI
             Response<Board> res = s.GetBoard(um.email);
             isErr(res);
             ObservableCollection<ColumnModel> temp = new ObservableCollection<ColumnModel>();
+            int i = 1;
             foreach (string s in res.Value.ColumnsNames) 
             {
-                temp.Add(ColumnToModel(s,um));
+                temp.Add(ColumnToModel(s,um,i,res.Value.emailCreator));
+                i++;
             }
             return Tuple.Create(res.Value.emailCreator, temp);
         } 
-        private ColumnModel ColumnToModel(string s,UserModel um) 
+        private ColumnModel ColumnToModel(string s,UserModel um,int n,string host) 
         {
-            return new ColumnModel(this,s, um);
+            return new ColumnModel(this,s, um,n,host);
         }
 
         public UserModel Login(string email, string password)
@@ -77,6 +79,11 @@ namespace KanbanUI
             {
                 throw new Exception(res.ErrorMessage);
             }
+        }
+        public void changeColumnName (int index,string newname,string email) 
+        {
+            Response res = s.ChangeColumnName(email,index,newname);
+            isErr(res);
         }
     }
 }

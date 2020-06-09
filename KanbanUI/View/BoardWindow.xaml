@@ -21,7 +21,8 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
-                              <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" Name="CN" TextChanged="CNfunction"/>
+                            <Label Content="{Binding Path=Index, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
+                                <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" IsEnabled="{Binding Path=isHost}"/>
                                 <TextBox Text="{Binding Path=ColumnLimit, Mode=TwoWay}"/>
                           </StackPanel>
                     </DataTemplate>
