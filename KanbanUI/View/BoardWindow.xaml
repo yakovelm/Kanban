@@ -7,41 +7,44 @@
         mc:Ignorable="d"
         Title="BoardWindow" Height="450" Width="800">
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="{Binding Path=Name, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
-            <Label Content="{Binding Path=Host, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
-            <Button Content="Logout" FontSize="12" Width="50" IsDefault="True"  Margin="0,30,10,350" Click="Button_Click"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button Content="left" Command = "{Binding LeftClick}"  FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="350,30,10,350"/>
-            <Button Content="right" Command = "{Binding RightClick}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,30,10,350"/>
-            <Button Content="Delete" Command = "{Binding DeleteColumn}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,30,10,350"/>
-            <Button Content="Add" Command = "{Binding AddColumn}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,30,10,350"/>
-        </StackPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="178*"/>
-                <ColumnDefinition Width="615*"/>
-            </Grid.ColumnDefinitions>
-            <ListBox ItemsSource="{Binding Path=BM.columns, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedColumn}" Grid.ColumnSpan="2" Margin="0,80,9.6,0" >
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" VerticalAlignment="Top"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-                            <TextBox Text="{Binding Path=ColumnLimit, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Path=Index, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding Path=Name, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Content="{Binding Path=Host, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Button Content="Logout" FontSize="12" Width="50" HorizontalAlignment="Stretch"  VerticalAlignment="Center" IsDefault="True" Click="Button_Click"/>
+            </StackPanel>
+        
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="615*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox ItemsSource="{Binding Path=BM.columns, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedColumn}" Grid.ColumnSpan="2" Margin="0,10,10,0" >
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" VerticalAlignment="Top"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Height="300">
+                                <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                                <TextBox Text="{Binding Path=ColumnLimit, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding Path=Index, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="left" Command = "{Binding LeftClick}"  FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,0,10,0" />
+                <Button Content="right" Command = "{Binding RightClick}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,0,10,0" />
+                <Button Content="Delete" Command = "{Binding DeleteColumn}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,0,10,0" />
+                <Button Content="Add" Command = "{Binding AddColumn}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,0,10,0" />
+                <TextBox Text="column to add" IsEnabled="{Binding IsHost}"/>
 
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
