@@ -19,5 +19,12 @@ namespace KanbanUI.Model
             host = board.Item1;
             columns = board.Item2;
         }
+
+        internal void ReLoad()
+        {
+            //columns.Clear();
+            columns = Controller.getBoard(UM).Item2;
+            RaisePropertyChanged("columns");
+        }
     }
 }

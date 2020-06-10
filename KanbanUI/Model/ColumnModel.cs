@@ -9,55 +9,57 @@ namespace KanbanUI.Model
 {
     public class ColumnModel: NotifiableModelObject
     {
-        public Boolean isHost { get => _ishost; set { _ishost = value; RaisePropertyChanged("isHost"); } }
-        private Boolean _ishost;
+       // public Boolean isHost { get => _ishost; set { _ishost = value; RaisePropertyChanged("isHost"); } }
+     //   private Boolean _ishost;
         public int Index { get => _index; set { _index = value; RaisePropertyChanged("Index"); } }
         private int _index;
         private string _name;
+        private string email;
         public string ColumnName { get=>_name; set {
                 if (changename(value)){
                     _name = value; }
                 RaisePropertyChanged("ColumnName");
             }  }
         private int _limit;
-        public int ColumnLimit
+        public string ColumnLimit
         {
-            get => _limit; set
+            get => _limit.ToString(); set
             {
                 if (changeLimit(value))
                 {
-                    _limit = value;
+                    _limit = Int32.Parse(value);
+                    RaisePropertyChanged("ColumnLimit");
                 }
-                RaisePropertyChanged("ColumnName");
             }
         }
-        public UserModel UM;
+       // public UserModel UM;
         public ObservableCollection<TaskModel> tasks;
        
-        public ColumnModel(BackendController c,string Name,UserModel um,int n,string host): base(c)
+        public ColumnModel(BackendController c,string Name,string email,int n): base(c)
         {
-            UM = um;
-            Tuple<string,int, ObservableCollection<TaskModel>> col = Controller.getColumn(UM.email,Name);
+       //     UM = um;
+            Tuple<string,int, ObservableCollection<TaskModel>> col = Controller.getColumn(email,Name);
             _name = col.Item1;
             _limit = col.Item2;
             tasks = col.Item3;
+            this.email = email;
             Index = n;
-            isHost = UM.email == host;
+          //  isHost = UM.email == host;
         }
         private Boolean changename(string newname) 
         {
             try
             {
-                Controller.changeColumnName(Index, newname, UM.email);
+                Controller.changeColumnName(Index, newname, email);
                 return true;
             }
             catch { return false; }
         }
-        private Boolean changeLimit(int newLimit)
+        private Boolean changeLimit(string newLimit)
         {
             try
             {
-                Controller.changeColumnLimit(Index, newLimit, UM.email);
+                Controller.changeColumnLimit(Index,Int32.Parse(newLimit), email);
                 return true;
             }
             catch { return false; }
@@ -68,7 +70,7 @@ namespace KanbanUI.Model
             Console.WriteLine("in moveLeft");
             try
             {
-                Controller.MoveLeft(UM.email,Index);
+                Controller.MoveLeft(email,Index);
                 Index = Index - 1;
             }
             catch {  }
@@ -77,7 +79,7 @@ namespace KanbanUI.Model
         {
             try
             {
-                Controller.MoveRight(UM.email, Index);
+                Controller.MoveRight(email, Index);
                 Index = Index + 1;
             }
             catch { }

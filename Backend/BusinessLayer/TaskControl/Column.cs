@@ -208,7 +208,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public void ChangeColumnName(int host, string newName)
         {
             log.Debug("in column with " + host + " and " + this.host);
-            if (host != this.host) throw new Exception("non host user tried to change column name.");
+            if (host != this.host | newName.Length>maxname) throw new Exception("non host user tried to change column name.");
             
             DAL.Column t= ToDalObject();
             t.UpdateName(newName);

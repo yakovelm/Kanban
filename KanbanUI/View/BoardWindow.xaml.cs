@@ -30,15 +30,25 @@ namespace KanbanUI.View
             DataContext = BVM;
         }
 
-        private void left_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ColumnModel col=(ColumnModel)((Button)sender).DataContext;
-            col.moveLeft();
+            BVM.logout();
+            LoginWindow l = new LoginWindow();
+            l.Show();
+            this.Close();
         }
 
-        private void right_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
+
+        //private void left_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ColumnModel col=(ColumnModel)((Button)sender).DataContext;
+        //    col.moveLeft();
+        //}
+
+        //private void right_Click(object sender, RoutedEventArgs e)
+        //{
+
+        //}
     }
 }

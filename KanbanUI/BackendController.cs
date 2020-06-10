@@ -26,6 +26,13 @@ namespace KanbanUI
             }
             return Tuple.Create(res.Value.Name, res.Value.Limit,tasks);
         }
+
+        internal void Logout(string email)
+        {
+             Response res= s.Logout(email);
+            isErr(res);
+        }
+
         private TaskModel taskToModel(IntroSE.Kanban.Backend.ServiceLayer.Task t,string email)
         {
             return new TaskModel(this,email,t.Title,t.Description,t.DueDate,t.CreationTime);
@@ -38,14 +45,14 @@ namespace KanbanUI
             int i = 0;
             foreach (string s in res.Value.ColumnsNames) 
             {
-                temp.Add(ColumnToModel(s,um,i,res.Value.emailCreator));
+                temp.Add(ColumnToModel(s,um.email,i));
                 i++;
             }
             return Tuple.Create(res.Value.emailCreator, temp);
         } 
-        private ColumnModel ColumnToModel(string s,UserModel um,int n,string host) 
+        private ColumnModel ColumnToModel(string s, string email,int n) 
         {
-            return new ColumnModel(this,s, um,n,host);
+            return new ColumnModel(this,s, email,n);
         }
 
         public UserModel Login(string email, string password)
