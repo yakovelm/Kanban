@@ -22,12 +22,22 @@ namespace KanbanUI.View
     public partial class TaskWindow : Window
     {
         TaskViewModel TVM;
-        TaskWindow(TaskModel tm)
+        public TaskWindow( UserModel um)
+        {
+            InitializeComponent();
+            TVM = new TaskViewModel(um);
+            DataContext = TVM;
+        }
+        public TaskWindow(TaskModel tm)
         {
             InitializeComponent();
             TVM = new TaskViewModel(tm);
             DataContext = TVM;
         }
 
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

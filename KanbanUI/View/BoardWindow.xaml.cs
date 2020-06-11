@@ -38,6 +38,13 @@ namespace KanbanUI.View
             this.Close();
         }
 
+        private void Add_Task_Click(object sender, RoutedEventArgs e)
+        {
+            TaskWindow tw = new TaskWindow(BVM.UM);
+            tw.ShowDialog();
+
+        }
+
 
 
         //private void left_Click(object sender, RoutedEventArgs e)

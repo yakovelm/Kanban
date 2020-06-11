@@ -5,12 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KanbanUI.View"
         mc:Ignorable="d"
-        Title="TaskWindow" Height="399" Width="861">
-    <StackPanel Orientation="Vertical" Margin="0,0,2,-4">
-        <Label Content="{Binding Path=Title, Mode=TwoWay}" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="278,0,337,0" Width="177"/>
-        <TextBlock x:Name="Desc" TextWrapping="Wrap" Height="232" Margin="10,0"><Run Text="{Binding Path=Desc, Mode=TwoWay}"/></TextBlock>
-        <Label Content="{Binding Path=Assignee, Mode=TwoWay}" HorizontalAlignment="Right" FontSize="15" FontWeight="Bold" Margin="0,0,365,0" Width="178"/>
-            <Label Content="{Binding Path=Due, Mode=TwoWay}" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="306,0,365,0" Width="178" Height="38"/>
-        <Label Content="{Binding Path=Cre, Mode=TwoWay}" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="278,0,337,0" Width="177"/>
-    </StackPanel>
+        Title="TaskWindow" Height="300" Width="500">
+    <Grid>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+            <Label Content="TASK" FontWeight="Bold" FontSize="20"  HorizontalAlignment="Center" Margin="0,10,53,0" />
+            <Grid>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Title: " HorizontalAlignment="Left" Margin="0,10,53,0" />
+                    <TextBox Text="title" Width="80" HorizontalAlignment="Right" Margin="0,10,40,0" />
+                </StackPanel>
+            </Grid>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="description: " Margin="0,10,15,0" />
+                <TextBox Text="this is a description you can read" Margin="0,10,40,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Due Date: " Margin="0,10,24,0" />
+                <TextBox Text="DD" Width="28" Margin="0,15,0,0"/>
+                <Label Content="/ " Margin="0,10,0,0" />
+                <TextBox Text="MM" Width="28" Margin="0,15,0,0"/>
+                <Label Content="/ " Margin="0,10,0,0" />
+                <TextBox Text="YYYY" Width="40" Margin="0,15,0,0"/>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Assignee: " Margin="0,10,28,0" />
+                <TextBox Text="you" Width="80" Margin="0,10,40,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="creation date: " Margin="0,10,0,0" />
+                <Label Content="1/2/3" Margin="0,10,40,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Cancel"  Width="80"  Margin="65,10,20,0"  HorizontalAlignment="Left" Click="Close_Click"/>
+                <Button Content="Apply" Width="80" Margin="0,10,0,0" HorizontalAlignment="Right"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
 </Window>

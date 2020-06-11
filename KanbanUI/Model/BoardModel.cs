@@ -22,9 +22,45 @@ namespace KanbanUI.Model
 
         internal void ReLoad()
         {
-            //columns.Clear();
             columns = Controller.getBoard(UM).Item2;
             RaisePropertyChanged("columns");
         }
+
+        internal void Delete(ColumnModel p)
+        {
+            Controller.DeleteColumn(UM.email, p.Index);
+            columns.Remove(p);
+            int i = 0;
+            foreach (ColumnModel cm in columns)
+            {
+                cm.Index = i;
+                i++;
+            }
+            RaisePropertyChanged("columns");
+        }
+
+        internal void MoveRight(ColumnModel p)
+        {
+            Controller.MoveRight(UM.email, p.Index);
+            ReLoad();
+        }
+        internal void MoveLeft(ColumnModel p)
+        {
+            Controller.MoveLeft(UM.email, p.Index);
+            ReLoad();
+        }
+
+        internal void Add(string Index, string Name)
+        {
+            ColumnModel col=Controller.AddColumn(UM.email, Int32.Parse(Index), Name);
+            columns.Insert(col.Index, col);
+            int i = 0;
+            foreach(ColumnModel cm in columns){
+                cm.Index = i;
+                i++;
+            }
+            RaisePropertyChanged("columns");
+        }
+       
     }
 }

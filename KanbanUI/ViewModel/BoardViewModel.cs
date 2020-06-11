@@ -13,8 +13,20 @@ namespace KanbanUI.ViewModel
     {
         public BoardModel BM { get; set; }
         public UserModel UM;
-        
 
+        private string _message;
+        public string Message
+        {
+            get => _message; set
+            {
+                _message = value; RaisePropertyChanged("Message");
+            }
+        }
+
+        private string _newColumnName;
+        public string NewColumnName { get => _newColumnName; set { _newColumnName = value; RaisePropertyChanged("NewColumnName"); } }
+        private string _newColumnIndex;
+        public string NewColumnIndex { get => _newColumnIndex; set { _newColumnIndex = value; RaisePropertyChanged("NewColumnIndex"); } }
         private string _name;
         public string Name { get => _name;set {  _name = value; RaisePropertyChanged("Name"); } }
         private string _host;
@@ -24,6 +36,7 @@ namespace KanbanUI.ViewModel
             set { _selectedColumn = value;
                 LeftClick.RaiseCanExecuteChanged();
                 RightClick.RaiseCanExecuteChanged();
+                DeleteClick.RaiseCanExecuteChanged();
             }
         }
 
@@ -35,6 +48,8 @@ namespace KanbanUI.ViewModel
         private ColumnModel _selectedColumn;
         public MyICommand LeftClick { get; set; }
         public MyICommand RightClick { get; set; }
+        public MyICommand DeleteClick { get; set; }
+        public MyICommand AddColumn { get; set; }
 
 
         public BoardViewModel(UserModel um)
@@ -44,26 +59,66 @@ namespace KanbanUI.ViewModel
             Name = "Logged in as: "+UM.email;
             Host = "Board hosted by: " + ((BM.host==UM.email) ? "you" : BM.host);
             IsHost = UM.email == BM.host;
-            LeftClick = new MyICommand(OnLeftClick, CanMove);
-            RightClick = new MyICommand(OnRightClick, CanMove);
+            NewColumnName = "name";
+            NewColumnIndex = "index";
+            LeftClick = new MyICommand(OnLeftClick);
+            RightClick = new MyICommand(OnRightClick);
+            DeleteClick = new MyICommand(OnDeleteClick);
+            AddColumn = new MyICommand(OnAddClick);
         }
 
-        private void OnLeftClick()
+        private void OnAddClick(object obj)
         {
-            SelectedColumn.moveLeft();
-            BM.ReLoad();
-
+            Message = "";
+            try
+            {
+                BM.Add(NewColumnIndex,NewColumnName);
+                Message = "column: " + NewColumnName + " added at "+NewColumnIndex+".";
+            }
+            catch (Exception e)
+            {
+                Message = "column: " + NewColumnName + " added due to: " + e.Message;
+            }
         }
-        private void OnRightClick()
+
+        private void OnLeftClick(object p)
         {
-            SelectedColumn.moveRight();
-            BM.ReLoad();
+            Message = "";
+            try
+            {
+                BM.MoveLeft((ColumnModel)p);
+                Message = "column: " + ((ColumnModel)p).ColumnName + " moved left.";
+            }
+            catch (Exception e)
+            {
+                Message = "column: " + ((ColumnModel)p).ColumnName + " not moved due to: " + e.Message;
+            }
         }
-
-        private bool CanMove()
+        private void OnRightClick(object p)
         {
-            return SelectedColumn != null;
+            Message = "";
+            try
+            {
+                BM.MoveRight((ColumnModel)p);
+                Message = "column: " + ((ColumnModel)p).ColumnName + " moved right.";
+            }
+            catch (Exception e)
+            {
+                Message = "column: " + ((ColumnModel)p).ColumnName + " not moved due to: " + e.Message;
+            }
         }
-
+        private void OnDeleteClick(object p)
+        {
+            Message = "";
+            try
+            {
+                BM.Delete((ColumnModel)p);
+                Message = "column: " + ((ColumnModel)p).ColumnName + " deleted.";
+            }
+            catch (Exception e)
+            {
+                Message = "column: " + ((ColumnModel)p).ColumnName + " not deleted due to: " + e.Message;
+            }
+        }
     }
 }

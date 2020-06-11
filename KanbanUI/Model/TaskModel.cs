@@ -21,5 +21,9 @@ namespace KanbanUI.Model
             Due = DU;
             Cre = C;
         }
+        public TaskModel(BackendController c) : base(c)
+        {
+
+        }
     }
 }

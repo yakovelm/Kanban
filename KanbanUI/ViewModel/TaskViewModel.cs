@@ -30,5 +30,9 @@ namespace KanbanUI.ViewModel
             Due = TM.Due.ToString();
             Cre = TM.Cre.ToString();
         }
+        public TaskViewModel(UserModel um)
+        {
+            TM = new TaskModel(um.Controller);
+        }
     }
 }

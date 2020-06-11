@@ -27,6 +27,12 @@ namespace KanbanUI
             return Tuple.Create(res.Value.Name, res.Value.Limit,tasks);
         }
 
+        internal void DeleteColumn(string email, int index)
+        {
+            Response res = s.RemoveColumn(email, index);
+            isErr(res);
+        }
+
         internal void Logout(string email)
         {
              Response res= s.Logout(email);
@@ -37,6 +43,15 @@ namespace KanbanUI
         {
             return new TaskModel(this,email,t.Title,t.Description,t.DueDate,t.CreationTime);
         }
+
+        internal ColumnModel AddColumn(string email, int index, string name)
+        {
+            Response<Column> res = s.AddColumn(email, index, name);
+            isErr(res);
+            return new ColumnModel(this, res.Value.Name, email, index);
+
+        }
+
         public Tuple<string, ObservableCollection<ColumnModel>> getBoard(UserModel um)
         {
             Response<Board> res = s.GetBoard(um.email);

@@ -9,15 +9,15 @@ namespace KanbanUI.Utils
 {
     public class MyICommand : ICommand
     {
-        Action _TargetExecuteMethod;
+        Action<object> _TargetExecuteMethod;
         Func<bool> _TargetCanExecuteMethod;
 
-        public MyICommand(Action executeMethod)
+        public MyICommand(Action<object> executeMethod)
         {
             _TargetExecuteMethod = executeMethod;
         }
 
-        public MyICommand(Action executeMethod, Func<bool> canExecuteMethod)
+        public MyICommand(Action<object> executeMethod, Func<bool> canExecuteMethod)
         {
             _TargetExecuteMethod = executeMethod;
             _TargetCanExecuteMethod = canExecuteMethod;
@@ -50,7 +50,7 @@ namespace KanbanUI.Utils
         {
             if (_TargetExecuteMethod != null)
             {
-                _TargetExecuteMethod();
+                _TargetExecuteMethod(parameter);
             }
         }
     }

@@ -12,6 +12,7 @@
                 <Label Content="{Binding Path=Name, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Label Content="{Binding Path=Host, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Button Content="Logout" FontSize="12" Width="50" HorizontalAlignment="Stretch"  VerticalAlignment="Center" IsDefault="True" Click="Button_Click"/>
+                <Label Content="{Binding Path=Message, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </StackPanel>
         
             <Grid>
@@ -29,21 +30,49 @@
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Height="300">
                                 <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
                                 <TextBox Text="{Binding Path=ColumnLimit, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                                <Label Content="{Binding Path=Index, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
+
+                                <ListBox ItemsSource="{Binding Path=tasks, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedTask}">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="Advance" Margin="0,0,10,0" />
+                                                <StackPanel Orientation="Vertical">
+                                                    <Label Content="Title" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                                                    <Label Content="Due Date" Margin="0,10,0,0" VerticalAlignment="Bottom"/>
+                                                </StackPanel>
+
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="{Binding Path=Index, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
+                                    <Button Content="left" Command = "{Binding DataContext.LeftClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}"  FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding DataContext.IsHost,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,0,10,0" />
+                                    <Button Content="Delete" Command = "{Binding DataContext.DeleteClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" FontSize="12" Width="50" IsEnabled="{Binding DataContext.IsHost,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,0,10,0"/>
+                                    <Button Content="right" Command = "{Binding DataContext.RightClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding DataContext.IsHost,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,0,10,0" />
+
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <StackPanel Orientation="Horizontal">
-                <Button Content="left" Command = "{Binding LeftClick}"  FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,0,10,0" />
-                <Button Content="right" Command = "{Binding RightClick}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,0,10,0" />
-                <Button Content="Delete" Command = "{Binding DeleteColumn}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,0,10,0" />
-                <Button Content="Add" Command = "{Binding AddColumn}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,0,10,0" />
-                <TextBox Text="column to add" IsEnabled="{Binding IsHost}"/>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Add Column" Command = "{Binding AddColumn}" FontSize="12" Width="80" IsDefault="True" IsEnabled="{Binding IsHost}" Margin="0,0,10,0" />
+                    <TextBox Text="{Binding NewColumnName}" Width="80" IsEnabled="{Binding IsHost}" Margin="0,0,10,0"/>
+                    <TextBox Text="{Binding NewColumnIndex}" Width="80" IsEnabled="{Binding IsHost}" Margin="0,0,10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Add Task"  Click="Add_Task_Click" FontSize="12" Width="80" IsDefault="True" Margin="0,10,10,0" />
 
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>
