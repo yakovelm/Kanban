@@ -42,6 +42,7 @@ namespace KanbanUI.View
         {
             TaskWindow tw = new TaskWindow(BVM.UM);
             tw.ShowDialog();
+            BVM.Reload();
 
         }
 

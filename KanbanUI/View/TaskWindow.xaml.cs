@@ -28,16 +28,24 @@ namespace KanbanUI.View
             TVM = new TaskViewModel(um);
             DataContext = TVM;
         }
-        public TaskWindow(TaskModel tm)
+        public TaskWindow(TaskModel tm,UserModel um)
         {
             InitializeComponent();
-            TVM = new TaskViewModel(tm);
+            TVM = new TaskViewModel(tm,um);
             DataContext = TVM;
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Apply_Click(object sender, RoutedEventArgs e)
+        {
+            if (TVM.apply())
+            {
+                Close();
+            }
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KanbanUI.View"
         mc:Ignorable="d"
-        Title="BoardWindow" Height="450" Width="800">
+        Title="BoardWindow" Height="750" Width="1000">
     <Grid>
         <StackPanel>
             <StackPanel Orientation="Horizontal">
@@ -14,12 +14,12 @@
                 <Button Content="Logout" FontSize="12" Width="50" HorizontalAlignment="Stretch"  VerticalAlignment="Center" IsDefault="True" Click="Button_Click"/>
                 <Label Content="{Binding Path=Message, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </StackPanel>
-        
+
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="615*"/>
                 </Grid.ColumnDefinitions>
-                <ListBox ItemsSource="{Binding Path=BM.columns, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedColumn}" Grid.ColumnSpan="2" Margin="0,10,10,0" >
+                <ListBox ItemsSource="{Binding Path=BM.columns, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedColumn}"  Grid.ColumnSpan="2" Margin="0,10,10,0" >
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" VerticalAlignment="Top"/>
@@ -27,35 +27,31 @@
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Height="300">
-                                <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-                                <TextBox Text="{Binding Path=ColumnLimit, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
-                                <Label Content="{Binding Path=Index, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
-
-                                <ListBox ItemsSource="{Binding Path=tasks, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedTask}">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical"/>
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Content="Advance" Margin="0,0,10,0" />
-                                                <StackPanel Orientation="Vertical">
-                                                    <Label Content="Title" Margin="0,10,0,0" VerticalAlignment="Top"/>
-                                                    <Label Content="Due Date" Margin="0,10,0,0" VerticalAlignment="Bottom"/>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Height="600">
+                                <StackPanel>
+                                    <TextBox Text="{Binding Path=ColumnName, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                                    <TextBox Text="{Binding Path=ColumnLimit, Mode=TwoWay}" IsEnabled="{Binding Path=DataContext.IsHost ,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+                                    <Label Content="{Binding Path=Index, Mode=TwoWay}" HorizontalAlignment="Left" Margin="-2,9,0,0" VerticalAlignment="Top"/>
+                                </StackPanel>
+                                <Grid Height="480">
+                                    <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding Path=tasks, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedTask}" >
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Height="80">
+                                                    <Button Content="Advance" Width="50" Height="25" Margin="0,0,10,0" />
+                                                    <StackPanel Orientation="Vertical">
+                                                        <Label Content="{Binding Path=Title}" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                                                        <Label Content="{Binding Path=Due}" Margin="0,10,0,0" VerticalAlignment="Bottom"/>
+                                                    </StackPanel>
                                                 </StackPanel>
-
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                                
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Content="left" Command = "{Binding DataContext.LeftClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}"  FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding DataContext.IsHost,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,0,10,0" />
-                                    <Button Content="Delete" Command = "{Binding DataContext.DeleteClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" FontSize="12" Width="50" IsEnabled="{Binding DataContext.IsHost,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,0,10,0"/>
-                                    <Button Content="right" Command = "{Binding DataContext.RightClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding DataContext.IsHost,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,0,10,0" />
+                                    <Button Content="left" Command = "{Binding DataContext.LeftClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}"  FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding DataContext.IsHost,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,10,10,0" />
+                                    <Button Content="Delete" Command = "{Binding DataContext.DeleteClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" FontSize="12" Width="50" IsEnabled="{Binding DataContext.IsHost,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,10,10,0"/>
+                                    <Button Content="right" Command = "{Binding DataContext.RightClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" FontSize="12" Width="50" IsDefault="True" IsEnabled="{Binding DataContext.IsHost,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Margin="0,10,10,0" />
 
                                 </StackPanel>
                             </StackPanel>

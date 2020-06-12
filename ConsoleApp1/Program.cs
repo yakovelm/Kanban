@@ -28,8 +28,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string tp2 = "123zsaZSA1212";
                 string tn2 = "nitay";
 
-                string te3 = "aleks@bgu.il";
-                string tp3 = "123zsaZSA1212";
+                string te3 = "aa@a.aa";
+                string tp3 = "Aa123";
                 string tn3 = "aleks";
 
                 //proper login tests - all should work
@@ -39,6 +39,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.Register(te,tp,tn));
                 print(s.Login(te3, tp3));
                 print(s.GetBoard(te3).toString());
+                for (int i = 4; i <= 20; i++) print(s.AddTask(te3, "title" + i, "desc" + i, new DateTime(2200, 06, 22)));
+                for (int i = 1; i <= 15; i++) print(s.AdvanceTask(te3, 0, i));
+                for (int i = 1; i <= 10; i++) print(s.AdvanceTask(te3, 1, i));
+                for (int i = 1; i <= 5; i++) print(s.AdvanceTask(te3, 2, i));
                 print(s.AddColumn(te3, 0, "ADD1").toString());
                 print(s.GetBoard(te3).toString());
                 print(s.AddColumn(te3, 1, "ADD2").toString());

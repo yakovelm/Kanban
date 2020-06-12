@@ -33,6 +33,12 @@ namespace KanbanUI
             isErr(res);
         }
 
+        internal void addTask(string email, string title, string desc, DateTime due)
+        {
+            Response res = s.AddTask(email, title, desc, due);
+            isErr(res);
+        }
+
         internal void Logout(string email)
         {
              Response res= s.Logout(email);

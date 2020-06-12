@@ -33,7 +33,7 @@ namespace KanbanUI.Model
         }
 
 
-        public ObservableCollection<TaskModel> tasks;
+        public ObservableCollection<TaskModel> tasks { get; set; }
        
         public ColumnModel(BackendController c,string Name,string email,int n): base(c)
         {

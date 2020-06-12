@@ -32,6 +32,12 @@ namespace KanbanUI.ViewModel
         private string _host;
         public bool IsHost { get; set; }
         public string Host { get => _host; set { _host = value; RaisePropertyChanged("Host"); } }
+
+        internal void Reload()
+        {
+            BM.ReLoad();
+        }
+
         public ColumnModel SelectedColumn { get=>_selectedColumn; 
             set { _selectedColumn = value;
                 LeftClick.RaiseCanExecuteChanged();
