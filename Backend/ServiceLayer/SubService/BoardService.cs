@@ -201,7 +201,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 
         private Task chengeType(TC.Task taskBL) // convert a BuisnessLayer task to a ServiceLayer task
         {
-            return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.GetDue(), taskBL.getTitle(), taskBL.getDesc(),null);
+            return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.GetDue(), taskBL.getTitle(), taskBL.getDesc(),taskBL.getEmail());
         }
         private Column chengeType(TC.Column columnBL)// convert a BuisnessLayer column to a ServiceLayer column
         {

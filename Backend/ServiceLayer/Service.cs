@@ -119,6 +119,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
         {
+            Console.WriteLine("IN SERVICE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return BS.AssignTask(email, columnOrdinal, taskId, emailAssignee);
         }		
 		

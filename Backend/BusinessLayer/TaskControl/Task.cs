@@ -59,6 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Task Dtask = ToDalObject();
             Dtask.Add();
         }
+        public string getEmail() { return email; }
         public string getTitle() { return title;}
         public string getDesc() { return desc;}
         public DateTime getCreation() { return creation;}
@@ -73,6 +74,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             log.Info("task #" + ID + "asignee changing from " + email + " to " + assig+".");
             email = assig;
+            DAL.Task Dtask = ToDalObject();
+            Dtask.UpdateAssignee(assig);
         }
         public void editColumn(string Cname) // update title of this task
         {

@@ -10,6 +10,10 @@ namespace KanbanUI.ViewModel
     class TaskViewModel : NotifiableObject
     {
 
+        public string WindowTitle {get=>_windowTitle;set{ _windowTitle = value; RaisePropertyChanged("WindowTitle"); } }
+        private string _windowTitle;
+        public bool isEdit { get; }
+        public bool isAssignee { get; }
         string _message;
         public string Message { get => _message; set { _message = value; RaisePropertyChanged("Message"); } }
         string _assignee;
@@ -44,13 +48,26 @@ namespace KanbanUI.ViewModel
 
         internal Boolean apply()
         {
-            try
+            if (!isEdit)
             {
-                TM.apply(Title,Desc,paresDate(),((Assignee==""|Assignee==null)? UM.email : Assignee),UM.email);
-                return true;
+                try
+                {
+                    TM.addTask(Title, Desc, parseDate(), UM.email);
+                    return true;
+                }
+                catch (Exception e) { Message = e.Message; }
+                return false;
             }
-            catch(Exception e) { Message = e.Message;  }
-            return false;
+            else
+            {
+                try
+                {
+                    TM.editTask(Title, Desc, parseDate(), Assignee, UM.email);
+                    return true;
+                }
+                catch(Exception e) { Message = e.Message; }
+                return false;
+            }
         }
 
         int _dueMonth;
@@ -85,6 +102,7 @@ namespace KanbanUI.ViewModel
         TaskModel TM;
         public TaskViewModel(TaskModel tm, UserModel um)
         {
+            
             UM = um;
             TM = tm;
             Assignee = TM.Assignee;
@@ -94,14 +112,25 @@ namespace KanbanUI.ViewModel
             DueMonth = DateTime.Parse(TM.Due).Month.ToString();
             DueYear = DateTime.Parse(TM.Due).Year.ToString();
             Cre = TM.Cre.ToString();
+            WindowTitle = "Edit Task";
+            isAssignee = (UM.email == Assignee);
+            isEdit = isAssignee;
+            Console.WriteLine(Assignee + "   " + UM.email);
         }
         public TaskViewModel(UserModel um)
         {
+            isEdit = false;
+            isAssignee = true;
             UM = um;
             TM = new TaskModel(um.Controller);
+            Assignee = UM.email;
+            Cre = DateTime.Now.ToString();
+            Message = "new Task will be assigned to you.";
+            WindowTitle = "Add Task";
+
         }
 
-        private DateTime paresDate()
+        private DateTime parseDate()
         {
             try
             {

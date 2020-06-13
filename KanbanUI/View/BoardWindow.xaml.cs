@@ -46,17 +46,12 @@ namespace KanbanUI.View
 
         }
 
-
-
-        //private void left_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ColumnModel col=(ColumnModel)((Button)sender).DataContext;
-        //    col.moveLeft();
-        //}
-
-        //private void right_Click(object sender, RoutedEventArgs e)
-        //{
-
-        //}
+        private void Edit_Task_Click(object sender, RoutedEventArgs e)
+        {
+            TaskModel T = (TaskModel)((Button)sender).DataContext;
+            TaskWindow TW = new TaskWindow(T,BVM.UM);
+            TW.ShowDialog();
+            BVM.Reload();
+        }
     }
 }

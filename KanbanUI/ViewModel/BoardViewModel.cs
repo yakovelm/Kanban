@@ -33,6 +33,19 @@ namespace KanbanUI.ViewModel
         public bool IsHost { get; set; }
         public string Host { get => _host; set { _host = value; RaisePropertyChanged("Host"); } }
 
+        internal void AddTask()
+        {
+            throw new NotImplementedException();
+        }
+
+        public TaskModel SelectedTask { get => _selectedTask;
+            set { 
+                _selectedTask = value;
+                RaisePropertyChanged("SelectedTask");
+            }
+        }
+        private TaskModel _selectedTask;
+
         internal void Reload()
         {
             BM.ReLoad();
@@ -56,6 +69,9 @@ namespace KanbanUI.ViewModel
         public MyICommand RightClick { get; set; }
         public MyICommand DeleteClick { get; set; }
         public MyICommand AddColumn { get; set; }
+        public MyICommand DeleteTaskClick { get; set; }
+        public MyICommand AdvanceClick { get; set; }
+        public MyICommand SortClick { get; set; }
 
 
         public BoardViewModel(UserModel um)
@@ -71,9 +87,32 @@ namespace KanbanUI.ViewModel
             RightClick = new MyICommand(OnRightClick);
             DeleteClick = new MyICommand(OnDeleteClick);
             AddColumn = new MyICommand(OnAddClick);
+            DeleteTaskClick = new MyICommand(OnDeleteTaskClick);
+            AdvanceClick = new MyICommand(onAdvanceClick);
+            SortClick = new MyICommand(onSortClick);
+        }
+        private void onSortClick(object p)
+        {
+            BM.isSorted = true;
+            BM.Sort();
+        }
+        private void onAdvanceClick(object p)
+        {
+            TaskModel T = (TaskModel)p;
+            Message = "";
+            try
+            {
+
+                BM.AdvanceTask(T.ColumnIndex, T.ID,T);
+                Message = "task: " + T.Title + " was advanced.";
+            }
+            catch (Exception e)
+            {
+                Message = "task: " + T.Title + " was not advanced due to: " + e.Message;
+            }
         }
 
-        private void OnAddClick(object obj)
+        private void OnAddClick(object p)
         {
             Message = "";
             try
@@ -86,7 +125,21 @@ namespace KanbanUI.ViewModel
                 Message = "column: " + NewColumnName + " added due to: " + e.Message;
             }
         }
-
+        private void OnDeleteTaskClick(object p)
+        { 
+            TaskModel T = (TaskModel)p;
+            Message = "";
+            try
+            {
+                
+                BM.DeleteTask(T.ColumnIndex,T.ID,T);
+                Message = "task: " +T.Title+ " was deleted.";
+            }
+            catch (Exception e)
+            {
+                Message = "task: " + T.Title + "was not deleted due to: " + e.Message;
+            }
+        }
         private void OnLeftClick(object p)
         {
             Message = "";

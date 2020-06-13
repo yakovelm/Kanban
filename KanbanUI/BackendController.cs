@@ -16,13 +16,13 @@ namespace KanbanUI
             s = new Service();
         }
 
-        public Tuple<string,int, ObservableCollection<TaskModel>> getColumn(string email,string name)
+        public Tuple<string,int, ObservableCollection<TaskModel>> getColumn(string email,string name, int n)
         {
             Response<Column> res = s.GetColumn(email,name);
             isErr(res);
             ObservableCollection<TaskModel> tasks= new ObservableCollection<TaskModel>();
             foreach(IntroSE.Kanban.Backend.ServiceLayer.Task t in res.Value.Tasks){
-                tasks.Add(taskToModel(t,email));
+                tasks.Add(taskToModel(t,email,n));
             }
             return Tuple.Create(res.Value.Name, res.Value.Limit,tasks);
         }
@@ -45,9 +45,45 @@ namespace KanbanUI
             isErr(res);
         }
 
-        private TaskModel taskToModel(IntroSE.Kanban.Backend.ServiceLayer.Task t,string email)
+        private TaskModel taskToModel(IntroSE.Kanban.Backend.ServiceLayer.Task t,string email, int n)
         {
-            return new TaskModel(this,email,t.Title,t.Description,t.DueDate,t.CreationTime);
+            return new TaskModel(this,t.Id,t.emailAssignee,t.Title,t.Description,t.DueDate,t.CreationTime,n,email);
+        }
+
+        internal void editDue(string email, int columnIndex, int ID, DateTime due)
+        {
+            Response res = s.UpdateTaskDueDate(email, columnIndex, ID, due);
+            isErr(res);
+        }
+
+        internal void editAssignee(string email, int columnIndex, int ID, string assignee)
+        {
+            Response res = s.AssignTask(email, columnIndex, ID, assignee);
+            isErr(res);
+        }
+
+        internal void AdvanceTask(string email, int columnIndex, int ID)
+        {
+            Response res = s.AdvanceTask(email, columnIndex, ID);
+            isErr(res);
+        }
+
+        internal void DeleteTask(string email, int columnIndex, int ID)
+        {
+            Response res = s.DeleteTask(email, columnIndex, ID);
+            isErr(res);
+        }
+
+        internal void editDesc(string email, int columnIndex, int ID, string desc)
+        {
+            Response res = s.UpdateTaskDescription(email, columnIndex, ID, desc);
+            isErr(res);
+        }
+
+        internal void editTitle(string email, int columnIndex, int ID, string title)
+        {
+            Response res = s.UpdateTaskTitle(email, columnIndex, ID, title);
+            isErr(res);
         }
 
         internal ColumnModel AddColumn(string email, int index, string name)

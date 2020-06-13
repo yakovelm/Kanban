@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KanbanUI.Utils;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace KanbanUI.Model
 {
     public class BoardModel: NotifiableModelObject
     {
+        public bool isSorted { get  ; set; }
         public UserModel UM;
         public string host;
         public ObservableCollection<ColumnModel> columns { get; set; }
@@ -18,25 +20,32 @@ namespace KanbanUI.Model
             Tuple<string, ObservableCollection<ColumnModel>> board=Controller.getBoard(um);
             host = board.Item1;
             columns = board.Item2;
+            isSorted = false;
         }
 
         internal void ReLoad()
         {
             columns = Controller.getBoard(UM).Item2;
+            Sort();
             RaisePropertyChanged("columns");
         }
-
+        internal void Sort()
+        {
+            if (isSorted)
+            {
+                foreach (ColumnModel cm in columns)
+                {
+                    cm.isSorted = true;
+                    cm.Sort();
+                }
+                RaisePropertyChanged("columns");
+                isSorted = true;
+            }
+        }
         internal void Delete(ColumnModel p)
         {
             Controller.DeleteColumn(UM.email, p.Index);
-            columns.Remove(p);
-            int i = 0;
-            foreach (ColumnModel cm in columns)
-            {
-                cm.Index = i;
-                i++;
-            }
-            RaisePropertyChanged("columns");
+            ReLoad();
         }
 
         internal void MoveRight(ColumnModel p)
@@ -61,6 +70,23 @@ namespace KanbanUI.Model
             }
             RaisePropertyChanged("columns");
         }
-       
+
+        internal void DeleteTask(int columnIndex, int ID,TaskModel T)
+        {
+            Controller.DeleteTask(UM.email, columnIndex, ID);
+            columns[columnIndex].tasks.Remove(T);
+            RaisePropertyChanged("columns");
+        }
+
+        internal void AdvanceTask(int columnIndex, int ID,TaskModel T)
+        {
+            Controller.AdvanceTask(UM.email, columnIndex, ID);
+            columns[columnIndex].tasks.Remove(T);
+            columns[columnIndex].Reload();
+            columns[columnIndex + 1].tasks.Add(T);
+            columns[columnIndex+1].Reload();
+            Sort();
+            RaisePropertyChanged("columns");
+        }
     }
 }

@@ -69,10 +69,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             if (!controller.Update(MakeFilter(), ColumnAtt, c))
             {
-                log.Error("fail to updata the name for task " + Cname + " on email " + Email);
+                log.Error("fail to update the name for task " + Cname + " on email " + Email);
                 throw new Exception("fail to updata the name for task " + Cname + " on email " + Email);
             }
         }
+
+        internal void UpdateAssignee(string assig)
+        {
+            if (!controller.Update(MakeFilter(), EmailAtt, assig))
+            {
+                log.Error("fail to update the name for task " + assig + " on email " + Email);
+                throw new Exception("fail to updata the name for task " + assig + " on email " + Email);
+            }
+        }
+
         public void UpdateDue(long d)
         {
             if (!controller.Update(MakeFilter(), DueAtt, d))
