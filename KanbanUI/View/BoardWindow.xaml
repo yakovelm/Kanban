@@ -41,7 +41,7 @@
                                                 <StackPanel Orientation="Horizontal" Height="80" Background="{Binding BackgroundBrush}" >
                                                     <StackPanel Orientation="Vertical">
                                                         <Button Content="Details" Width="50" Height="25" Margin="10,10,10,0" Click="Edit_Task_Click"/>
-                                                        <Button Content="Delete" Width="50" Height="25" IsEnabled="{Binding IsAssignee}" Margin="10,10,10,0" CommandParameter="{Binding}" Command="{Binding DataContext.DeleteTaskClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                                                        <Button Content="Delete" Width="50" Height="25" IsEnabled="{Binding IsAssignee}" Margin="10,10,10,0" CommandParameter="{Binding}" Command="{Binding DataContext.DeleteTaskClick, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" />
                                                     </StackPanel>
                                                     <StackPanel Orientation="Vertical">
                                                         <Label Content="{Binding Path=Title}" Margin="0,10,0,0" VerticalAlignment="Top" />

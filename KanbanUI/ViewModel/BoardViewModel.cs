@@ -69,7 +69,6 @@ namespace KanbanUI.ViewModel
         public MyICommand RightClick { get; set; }
         public MyICommand DeleteClick { get; set; }
         public MyICommand AddColumn { get; set; }
-        public MyICommand DeleteTaskClick { get; set; }
         public MyICommand AdvanceClick { get; set; }
         public MyICommand SortClick { get; set; }
 
@@ -87,7 +86,6 @@ namespace KanbanUI.ViewModel
             RightClick = new MyICommand(OnRightClick);
             DeleteClick = new MyICommand(OnDeleteClick);
             AddColumn = new MyICommand(OnAddClick);
-            DeleteTaskClick = new MyICommand(OnDeleteTaskClick);
             AdvanceClick = new MyICommand(onAdvanceClick);
             SortClick = new MyICommand(onSortClick);
         }
@@ -123,21 +121,6 @@ namespace KanbanUI.ViewModel
             catch (Exception e)
             {
                 Message = "column: " + NewColumnName + " added due to: " + e.Message;
-            }
-        }
-        private void OnDeleteTaskClick(object p)
-        { 
-            TaskModel T = (TaskModel)p;
-            Message = "";
-            try
-            {
-                
-                BM.DeleteTask(T.ColumnIndex,T.ID,T);
-                Message = "task: " +T.Title+ " was deleted.";
-            }
-            catch (Exception e)
-            {
-                Message = "task: " + T.Title + "was not deleted due to: " + e.Message;
             }
         }
         private void OnLeftClick(object p)

@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private const int MaxLength = 25;
         private const int MinLength = 5;
         private User ActiveUser;
-        private int emailHost;
+       // private int emailHost;
         private List<User> list;
         private UBlink lnk;
 
@@ -37,12 +37,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             checkEmail(email);
             checkUser(email, nickname);
             checkPassword(password);
+            save(email, password, nickname, list.Count()+1);
             log.Debug("register values are legal.");
-            this.emailHost = list.Count() + 1;
             lnk.Lastemail = email;
-            lnk.LastId = emailHost;
-            save(email, password, nickname);
+            lnk.LastId = FindID(email);
+
         }
+
         public void register(string email, string password, string nickname,string emailHost) 
         {
             log.Debug("Email: " + email + " Password: " + password + " nickname: " + nickname + " Host: " + emailHost);
@@ -52,24 +53,31 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             checkUser(email, nickname);
             checkPassword(password);
             emailHostCheck(emailHost);
+            save(email, password, nickname,FindID(emailHost));
             lnk.Lastemail = email;
-            lnk.LastId = list.Count() + 1;
-            lnk.HostId = this.emailHost;
+            lnk.LastId = FindID(email);
+            lnk.HostId =FindID(emailHost);
             log.Debug("register values are legal.");
-            save(email, password, nickname);
         }
+        private int FindID(string email)
+        {
+            DAL.DALControllers.UserCtrl u = new DAL.DALControllers.UserCtrl();
+            return u.FindLastID(email);
+        }
+
         private void emailHostCheck(string emailHost)
         {
-            for (int i = 0; i < list.Count() & this.emailHost == 0; i++)
+            int check= FindID(emailHost);
+            for (int i = 0; i < list.Count() & check == 0; i++)
             {
-                if (list[i].isMatchEmail(emailHost) & list[i].isMatchEmailHost()) this.emailHost = i + 1;
+                if (list[i].isMatchEmail(emailHost) & list[i].isMatchEmailHost()) check = i + 1;
                 else
                 {
                     log.Warn("emailHost given invaule");
                     throw new Exception("emailHost given invaule");
                 }
             }
-            if (this.emailHost == 0)
+            if (this.FindID(emailHost) == 0)
             {
                 log.Warn("emailHost given not exist");
                 throw new Exception("emailHost given not exist");
@@ -102,9 +110,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw new Exception("must include at least one uppercase letter, one lowercase letter and a number and be between 5 and 25 characters.");
             }
         }
-        private void save(string email, string password, string nickname) // saves newly registered user
+        private void save(string email, string password, string nickname,int IDHost) // saves newly registered user
         {
-            User NU = new User(email, password, nickname,this.emailHost);
+            User NU = new User(email, password, nickname,IDHost);
             NU.Insert();
             log.Info("user created for "+ NU.getemail());
             list.Add(NU);

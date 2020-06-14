@@ -11,6 +11,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
     class UserCtrl : DALCtrl<User>
     {
         private const string UserTableName = DAL.DB.FirstTableName;
+        private const string UserTableSQLite = DAL.DB.FirstTableName;
         public UserCtrl(): base (UserTableName) { }
         public override bool Insert(User obj) //insert a specific user object into the DB
         {
@@ -59,6 +60,47 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         {
             User result = new User(reader.GetInt64(0), reader.GetString(1), reader.GetString(2),reader.GetString(3),reader.GetInt64(4));
             return result;
+        }
+
+        internal int FindLastID(string email)
+        {
+            bool ex = false;
+            long result = -1;
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"SELECT UID FROM {tableName} WHERE email='{email}'";
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+                    if (dataReader.StepCount != 1 ) { ex = true; }
+                    if(!ex && dataReader.Read())
+                    {
+                        result= dataReader.GetInt64(0);
+                    }
+                }
+                catch (Exception)
+                {
+                    log.Error("failed to Select from " + tableName);
+                    ex = true;
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+
+                    command.Dispose();
+                    connection.Close();
+                    if (ex) throw new Exception("failed to Select from " + tableName);
+                    
+                }
+
+            }
+            return (int)result;
         }
     }
 }

@@ -71,12 +71,6 @@ namespace KanbanUI.Model
             RaisePropertyChanged("columns");
         }
 
-        internal void DeleteTask(int columnIndex, int ID,TaskModel T)
-        {
-            Controller.DeleteTask(UM.email, columnIndex, ID);
-            columns[columnIndex].tasks.Remove(T);
-            RaisePropertyChanged("columns");
-        }
 
         internal void AdvanceTask(int columnIndex, int ID,TaskModel T)
         {

@@ -33,7 +33,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 string tn3 = "aleks";
 
                 //proper login tests - all should work
-                print(s.LoadData());
                 print(s.Register(te3, tp3, tn3));
                 print(s.Register(te2,tp2,tn2,te3));
                 print(s.Register(te,tp,tn));
