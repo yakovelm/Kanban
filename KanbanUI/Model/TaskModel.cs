@@ -49,18 +49,18 @@ namespace KanbanUI.Model
             Cre = C;
             IsAssignee = (email == Assignee);
             Console.WriteLine("-------------- title: "+Title+"   "+((double)(DateTime.Now.Subtract(Cre).Ticks) / _due.Subtract(Cre).Ticks)+"----------");
-            if (DateTime.Now > _due)
-            {
-                BackgroundBrush = Brushes.Red;  
-            }
-            else if(((double)DateTime.Now.Subtract(Cre).Ticks / _due.Subtract(Cre).Ticks) > 0.75)
-            {
-                BackgroundBrush = Brushes.Orange;
-            }
-            if (IsAssignee)
-            {
-                BorderBrush = Brushes.Blue;
-            }
+            //if (DateTime.Now > _due)
+            //{
+            //    BackgroundBrush = Brushes.Red;  
+            //}
+            //else if(((double)DateTime.Now.Subtract(Cre).Ticks / _due.Subtract(Cre).Ticks) > 0.75)
+            //{
+            //    BackgroundBrush = Brushes.Orange;
+            //}
+            //if (IsAssignee)
+            //{
+            //    BorderBrush = Brushes.Blue;
+            //}
         }
         public TaskModel(BackendController c) : base(c)
         {

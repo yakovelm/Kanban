@@ -69,7 +69,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             if(host!=this.host) throw new Exception("non host user tried to change column limit.");
             log.Info("changing task limit for column: " + name + " in " + host + " from: " + this.limit + " to: " + limit + ".");
-            if (limit < size & limit > 0)
+            if (limit < size|limit <= 0)
             {
                 log.Warn("limit cannot be lower than current amount of tasks. limit not changed.");
                 throw new Exception("limit cannot be lower than current amount of tasks. limit not changed.");

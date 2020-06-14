@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace KanbanUI.ViewModel
 {
@@ -49,6 +50,7 @@ namespace KanbanUI.ViewModel
         internal void Reload()
         {
             BM.ReLoad();
+            Paint();
         }
 
         public ColumnModel SelectedColumn { get=>_selectedColumn; 
@@ -69,7 +71,6 @@ namespace KanbanUI.ViewModel
         public MyICommand RightClick { get; set; }
         public MyICommand DeleteClick { get; set; }
         public MyICommand AddColumn { get; set; }
-        public MyICommand DeleteTaskClick { get; set; }
         public MyICommand AdvanceClick { get; set; }
         public MyICommand SortClick { get; set; }
 
@@ -87,14 +88,37 @@ namespace KanbanUI.ViewModel
             RightClick = new MyICommand(OnRightClick);
             DeleteClick = new MyICommand(OnDeleteClick);
             AddColumn = new MyICommand(OnAddClick);
-            DeleteTaskClick = new MyICommand(OnDeleteTaskClick);
             AdvanceClick = new MyICommand(onAdvanceClick);
             SortClick = new MyICommand(onSortClick);
+            Paint();
         }
+
+        public void Paint() 
+        {
+            foreach(ColumnModel run in BM.columns) 
+            {
+                foreach(TaskModel t in run.tasks) 
+                {
+                    if (DateTime.Now > (DateTime.Parse(t.Due)))
+                    {
+                        t.BackgroundBrush = Brushes.Red;
+                    }
+                    else if (((double)DateTime.Now.Subtract(t.Cre).Ticks / (DateTime.Parse(t.Due).Subtract(t.Cre).Ticks) > 0.75))
+                    {
+                        t.BackgroundBrush = Brushes.Orange;
+                    }
+                    if (t.IsAssignee)
+                    {
+                        t.BorderBrush = Brushes.Blue;
+                    }
+                }
+            }
+        } 
         private void onSortClick(object p)
         {
             BM.isSorted = true;
             BM.Sort();
+            Paint();
         }
         private void onAdvanceClick(object p)
         {
@@ -105,11 +129,13 @@ namespace KanbanUI.ViewModel
 
                 BM.AdvanceTask(T.ColumnIndex, T.ID,T);
                 Message = "task: " + T.Title + " was advanced.";
+                Paint();
             }
             catch (Exception e)
             {
                 Message = "task: " + T.Title + " was not advanced due to: " + e.Message;
             }
+            
         }
 
         private void OnAddClick(object p)
@@ -125,21 +151,6 @@ namespace KanbanUI.ViewModel
                 Message = "column: " + NewColumnName + " added due to: " + e.Message;
             }
         }
-        private void OnDeleteTaskClick(object p)
-        { 
-            TaskModel T = (TaskModel)p;
-            Message = "";
-            try
-            {
-                
-                BM.DeleteTask(T.ColumnIndex,T.ID,T);
-                Message = "task: " +T.Title+ " was deleted.";
-            }
-            catch (Exception e)
-            {
-                Message = "task: " + T.Title + "was not deleted due to: " + e.Message;
-            }
-        }
         private void OnLeftClick(object p)
         {
             Message = "";
@@ -147,6 +158,7 @@ namespace KanbanUI.ViewModel
             {
                 BM.MoveLeft((ColumnModel)p);
                 Message = "column: " + ((ColumnModel)p).ColumnName + " moved left.";
+                Paint();
             }
             catch (Exception e)
             {
@@ -160,6 +172,7 @@ namespace KanbanUI.ViewModel
             {
                 BM.MoveRight((ColumnModel)p);
                 Message = "column: " + ((ColumnModel)p).ColumnName + " moved right.";
+                Paint();
             }
             catch (Exception e)
             {
@@ -173,6 +186,7 @@ namespace KanbanUI.ViewModel
             {
                 BM.Delete((ColumnModel)p);
                 Message = "column: " + ((ColumnModel)p).ColumnName + " deleted.";
+                Paint();
             }
             catch (Exception e)
             {

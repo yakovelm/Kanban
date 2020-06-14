@@ -14,6 +14,8 @@ namespace KanbanUI.Model
         private int _index;
         private string _name;
         private string email;
+        public MyICommand DeleteTaskClick { get; set; }
+       
         public bool isSorted {get;set ;}
         public string ColumnName { get=>_name; set {
                 if (changename(value)){
@@ -30,6 +32,14 @@ namespace KanbanUI.Model
                     _limit = Int32.Parse(value);
                     RaisePropertyChanged("ColumnLimit");
                 }
+            }
+        }
+        private string _message;
+        public string Message
+        {
+            get => _message; set
+            {
+                _message = value; RaisePropertyChanged("Message");
             }
         }
 
@@ -70,6 +80,7 @@ namespace KanbanUI.Model
         public ColumnModel(BackendController c,string Name,string email,int n): base(c)
         {
             Tuple<string,int, ObservableCollection<TaskModel>> col = Controller.getColumn(email,Name,n);
+            DeleteTaskClick = new MyICommand(OnDeleteTaskClick);
             _name = col.Item1;
             _limit = col.Item2;
             tasks = col.Item3;
@@ -77,15 +88,37 @@ namespace KanbanUI.Model
             Index = n;
             isSorted = false;
         }
+        private void OnDeleteTaskClick(object p)
+        {
+            TaskModel T = (TaskModel)p;
+            Message = "";
+            try
+            {
+                Controller.DeleteTask(email, Index, T.ID);
+                tasks.Remove(T);
+                RaisePropertyChanged("tasks");
+                Message = "task: " + T.Title + " was deleted.";
+            }
+            catch (Exception e)
+            {
+                Message = "task: " + T.Title + " was not deleted due to: " + e.Message;
+            }
+        }
 
         private Boolean changename(string newname) 
         {
+            Message = "";
             try
             {
                 Controller.changeColumnName(Index, newname, email);
+                Message = "Namecolumn: "+newname+" update";
                 return true;
             }
-            catch { return false; }
+            catch(Exception e) 
+            {
+                Message = e.Message;
+                return false; 
+            }
         }
 
         internal void Delete()
