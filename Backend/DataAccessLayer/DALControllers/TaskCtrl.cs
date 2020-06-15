@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
      class TaskCtrl : DALCtrl<Task>
     {
-        private const string TaskTableName = DAL.DB.ThirdTableName;
+        private const string TaskTableName = DAL.DB._tasktbalename;
         public TaskCtrl(): base(TaskTableName) { }
         public override bool Insert(Task obj) // insert given DAL task into DB
         {

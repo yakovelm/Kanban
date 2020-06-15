@@ -11,32 +11,35 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     class DB
     { // this class holds the majority of constants and creates the initial DB
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public const string FirstTableName = "users";
-        public const string SecondTableName = "columns";
-        public const string ThirdTableName = "tasks";
-        public const string UserDBName1 = "email";
-        public const string UserDBName2 = "pw";
-        public const string UserDBName3 = "nickname";
-        public const string UserDBName4 = "emailHost";
-        public const string UserDBName5 = "UID";
-        public const string TaskDBName1 = "boardHost";
-        public const string TaskDBName2 = "TID";
-        public const string TaskDBName3 = "assignee";
-        public const string TaskDBName4 = "Cname";
-        public const string TaskDBName5 = "title";
-        public const string TaskDBName6 = "description";
-        public const string TaskDBName7 = "dueDate";
-        public const string TaskDBName8 = "creationDate";
-        public const string ColumnDBName1 = "Host";
-        public const string ColumnDBName2 = "Cname";
-        public const string ColumnDBName3 = "Ord";
-        public const string ColumnDBName4 = "lim";
-        public const string database_name ="KanbanDB.db";
+        public const string _usertbalename = "users";
+        public const string _boardtbalename = "boards";
+        public const string _columntbalename = "columns";
+        public const string _tasktbalename = "tasks";
+        public const string _uidcolumn = "UID";
+        public const string _emailcolumn = "email";
+        public const string _passwordcolumn = "pw";
+        public const string _nicknamecolumn = "nickname";
+        public const string _hostcolumn = "Host";
+        //public const string _taskhostcolumn = "boardHost";
+        public const string _tidcolumn = "TID";
+        public const string _assigneecolumn = "assignee";
+        public const string _columnnamecolumn = "Cname";
+        public const string _titlecolumn = "title";
+        public const string _desccolumn = "description";
+        public const string _duedatecolumn = "dueDate";
+        public const string _createcolumn = "creationDate";
+        //public const string _Chostcolumn = "Host";
+        //public const string _columnnamecolumn = "Cname";
+        public const string _ordinalcolumn = "Ord";
+        public const string _limitcolumn = "lim";
+        public const string _bidcolumn = "BDI";
+        public const string _taskcountcolumn = "taskcounter";
+        public const string _databasename = "KanbanDB.db";
         private string connection_string;
 
-        public DB() 
+        public DB()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), database_name));
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), _databasename));
             connection_string = $"Data Source={path};Version=3;";
         }
         public void Build() // build a new DB
@@ -49,11 +52,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
                     createUserTable(connection);
-                    log.Debug("created UserTable");
-                    createColumnTable(connection);
-                    log.Debug("created ColumnTable");
-                    createTaskTable(connection);
-                    log.Debug("created TaskTable");
+                    log.Debug("created Tables");
                     connection.Close();
                 }
                 catch (Exception)
@@ -61,37 +60,25 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     log.Error("Failed to create new DataBase");
                     ex = true;
                 }
-                finally 
-                { 
-                    if(ex) { throw new Exception("Failed to create new DataBase"); }
+                finally
+                {
+                    if (ex) { throw new Exception("Failed to create new DataBase"); }
                     connection.Close();
                 }
             }
         }
 
-        
+
         private void createUserTable(SQLiteConnection connection) // build user table
         {
-            string createTableQuery = $@"CREATE TABLE [{FirstTableName}]([{UserDBName5}] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [{UserDBName1}] TEXT NOT NULL UNIQUE, [{UserDBName2}] TEXT NOT NULL,[{UserDBName3}] TEXT NOT NULL,[{UserDBName4}] INTEGER NOT NULL)";
+            string createTableQuery = $@"CREATE TABLE[{_usertbalename}]([{_uidcolumn}] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [{_emailcolumn}] TEXT NOT NULL UNIQUE, [{_passwordcolumn}] TEXT NOT NULL,[{_nicknamecolumn}] TEXT NOT NULL,[{_hostcolumn}] INTEGER NOT NULL);" + '\n' +
+                                      $@"CREATE TABLE[{_boardtbalename}]([{_bidcolumn}] INTEGER NOT NULL , [{_uidcolumn}] INTEGER NOT NULL , [{_taskcountcolumn}] INTEGER NOT NULL ,[{_emailcolumn}] TEXT NOT NULL UNIQUE,FOREIGN KEY('{_uidcolumn}') REFERENCES '{_usertbalename}'('{_uidcolumn}'),FOREIGN KEY('{_emailcolumn}') REFERENCES '{_usertbalename}'('{_emailcolumn}'));" + '\n' +
+                                      $@"CREATE TABLE[{_columntbalename}]([{_hostcolumn}] INTEGER NOT NULL,[{_columnnamecolumn}] TEXT NOT NULL,[{_ordinalcolumn}] INTEGER NOT NULL,[{_limitcolumn}] INTEGER NOT NULL,PRIMARY KEY(`{_hostcolumn}`,`{_columnnamecolumn}`), FOREIGN KEY('{_hostcolumn}') REFERENCES '{_usertbalename}'('{_hostcolumn}'));" + '\n' +
+                                      $@"CREATE TABLE[{_tasktbalename}]([{_hostcolumn}] INTEGER NOT NULL ,[{_tidcolumn}] INTEGER NOT NULL,[{_assigneecolumn}] TEXT NOT NULL,[{_columnnamecolumn}] TEXT NOT NULL,[{_titlecolumn}] TEXT NOT NULL,[{_desccolumn}] TEXT,[{_duedatecolumn}] INTEGER NOT NULL,[{_createcolumn}] INTEGER NOT NULL, PRIMARY KEY(`{_hostcolumn}`,`{_tidcolumn}`),FOREIGN KEY('{_assigneecolumn}') REFERENCES '{_usertbalename}'('{_emailcolumn}'),FOREIGN KEY('{_hostcolumn}') REFERENCES '{_columntbalename}'('{_hostcolumn}') );";
             SQLiteCommand c = new SQLiteCommand(connection);
             c.CommandText = createTableQuery;
             c.ExecuteNonQuery();
         }
-        private void createColumnTable(SQLiteConnection connection) // build column table
-        {
-            string createTableQuery = $@"CREATE TABLE [{SecondTableName}]([{ColumnDBName1}] INTEGER NOT NULL,[{ColumnDBName2}] TEXT NOT NULL,[{ColumnDBName3}] INTEGER NOT NULL,[{ColumnDBName4}] INTEGER NOT NULL,PRIMARY KEY(`{ColumnDBName1}`,`{ColumnDBName2}`), FOREIGN KEY('{ColumnDBName1}') REFERENCES '{FirstTableName}'('{UserDBName4}'))";
-            SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = createTableQuery;
-            c.ExecuteNonQuery();
-        }
-        private void createTaskTable(SQLiteConnection connection) // build task table
-        {
-            string createTableQuery = $@"CREATE TABLE [{ThirdTableName}]([{TaskDBName1}] INTEGER NOT NULL ,[{TaskDBName2}] INTEGER NOT NULL,[{TaskDBName3}] TEXT NOT NULL,[{TaskDBName4}] TEXT NOT NULL,[{TaskDBName5}] TEXT NOT NULL,[{TaskDBName6}] TEXT,[{TaskDBName7}] INTEGER NOT NULL,[{TaskDBName8}] INTEGER NOT NULL,
-            PRIMARY KEY(`{TaskDBName1}`,`{TaskDBName2}`),FOREIGN KEY('{TaskDBName3}') REFERENCES '{FirstTableName}'('{UserDBName1}'),FOREIGN KEY('{TaskDBName1}') REFERENCES '{SecondTableName}'('{ColumnDBName1}') )";
-            SQLiteCommand c = new SQLiteCommand(connection);
-            c.CommandText = createTableQuery;
-            c.ExecuteNonQuery();
-        }	
         private void drop(string s) // drop all tables and rebuild DataBase from nothing
         {
             using (var connection = new SQLiteConnection(connection_string))
@@ -110,7 +97,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 catch (Exception)
                 {
                     log.Error("fail to delete from " + s);
-                    ex = true;                    
+                    ex = true;
                 }
                 finally
                 {
@@ -123,15 +110,21 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void DropAll()
         {
             log.Debug("DB DAL");
-            try { drop(FirstTableName);
+            try
+            {
+                drop(_usertbalename);
             }
-            catch(Exception) { }
+            catch (Exception) { }
 
-            try { drop(SecondTableName);
+            try
+            {
+                drop(_columntbalename);
 
             }
             catch (Exception) { }
-            try { drop(ThirdTableName);
+            try
+            {
+                drop(_tasktbalename);
             }
             catch (Exception) { }
             Build();

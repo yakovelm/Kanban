@@ -10,7 +10,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
     internal class ColumnCtrl : DALCtrl<Column>
     {
-        private const string ColumnTableName = DAL.DB.SecondTableName;
+        private const string ColumnTableName = DAL.DB._columntbalename;
         public ColumnCtrl() : base(ColumnTableName) { }
         protected override Column ConvertReaderToObject(SQLiteDataReader reader)
         {

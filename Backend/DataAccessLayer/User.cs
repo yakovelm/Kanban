@@ -11,11 +11,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     internal class User : DalObject<User>
     {
-        public const string EmailAtt = DB.UserDBName1;
-        public const string passwordAtt = DB.UserDBName2;
-        public const string nicknameAtt = DB.UserDBName3;
-        public const string emailHostAtt = DB.UserDBName4;
-        public const string UIDAtt = DB.UserDBName5;
+        public const string UIDAtt = DB._uidcolumn;
+        public const string EmailAtt = DB._emailcolumn;
+        public const string passwordAtt = DB._passwordcolumn;
+        public const string nicknameAtt = DB._nicknamecolumn;
+        public const string emailHostAtt = DB._hostcolumn;
 
         public string password;
         public string nickname { get; }

@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
         private bool sqlfilexist()
         {
-            string check =Path.Combine( Directory.GetCurrentDirectory(),DAL.DB.database_name);
+            string check =Path.Combine( Directory.GetCurrentDirectory(),DAL.DB._databasename);
             return File.Exists(check);
         }
         public void DropAll()

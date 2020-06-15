@@ -11,10 +11,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Column : DalObject<Column>
     {
-        public const string HostAtt = DB.ColumnDBName1;
-        public const string NameAtt = DB.ColumnDBName2;
-        public const string OrdAtt = DB.ColumnDBName3;
-        public const string LimitAtt = DB.ColumnDBName4;
+        public const string HostAtt = DB._hostcolumn;
+        public const string NameAtt = DB._columnnamecolumn;
+        public const string OrdAtt = DB._ordinalcolumn;
+        public const string LimitAtt = DB._limitcolumn;
         private List<Task> tasks;
         public long Host { get; set; }
         public string Cname { get; set; }

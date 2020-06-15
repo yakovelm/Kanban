@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected readonly string connectionString;
         protected readonly string tableName;
-        protected readonly string DB= DAL.DB.database_name;
+        protected readonly string DB = DAL.DB._databasename;
         public DALCtrl(string tableName) // constructor for each table
         {
             this.tableName = tableName;

@@ -10,8 +10,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
     class UserCtrl : DALCtrl<User>
     {
-        private const string UserTableName = DAL.DB.FirstTableName;
-        private const string UserTableSQLite = DAL.DB.FirstTableName;
+        private const string UserTableName = DAL.DB._usertbalename;
+        private const string UserTableSQLite = DAL.DB._usertbalename;
         public UserCtrl(): base (UserTableName) { }
         public override bool Insert(User obj) //insert a specific user object into the DB
         {

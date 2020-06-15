@@ -10,14 +10,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class Task : DalObject<Task>
     {
-        public const string HostAtt=DB.TaskDBName1;
-        public const string IDAtt = DB.TaskDBName2;
-        public const string EmailAtt = DB.TaskDBName3;
-        public const string ColumnAtt = DB.TaskDBName4;
-        public const string TitleAtt = DB.TaskDBName5;
-        public const string DescAtt = DB.TaskDBName6;
-        public const string DueAtt = DB.TaskDBName7;
-        public const string createAtt = DB.TaskDBName8;
+        public const string HostAtt = DB._hostcolumn;
+        public const string IDAtt = DB._tidcolumn;
+        public const string EmailAtt = DB._assigneecolumn;
+        public const string ColumnAtt = DB._columnnamecolumn;
+        public const string TitleAtt = DB._titlecolumn;
+        public const string DescAtt = DB._desccolumn;
+        public const string DueAtt = DB._duedatecolumn;
+        public const string createAtt = DB._createcolumn;
         public long ID { get; }
         public string Cname { get; set; }
         public string Title { get; set; }

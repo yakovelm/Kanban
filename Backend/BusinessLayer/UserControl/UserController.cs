@@ -14,6 +14,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
     class UserController
     {
+        private const int y=9; 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const int MaxLength = 25;
         private const int MinLength = 5;
@@ -21,12 +22,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
        // private int emailHost;
         private List<User> list;
         private UBlink lnk;
+        private DC.UserCtrl Duc;
 
         public UserController(UBlink u)
         {
             lnk = u;
             log.Debug("createing user controller.");
             this.ActiveUser = null;
+            Duc = new DC.UserCtrl();
         }
         public User get_active() { return ActiveUser; }
         public void register(string email, string password, string nickname) // register a new user
@@ -37,7 +40,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             checkEmail(email);
             checkUser(email, nickname);
             checkPassword(password);
-            save(email, password, nickname, list.Count()+1);
+            save(email, password, nickname, -1);
             log.Debug("register values are legal.");
             lnk.Lastemail = email;
             lnk.LastId = FindID(email);
@@ -47,13 +50,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public void register(string email, string password, string nickname,string emailHost) 
         {
             log.Debug("Email: " + email + " Password: " + password + " nickname: " + nickname + " Host: " + emailHost);
+            int check = FindID(emailHost);
             NullCheck(email, password, nickname,emailHost);
             email = email.ToLower();
+            emailHost = emailHost.ToLower();
             checkEmail(email);
             checkUser(email, nickname);
             checkPassword(password);
-            emailHostCheck(emailHost);
-            save(email, password, nickname,FindID(emailHost));
+            //emailHostCheck(emailHost);
+            save(email, password, nickname,check);
             lnk.Lastemail = email;
             lnk.LastId = FindID(email);
             lnk.HostId =FindID(emailHost);
@@ -61,28 +66,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         private int FindID(string email)
         {
-            DAL.DALControllers.UserCtrl u = new DAL.DALControllers.UserCtrl();
-            return u.FindLastID(email);
+            Duc = new DC.UserCtrl();
+            return Duc.FindLastID(email);
         }
 
-        private void emailHostCheck(string emailHost)
-        {
-            int check= FindID(emailHost);
-            for (int i = 0; i < list.Count() & check == 0; i++)
-            {
-                if (list[i].isMatchEmail(emailHost) & list[i].isMatchEmailHost()) check = i + 1;
-                else
-                {
-                    log.Warn("emailHost given invaule");
-                    throw new Exception("emailHost given invaule");
-                }
-            }
-            if (this.FindID(emailHost) == 0)
-            {
-                log.Warn("emailHost given not exist");
-                throw new Exception("emailHost given not exist");
-            }
-        }
+        //private void emailHostCheck(string emailHost)
+        //{
+        //    for (int i = 0; i < list.Count() & check == 0; i++)
+        //    {
+        //        if (list[i].isMatchEmail(emailHost) & list[i].isMatchEmailHost()) check = i + 1;
+        //        else
+        //        {
+        //            log.Warn("emailHost given invaule");
+        //            throw new Exception("emailHost given invaule");
+        //        }
+        //    }
+        //    if (this.FindID(emailHost) == 0)
+        //    {
+        //        log.Warn("emailHost given not exist");
+        //        throw new Exception("emailHost given not exist");
+        //    }
+        //}
         private void NullCheck(params object[] s) // checks if any of the given parameters are null or empty
         {
             foreach(object check in s)
