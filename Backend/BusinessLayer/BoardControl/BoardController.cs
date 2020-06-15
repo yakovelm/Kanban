@@ -37,12 +37,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         public void LoadData() // load board dictionary (boards keyd by email) of all saved boards
         {
             if (lnk.Load) { log.Warn("Data already loaded."); throw new Exception("Data already loaded."); }
-            List<Tuple<string, long, long>> temp = DBC.LoadData();
-            temp.ForEach(x => { IdToEmail.Add((int)x.Item3, x.Item1);});
-            temp.ForEach(x => { hosts.Add(x.Item1, (int)x.Item2); });
-
-            temp.Where(x => x.Item2 == x.Item3).ToList().ForEach(x => { BC.Add(x.Item1, new Board(x.Item1, (int)x.Item3)); BC[x.Item1].LoadData(); });
-            temp.Where(x => x.Item2 != x.Item3).ToList().ForEach(x => { BC[IdToEmail[(int)x.Item2]].Join(x.Item1);});
+            List<Tuple<long, long, string>> temp = DBC.LoadData();
+            temp.ForEach(x => { IdToEmail.Add((int)x.Item1, x.Item3); });
+            temp.ForEach(x => { hosts.Add(x.Item3, (int)x.Item2); });
+            temp.Where(x => x.Item1 == x.Item2).ToList().ForEach(x => { BC.Add(x.Item3, new Board(x.Item3, (int)x.Item1)); });
+            temp.Where(x => x.Item1 != x.Item2).ToList().ForEach(x => { BC[IdToEmail[(int)x.Item2]].Join(x.Item3); });
             log.Debug("board list has been loaded.");
             lnk.Load = true;
         }
@@ -61,7 +60,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             hosts.Add(email, ID);
             BC.Add(email, new Board(email, ID));
             BC[email].Register();
+            checkSave(DBC.Save(ID, ID, email));
             log.Debug($"the Board of {email} is ready.");
+        }
+        private void checkSave(bool b)
+        {
+            if (!b)
+            {
+                log.Warn("fail to insert the new Register.");
+                throw new Exception("fail to insert the new Register.");
+            }
         }
         public void ResetLnk()
         {
@@ -109,9 +117,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 BC.Add(email, BC[emailhost]);
                 BC[emailhost].Join(email);
             }
-
+            checkSave(DBC.Save(ID, HostID, email));
             log.Debug($"the Board of {email} is ready and his Host is {emailhost}.");
         }
+
+
         private bool ExistBoardForThisID(int id)
         {
             if(!IdToEmail.ContainsKey(id)) { return false; }

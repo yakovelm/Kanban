@@ -30,6 +30,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             columns = new List<TC.Column>();
             License = new List<string>();
             License.Add(email);
+            LoadData();
             log.Debug("a board for " + email + " has been made.");        
         }
         public void LoadData()

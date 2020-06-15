@@ -74,7 +74,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private void createUserTable(SQLiteConnection connection) // build user table
         {
             string createTableQuery = $@"CREATE TABLE[{_usertbalename}]([{_uidcolumn}] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [{_emailcolumn}] TEXT NOT NULL UNIQUE, [{_passwordcolumn}] TEXT NOT NULL,[{_nicknamecolumn}] TEXT NOT NULL,[{_hostcolumn}] INTEGER NOT NULL);" + '\n' +
-                                      $@"CREATE TABLE[{_boardtbalename}]([{_uidcolumn}] INTEGER NOT NULL ,[{_hostcolumn}] INTEGER NOT NULL,[{_emailcolumn}] TEXT NOT NULL UNIQUE,[{_taskcounter}] INTEGER NOT NULL,[{_columncounter}] INTEGER NOT NULL, FOREIGN KEY('{_uidcolumn}') REFERENCES '{_usertbalename}'('{_uidcolumn}'),FOREIGN KEY('{_hostcolumn}') REFERENCES '{_usertbalename}'('{_hostcolumn}'),FOREIGN KEY('{_emailcolumn}') REFERENCES '{_usertbalename}'('{_emailcolumn}') );" + '\n' +
+                                      $@"CREATE TABLE[{_boardtbalename}]([{_uidcolumn}] INTEGER NOT NULL ,[{_hostcolumn}] INTEGER NOT NULL,[{_emailcolumn}] TEXT NOT NULL UNIQUE, FOREIGN KEY('{_uidcolumn}') REFERENCES '{_usertbalename}'('{_uidcolumn}'),FOREIGN KEY('{_hostcolumn}') REFERENCES '{_usertbalename}'('{_hostcolumn}'),FOREIGN KEY('{_emailcolumn}') REFERENCES '{_usertbalename}'('{_emailcolumn}') );" + '\n' +
                                       $@"CREATE TABLE[{_columntbalename}]([{_hostcolumn}] INTEGER NOT NULL,[{_columnnamecolumn}] TEXT NOT NULL,[{_ordinalcolumn}] INTEGER NOT NULL,[{_limitcolumn}] INTEGER NOT NULL,PRIMARY KEY(`{_hostcolumn}`,`{_columnnamecolumn}`), FOREIGN KEY('{_hostcolumn}') REFERENCES '{_usertbalename}'('{_hostcolumn}'));" + '\n' +
                                       $@"CREATE TABLE[{_tasktbalename}]([{_hostcolumn}] INTEGER NOT NULL ,[{_tidcolumn}] INTEGER NOT NULL,[{_assigneecolumn}] TEXT NOT NULL,[{_columnnamecolumn}] TEXT NOT NULL,[{_titlecolumn}] TEXT NOT NULL,[{_desccolumn}] TEXT,[{_duedatecolumn}] INTEGER NOT NULL,[{_createcolumn}] INTEGER NOT NULL, PRIMARY KEY(`{_hostcolumn}`,`{_tidcolumn}`),FOREIGN KEY('{_assigneecolumn}') REFERENCES '{_usertbalename}'('{_emailcolumn}'),FOREIGN KEY('{_hostcolumn}') REFERENCES '{_columntbalename}'('{_hostcolumn}') );";
             SQLiteCommand c = new SQLiteCommand(connection);
@@ -129,6 +129,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 drop(_tasktbalename);
             }
             catch (Exception) { }
+            try
+            {
+                drop(_boardtbalename);
+
+            }
+            catch { }
             Build();
         }
 

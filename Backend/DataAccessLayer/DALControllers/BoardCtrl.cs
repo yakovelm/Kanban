@@ -12,13 +12,57 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
     {
         protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected readonly string connectionString;
-        protected readonly string tableName="users";
+        protected readonly string tableName= "boards";
+        public const string EmailAtt = DB._emailcolumn;
+        public const string HostAtt = DB._hostcolumn;
+        public const string UIDAtt = DB._uidcolumn;
         protected readonly string need = "*";
         public BoardCtrl()
         {
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "KanbanDB.db"));
             connectionString = $"Data Source={path}; Version=3;";
         }
+
+        internal bool Save(int ID, int Host, string email)
+        {
+            bool fail = false;
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                int res = -1;
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"INSERT INTO {tableName} ({UIDAtt} ,{HostAtt}," +
+                        $"{EmailAtt}) VALUES (@IDVal,@hostVal,@EmailVal)";
+                    SQLiteParameter UIDParam = new SQLiteParameter(@"IDVal", ID);
+                    SQLiteParameter hostParam = new SQLiteParameter(@"hostVal", Host);
+                    SQLiteParameter EmailParam = new SQLiteParameter(@"EmailVal", email);
+
+                    command.Parameters.Add(UIDParam);
+                    command.Parameters.Add(hostParam);
+                    command.Parameters.Add(EmailParam);
+                    command.Prepare();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    fail = true;
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                    if (fail)
+                    {
+                        log.Error("fail to Insert to " + tableName);
+                        throw new Exception("fail to Insert to " + tableName);
+                    }
+                }
+                return res > 0;
+            }
+        }
+
         //public int FindBoard(string s)
         //{
         //    bool fail = false;
@@ -72,10 +116,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         //    return (int)result[0];
         //}
 
-        public List<Tuple<string, long, long>> LoadData()
+        public List<Tuple<long, long, string>> LoadData()
         {
             bool fail = false;
-            List<Tuple<string, long, long>> results = new List<Tuple<string, long, long>>();
+            List<Tuple<long, long, string>> results = new List<Tuple<long, long, string>>();
             using (var connection = new SQLiteConnection(connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
@@ -88,7 +132,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
                     while (dataReader.Read())
                     {
-                        results.Add(Tuple.Create(dataReader.GetString(1), dataReader.GetInt64(4), dataReader.GetInt64(0)));
+                        results.Add(Tuple.Create(dataReader.GetInt64(0), dataReader.GetInt64(1), dataReader.GetString(2)));
                     }
                 }
                 catch(Exception e)
