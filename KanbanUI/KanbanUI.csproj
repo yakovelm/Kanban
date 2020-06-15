@@ -114,7 +114,9 @@
     <Compile Include="Model\ColumnModel.cs" />
     <Compile Include="Model\TaskModel.cs" />
     <Compile Include="Model\UserModel.cs" />
-    <Compile Include="Utils\MyICommand .cs" />
+    <Compile Include="Utils\ColumnCommand.cs" />
+    <Compile Include="Utils\EmptyCommand.cs" />
+    <Compile Include="Utils\TaskCommand.cs" />
     <Compile Include="ViewModel\BoardViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="NotifiableObject.cs" />

@@ -12,7 +12,7 @@
                 <Label Content="{Binding Path=Name, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Label Content="{Binding Path=Host, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Button Content="Logout" FontSize="12" Width="50" HorizontalAlignment="Stretch"  VerticalAlignment="Center" IsDefault="True" Click="Button_Click"/>
-                <Label Content="{Binding Path=Message, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Content="{Binding Path=Message, Mode=TwoWay}" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </StackPanel>
 
             <Grid>

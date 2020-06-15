@@ -21,7 +21,7 @@ namespace KanbanUI.Model
                 RaisePropertyChanged("ColumnName");
             }  }
         private int _limit;
-        public MyICommand DeleteTaskClick { get; set; }
+        public TaskCommand DeleteTaskClick { get; set; }
         public string ColumnLimit
         {
             get => _limit.ToString(); set
@@ -63,13 +63,12 @@ namespace KanbanUI.Model
                 RaisePropertyChanged("tasks");
             }
         }
-        private void OnDeleteTaskClick(object p)
+        private void OnDeleteTaskClick(TaskModel p)
         {
-            TaskModel T = (TaskModel)p;
             try
             {
-                Controller.DeleteTask(email, Index, T.ID);
-                tasks.Remove(T);
+                Controller.DeleteTask(email, Index, p.ID);
+                tasks.Remove(p);
                 RaisePropertyChanged("tasks");
             }
             catch
@@ -90,7 +89,7 @@ namespace KanbanUI.Model
             this.email = email;
             Index = n;
             isSorted = false;
-            DeleteTaskClick = new MyICommand(OnDeleteTaskClick);
+            DeleteTaskClick = new TaskCommand(OnDeleteTaskClick);
         }
 
         private Boolean changename(string newname) 

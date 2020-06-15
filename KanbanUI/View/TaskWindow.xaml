@@ -36,7 +36,7 @@
                 <Label Content="creation date: " Margin="0,10,0,0" />
                 <Label Content="{Binding Cre}" Margin="0,10,40,0" />
             </StackPanel>
-            <Label Content="{Binding Path=Message}" Height="30" />
+            <Label Content="{Binding Path=Message}" Foreground="Red" Height="30" />
             <StackPanel Orientation="Horizontal">
                 <Button Content="Cancel"  Width="80"  Margin="65,10,20,0"  HorizontalAlignment="Left" Click="Close_Click"/>
                 <Button Content="Apply" Width="80" Margin="0,10,0,0" HorizontalAlignment="Right" Click="Apply_Click"/>

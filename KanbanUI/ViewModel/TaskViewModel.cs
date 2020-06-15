@@ -125,6 +125,9 @@ namespace KanbanUI.ViewModel
             TM = new TaskModel(um.Controller);
             Assignee = UM.email;
             Cre = DateTime.Now.ToString();
+            DueDay = DateTime.Today.AddDays(1).Day.ToString();
+            DueMonth = DateTime.Today.Month.ToString();
+            DueYear = DateTime.Today.Year.ToString();
             Message = "new Task will be assigned to you.";
             WindowTitle = "Add Task";
 

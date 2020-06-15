@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KanbanUI.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,17 +8,17 @@ using System.Windows.Input;
 
 namespace KanbanUI.Utils
 {
-    public class MyICommand : ICommand
+    public class ColumnCommand : ICommand
     {
-        Action<object> _TargetExecuteMethod;
+        Action<ColumnModel> _TargetExecuteMethod;
         Func<bool> _TargetCanExecuteMethod;
 
-        public MyICommand(Action<object> executeMethod)
+        public ColumnCommand(Action<ColumnModel> executeMethod)
         {
             _TargetExecuteMethod = executeMethod;
         }
 
-        public MyICommand(Action<object> executeMethod, Func<bool> canExecuteMethod)
+        public ColumnCommand(Action<ColumnModel> executeMethod, Func<bool> canExecuteMethod)
         {
             _TargetExecuteMethod = executeMethod;
             _TargetCanExecuteMethod = canExecuteMethod;
@@ -43,14 +44,14 @@ namespace KanbanUI.Utils
 
             return false;
         }
-		
+
         public event EventHandler CanExecuteChanged = delegate { };
 
         void ICommand.Execute(object parameter)
         {
             if (_TargetExecuteMethod != null)
             {
-                _TargetExecuteMethod(parameter);
+                _TargetExecuteMethod((ColumnModel)parameter);
             }
         }
     }

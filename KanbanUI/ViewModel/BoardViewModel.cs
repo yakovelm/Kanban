@@ -65,12 +65,12 @@ namespace KanbanUI.ViewModel
         }
 
         private ColumnModel _selectedColumn;
-        public MyICommand LeftClick { get; set; }
-        public MyICommand RightClick { get; set; }
-        public MyICommand DeleteClick { get; set; }
-        public MyICommand AddColumn { get; set; }
-        public MyICommand AdvanceClick { get; set; }
-        public MyICommand SortClick { get; set; }
+        public ColumnCommand LeftClick { get; set; }
+        public ColumnCommand RightClick { get; set; }
+        public ColumnCommand DeleteClick { get; set; }
+        public EmptyCommand AddColumn { get; set; }
+        public TaskCommand AdvanceClick { get; set; }
+        public EmptyCommand SortClick { get; set; }
 
 
         public BoardViewModel(UserModel um)
@@ -82,35 +82,34 @@ namespace KanbanUI.ViewModel
             IsHost = UM.email == BM.host;
             NewColumnName = "name";
             NewColumnIndex = "index";
-            LeftClick = new MyICommand(OnLeftClick);
-            RightClick = new MyICommand(OnRightClick);
-            DeleteClick = new MyICommand(OnDeleteClick);
-            AddColumn = new MyICommand(OnAddClick);
-            AdvanceClick = new MyICommand(onAdvanceClick);
-            SortClick = new MyICommand(onSortClick);
+            LeftClick = new ColumnCommand(OnLeftClick);
+            RightClick = new ColumnCommand(OnRightClick);
+            DeleteClick = new ColumnCommand(OnDeleteClick);
+            AddColumn = new EmptyCommand(OnAddClick);
+            AdvanceClick = new TaskCommand(onAdvanceClick);
+            SortClick = new EmptyCommand(onSortClick);
         }
-        private void onSortClick(object p)
+        private void onSortClick()
         {
             BM.isSorted = true;
             BM.Sort();
         }
-        private void onAdvanceClick(object p)
+        private void onAdvanceClick(TaskModel p)
         {
-            TaskModel T = (TaskModel)p;
             Message = "";
             try
             {
 
-                BM.AdvanceTask(T.ColumnIndex, T.ID,T);
-                Message = "task: " + T.Title + " was advanced.";
+                BM.AdvanceTask(p.ColumnIndex, p.ID,p);
+                Message = "task: " + p.Title + " was advanced.";
             }
             catch (Exception e)
             {
-                Message = "task: " + T.Title + " was not advanced due to: " + e.Message;
+                Message = "task: " + p.Title + " was not advanced due to: " + e.Message;
             }
         }
 
-        private void OnAddClick(object p)
+        private void OnAddClick()
         {
             Message = "";
             try
@@ -123,43 +122,43 @@ namespace KanbanUI.ViewModel
                 Message = "column: " + NewColumnName + " added due to: " + e.Message;
             }
         }
-        private void OnLeftClick(object p)
+        private void OnLeftClick(ColumnModel p)
         {
             Message = "";
             try
             {
-                BM.MoveLeft((ColumnModel)p);
-                Message = "column: " + ((ColumnModel)p).ColumnName + " moved left.";
+                BM.MoveLeft(p);
+                Message = "column: " + p.ColumnName + " moved left.";
             }
             catch (Exception e)
             {
-                Message = "column: " + ((ColumnModel)p).ColumnName + " not moved due to: " + e.Message;
+                Message = "column: " + p.ColumnName + " not moved due to: " + e.Message;
             }
         }
-        private void OnRightClick(object p)
+        private void OnRightClick(ColumnModel p)
         {
             Message = "";
             try
             {
-                BM.MoveRight((ColumnModel)p);
-                Message = "column: " + ((ColumnModel)p).ColumnName + " moved right.";
+                BM.MoveRight(p);
+                Message = "column: " + p.ColumnName + " moved right.";
             }
             catch (Exception e)
             {
-                Message = "column: " + ((ColumnModel)p).ColumnName + " not moved due to: " + e.Message;
+                Message = "column: " + p.ColumnName + " not moved due to: " + e.Message;
             }
         }
-        private void OnDeleteClick(object p)
+        private void OnDeleteClick(ColumnModel p)
         {
             Message = "";
             try
             {
-                BM.Delete((ColumnModel)p);
-                Message = "column: " + ((ColumnModel)p).ColumnName + " deleted.";
+                BM.Delete(p);
+                Message = "column: " + p.ColumnName + " deleted.";
             }
             catch (Exception e)
             {
-                Message = "column: " + ((ColumnModel)p).ColumnName + " not deleted due to: " + e.Message;
+                Message = "column: " + p.ColumnName + " not deleted due to: " + e.Message;
             }
         }
     }
