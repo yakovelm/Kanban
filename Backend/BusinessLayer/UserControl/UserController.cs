@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
     class UserController
     {
-        private const int y=9; 
+        private const int nothost=-1; 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const int MaxLength = 25;
         private const int MinLength = 5;
@@ -23,6 +23,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private List<User> list;
         private UBlink lnk;
         private DC.UserCtrl Duc;
+        private User NU;
 
         public UserController(UBlink u)
         {
@@ -40,11 +41,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             checkEmail(email);
             checkUser(email, nickname);
             checkPassword(password);
-            save(email, password, nickname, -1);
+            save(email, password, nickname, nothost);
+            int host = FindID(email);
             log.Debug("register values are legal.");
             lnk.Lastemail = email;
-            lnk.LastId = FindID(email);
-
+            lnk.LastId = host;
+            UpdateHost(host);
         }
 
         public void register(string email, string password, string nickname,string emailHost) 
@@ -61,8 +63,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             save(email, password, nickname,check);
             lnk.Lastemail = email;
             lnk.LastId = FindID(email);
-            lnk.HostId =FindID(emailHost);
+            lnk.HostId = FindID(emailHost);
             log.Debug("register values are legal.");
+        }
+        private void UpdateHost(int i) 
+        {
+            NU.updateHost(i);
         }
         private int FindID(string email)
         {
@@ -116,7 +122,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         private void save(string email, string password, string nickname,int IDHost) // saves newly registered user
         {
-            User NU = new User(email, password, nickname,IDHost);
+            NU = new User(email, password, nickname,IDHost);
             NU.Insert();
             log.Info("user created for "+ NU.getemail());
             list.Add(NU);

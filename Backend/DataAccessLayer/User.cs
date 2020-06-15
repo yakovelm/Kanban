@@ -41,5 +41,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 throw new Exception("fail to save user for email " + Email);
             }
         }
+        public void UpdateHost(long host)
+        {
+            if (!controller.Update(MakeFilter(), emailHostAtt, host))
+            {
+                log.Error("failed to update user host " +host + " on email " + Email);
+                throw new Exception("failed to update the ordinal for column " + 8 + " on email " + Email);
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private String nickname;
         private int emailHost=0;
         private int UID;
+        private DAL.User DU;
 
         public User() { }
         public User(string email, string password, string nickname,int emailHost) // new user creation (register) constructor
@@ -66,8 +67,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         public void Insert() 
         {
-            DAL.User DU = ToDalObject();
+            DU = ToDalObject();
             DU.Insert();
+        }
+
+        internal void updateHost(int i)
+        {
+            DU.UpdateHost(i);
         }
     }
 }
