@@ -69,7 +69,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             if(host!=this.host) throw new Exception("non host user tried to change column limit.");
             log.Info("changing task limit for column: " + name + " in " + host + " from: " + this.limit + " to: " + limit + ".");
-            if (limit < size & limit > 0)
+            if (limit < size | limit<1)
             {
                 log.Warn("limit cannot be lower than current amount of tasks. limit not changed.");
                 throw new Exception("limit cannot be lower than current amount of tasks. limit not changed.");
@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void addTasks(List<Task> ts) // append a list of tasks to the end of this column
         {
-            if (limit > 0 & size + ts.Count() > limit)
+            if (size + ts.Count() > limit)
             {
                 log.Warn("task limit reached, tasks not added.");
                 throw new Exception("task limit reached, tasks not added.");
@@ -92,7 +92,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public void addTask(Task task) // add a new task to this column
         {
             log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + host + ".");
-            if (limit > 0 & limit <= size)
+            if (limit <= size)
             {
                 log.Warn("task limit reached, task not added.");
                 throw new Exception("task limit reached, task not added.");

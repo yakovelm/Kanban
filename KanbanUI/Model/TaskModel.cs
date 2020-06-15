@@ -48,7 +48,6 @@ namespace KanbanUI.Model
             _due = DU;
             Cre = C;
             IsAssignee = (email == Assignee);
-            Console.WriteLine("-------------- title: "+Title+"   "+((double)(DateTime.Now.Subtract(Cre).Ticks) / _due.Subtract(Cre).Ticks)+"----------");
             if (DateTime.Now > _due)
             {
                 BackgroundBrush = Brushes.Red;  

@@ -65,7 +65,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 TC.Task task = BC.AddTask(email, title, desciption, dueTime);
-                return new Response<Task>(new Task(task.getID(), task.getCreation(), task.GetDue(), title, desciption,null));
+                return new Response<Task>(new Task(task.getID(), task.getCreation(), task.GetDue(), title, desciption,task.getEmail()));
             }
             catch (Exception e) { return (new Response<Task>(e.Message)); }
         }
