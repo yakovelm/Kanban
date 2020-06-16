@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace KanbanUI.Model
@@ -20,6 +21,16 @@ namespace KanbanUI.Model
             }
         }
         private SolidColorBrush _background;
+        public SolidColorBrush FilterBrush
+        {
+            get => _filterBrush;
+            set
+            {
+                _filterBrush = value;
+                RaisePropertyChanged("FilterBrush");
+            }
+        }
+        private SolidColorBrush _filterBrush;
         public SolidColorBrush BorderBrush
         {
             get => _borderBrush;
@@ -35,7 +46,7 @@ namespace KanbanUI.Model
         public string Assignee { get; set; }
         public string Title { get; set; }
         public string Desc { get; set; }
-        public string Due { get=>_due.ToString(); set { _due = DateTime.Parse(value); } }
+        public string Due { get=>_due.ToShortDateString(); set { _due = DateTime.Parse(value); } }
         private DateTime _due;
         public DateTime Cre { get; set; }
         public TaskModel(BackendController c, int ID, string A, string T, string D, DateTime DU, DateTime C, int columnIndex, string email) : base(c)
@@ -80,6 +91,19 @@ namespace KanbanUI.Model
             if (desc!=Desc) Controller.editDesc(email, ColumnIndex, ID, desc);
             if (!due.Equals(_due)) Controller.editDue(email, ColumnIndex, ID, due);
             if (!assignee.Equals(Assignee)) Controller.editAssignee(email, ColumnIndex, ID, assignee);
+        }
+
+        internal void Filter(string filter)
+        {
+            if (!string.IsNullOrEmpty(filter)) filter = filter.ToLower();
+            if (!string.IsNullOrEmpty(filter) && (Title.ToLower().Contains(filter) || (Desc!=null && Desc.ToLower().Contains(filter))))
+            {
+                FilterBrush = Brushes.Yellow;
+            }
+            else
+            {
+                FilterBrush= BackgroundBrush;
+            }
         }
     }
 }

@@ -82,5 +82,13 @@ namespace KanbanUI.Model
             Sort();
             RaisePropertyChanged("columns");
         }
+
+        internal void Filter(string filter)
+        {
+            foreach(ColumnModel c in columns)
+            {
+                c.Filter(filter);
+            }
+        }
     }
 }

@@ -92,6 +92,14 @@ namespace KanbanUI.Model
             DeleteTaskClick = new TaskCommand(OnDeleteTaskClick);
         }
 
+        internal void Filter(string filter)
+        {
+            foreach (TaskModel t in tasks)
+            {
+                t.Filter(filter);
+            }
+        }
+
         private Boolean changename(string newname) 
         {
             try

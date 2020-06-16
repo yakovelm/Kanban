@@ -41,6 +41,8 @@ namespace KanbanUI.View
             UserModel u = LM.Login();
             if (u != null) {
                 BoardWindow boardView = new BoardWindow(u);
+                boardView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                boardView.WindowState = WindowState.Maximized;
                 boardView.Show();
                 //boardView.BVM.LoadColumns();
                 this.Close();

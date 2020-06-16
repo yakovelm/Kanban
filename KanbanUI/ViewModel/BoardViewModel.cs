@@ -32,6 +32,8 @@ namespace KanbanUI.ViewModel
         private string _host;
         public bool IsHost { get; set; }
         public string Host { get => _host; set { _host = value; RaisePropertyChanged("Host"); } }
+        private string _filter;
+        public string Filter { get => _filter; set { _filter = value; RaisePropertyChanged("Filter"); } }
 
         internal void AddTask()
         {
@@ -71,6 +73,7 @@ namespace KanbanUI.ViewModel
         public EmptyCommand AddColumn { get; set; }
         public TaskCommand AdvanceClick { get; set; }
         public EmptyCommand SortClick { get; set; }
+        public EmptyCommand FilterClick { get; set; }
 
 
         public BoardViewModel(UserModel um)
@@ -88,6 +91,11 @@ namespace KanbanUI.ViewModel
             AddColumn = new EmptyCommand(OnAddClick);
             AdvanceClick = new TaskCommand(onAdvanceClick);
             SortClick = new EmptyCommand(onSortClick);
+            FilterClick = new EmptyCommand(onFilterClick);
+        }
+        private void onFilterClick()
+        {
+            BM.Filter(Filter);
         }
         private void onSortClick()
         {
