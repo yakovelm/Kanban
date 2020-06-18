@@ -90,5 +90,14 @@ namespace KanbanUI.Model
                 c.Filter(filter);
             }
         }
+
+        internal void Unsort()
+        {
+            foreach(ColumnModel c in columns)
+            {
+                c.isSorted = false;
+            }
+            ReLoad();
+        }
     }
 }

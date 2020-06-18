@@ -61,15 +61,15 @@ namespace KanbanUI.Model
             IsAssignee = (email == Assignee);
             if (DateTime.Now > _due)
             {
-                BackgroundBrush = Brushes.Red;  
+                BackgroundBrush = Brushes.Crimson;  
             }
             else if(((double)DateTime.Now.Subtract(Cre).Ticks / _due.Subtract(Cre).Ticks) > 0.75)
             {
-                BackgroundBrush = Brushes.Orange;
+                BackgroundBrush = Brushes.Coral;
             }
             if (IsAssignee)
             {
-                BorderBrush = Brushes.Blue;
+                BorderBrush = Brushes.RoyalBlue;
             }
         }
         public TaskModel(BackendController c) : base(c)
@@ -98,7 +98,7 @@ namespace KanbanUI.Model
             if (!string.IsNullOrEmpty(filter)) filter = filter.ToLower();
             if (!string.IsNullOrEmpty(filter) && (Title.ToLower().Contains(filter) || (Desc!=null && Desc.ToLower().Contains(filter))))
             {
-                FilterBrush = Brushes.Yellow;
+                FilterBrush = Brushes.Gold;
             }
             else
             {

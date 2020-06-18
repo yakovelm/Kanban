@@ -25,17 +25,10 @@ namespace BoardTests
             b = new Board();
             columns = new List<Column>();
             Mockcolumns = new List<Mock<Column>>();
-
             backlog = new Mock<Column>();
             progress = new Mock<Column>();
             done = new Mock<Column>();
-
-
             SetColumns();
-
-
-
-
         }
         private void SetColumns()
         {

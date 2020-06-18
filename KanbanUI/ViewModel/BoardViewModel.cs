@@ -73,6 +73,7 @@ namespace KanbanUI.ViewModel
         public EmptyCommand AddColumn { get; set; }
         public TaskCommand AdvanceClick { get; set; }
         public EmptyCommand SortClick { get; set; }
+        public EmptyCommand UnSortClick { get; set; }
         public EmptyCommand FilterClick { get; set; }
 
 
@@ -83,19 +84,23 @@ namespace KanbanUI.ViewModel
             Name = "Logged in as: "+UM.email;
             Host = "Board hosted by: " + ((BM.host==UM.email) ? "you" : BM.host);
             IsHost = UM.email == BM.host;
-            NewColumnName = "name";
-            NewColumnIndex = "index";
             LeftClick = new ColumnCommand(OnLeftClick);
             RightClick = new ColumnCommand(OnRightClick);
             DeleteClick = new ColumnCommand(OnDeleteClick);
             AddColumn = new EmptyCommand(OnAddClick);
             AdvanceClick = new TaskCommand(onAdvanceClick);
             SortClick = new EmptyCommand(onSortClick);
+            UnSortClick = new EmptyCommand(onUnSortClick);
             FilterClick = new EmptyCommand(onFilterClick);
         }
         private void onFilterClick()
         {
             BM.Filter(Filter);
+        }
+        private void onUnSortClick()
+        {
+            BM.isSorted = false;
+            BM.Unsort();
         }
         private void onSortClick()
         {
