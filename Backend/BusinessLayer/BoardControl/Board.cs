@@ -6,20 +6,21 @@ using System.Threading.Tasks;
 using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 {
     class Board
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private List<TC.Column> columns;
+        internal List<TC.Column> columns;
         private List<string> License;
         private const int minColumn = 2;
         private int size;
         private int IDtask;
         private string email;
         private int host;
-        private string cur;
+        internal string cur;
         public Board(string email, int Id) 
         {
             this.email = email;
@@ -32,6 +33,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             License.Add(email);
             LoadData();
             log.Debug("a board for " + email + " has been made.");        
+        }
+
+        public Board()//moq constractor
+        {
+            this.email = "test";
+            size = 3;
+            cur = "test";
+            IDtask = 1;
+            host = 0;
+            columns = new List<TC.Column>();
+            License = new List<string>();
+            License.Add(email);
+        }
+        public void SetColumns(List<TC.Column> s)
+        {
+            columns = s;
         }
         public void LoadData()
         {
@@ -337,7 +354,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         private void CheckHost()
         {
-            if (!cur.Equals(email))
+            if(cur==null)
+            {
+                log.Error($"System Problem");
+                throw new Exception($"System Problem");
+            }
+            
+
+            if (!cur.ToLower().Equals(email.ToLower()))
             {
                 log.Warn($"ID #{cur} is not host and can not do this action.");
                 throw new Exception($"ID #{cur} is not host and can not do this action.");

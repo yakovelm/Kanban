@@ -11,14 +11,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
     class Column : IPersistentObject<DAL.Column>
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private int host;
-        private int ord;
+        internal int host;
+        internal int ord;
         private const int maxname= 15;
         private const int defLimit = 100;
-        private string name;
+        internal string name;
         private List<Task> tasks;
-        private int limit;
+        internal int limit;
         private int size;
+        internal bool fortests = false;//for testing
         public Column(int host, string name,int ord)
         {
             log.Info("creating new empty " + name + " column for " + host + ".");
@@ -53,12 +54,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             return name;
         }
-        public List<Task> getAll()
+        public virtual List<Task> getAll()
         {
             log.Debug("returning all tasks");
             return tasks;
         }
-        public void setOrd(int ord)
+        public virtual void setOrd(int ord)
         {
             if (ord < 0) throw new Exception("ordinal illegal.");
             this.ord = ord;
@@ -78,8 +79,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Column Dcol = ToDalObject();
             Dcol.UpdateLimit(limit);
         }
-        public void addTasks(List<Task> ts) // append a list of tasks to the end of this column
+        public virtual void addTasks(List<Task> ts) // append a list of tasks to the end of this column
         {
+            fortests = true;
             if (size + ts.Count() > limit)
             {
                 log.Warn("task limit reached, tasks not added.");
@@ -199,7 +201,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             }
             t.editDue(assig, due);
         }
-        public void delete(int host)
+        public virtual void delete(int host)
         {
             if (host != this.host) throw new Exception("non host user tried to delete a column.");
             DAL.Column c = new DAL.Column(host, name);
