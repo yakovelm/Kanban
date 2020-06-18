@@ -13,19 +13,19 @@ namespace KanbanUI.Model
         public bool isSorted { get  ; set; }
         public UserModel UM;
         public string host;
-        public ObservableCollection<ColumnModel> columns { get; set; }
+        public ObservableCollection<ColumnModel> Columns { get; set; }
         public BoardModel(UserModel um): base(um.Controller)
         {
             UM = um;
             Tuple<string, ObservableCollection<ColumnModel>> board=Controller.getBoard(um);
             host = board.Item1;
-            columns = board.Item2;
+            Columns = board.Item2;
             isSorted = false;
         }
 
         internal void ReLoad()
         {
-            columns = Controller.getBoard(UM).Item2;
+            Columns = Controller.getBoard(UM).Item2;
             Sort();
             RaisePropertyChanged("columns");
         }
@@ -33,7 +33,7 @@ namespace KanbanUI.Model
         {
             if (isSorted)
             {
-                foreach (ColumnModel cm in columns)
+                foreach (ColumnModel cm in Columns)
                 {
                     cm.isSorted = true;
                     cm.Sort();
@@ -62,9 +62,10 @@ namespace KanbanUI.Model
         internal void Add(string Index, string Name)
         {
             ColumnModel col=Controller.AddColumn(UM.email, Int32.Parse(Index), Name);
-            columns.Insert(col.Index, col);
+            Columns.Insert(col.Index, col);
             int i = 0;
-            foreach(ColumnModel cm in columns){
+            foreach(ColumnModel cm in Columns)
+            {
                 cm.Index = i;
                 i++;
             }
@@ -75,17 +76,17 @@ namespace KanbanUI.Model
         internal void AdvanceTask(int columnIndex, int ID,TaskModel T)
         {
             Controller.AdvanceTask(UM.email, columnIndex, ID);
-            columns[columnIndex].tasks.Remove(T);
-            columns[columnIndex].Reload();
-            columns[columnIndex + 1].tasks.Add(T);
-            columns[columnIndex+1].Reload();
+            Columns[columnIndex].tasks.Remove(T);
+            Columns[columnIndex].Reload();
+            Columns[columnIndex + 1].tasks.Add(T);
+            Columns[columnIndex+1].Reload();
             Sort();
             RaisePropertyChanged("columns");
         }
 
         internal void Filter(string filter)
         {
-            foreach(ColumnModel c in columns)
+            foreach(ColumnModel c in Columns)
             {
                 c.Filter(filter);
             }
@@ -93,7 +94,7 @@ namespace KanbanUI.Model
 
         internal void Unsort()
         {
-            foreach(ColumnModel c in columns)
+            foreach(ColumnModel c in Columns)
             {
                 c.isSorted = false;
             }

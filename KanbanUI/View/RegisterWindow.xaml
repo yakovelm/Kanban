@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KanbanUI"
         mc:Ignorable="d"
-        Title="RegisterWindow" Height="319" Width="371" Background="Bisque">
+        Title="RegisterWindow" Height="319" Width="371" Background="Beige">
     <Grid Margin="10">
         <StackPanel Orientation="Vertical">
             <Label Content="Register System" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold"/>
@@ -21,16 +21,16 @@
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
                 <Label Content="Email: " FontSize="16" FontWeight="DemiBold" Grid.Column="0" Grid.Row="0"/>
-                <TextBox Text="{Binding Path=Email, Mode=TwoWay}" Background="Beige" Width="200"  Grid.Column="1" Grid.Row="0" Margin="5"/>
+                <TextBox Text="{Binding Path=Email, Mode=TwoWay}" Background="OldLace" Width="200"  Grid.Column="1" Grid.Row="0" Margin="5"/>
                 <Label Content="Password: " FontSize="16" FontWeight="DemiBold" Grid.Column="0" Grid.Row="1"/>
-                <TextBox Text="{Binding Path=Password, Mode=TwoWay}" Background="Beige" Width="200"  Grid.Column="1" Grid.Row="1" Margin="5"/>
+                <TextBox Text="{Binding Path=Password, Mode=TwoWay}" Background="OldLace" Width="200"  Grid.Column="1" Grid.Row="1" Margin="5"/>
                 <Label Content="Nickname: " FontSize="16" FontWeight="DemiBold" Grid.Column="0" Grid.Row="2"/>
-                <TextBox Text="{Binding Path=Nickname, Mode=TwoWay}" Background="Beige" Width="200"  Grid.Column="1" Grid.Row="2" Margin="5"/>
+                <TextBox Text="{Binding Path=Nickname, Mode=TwoWay}" Background="OldLace" Width="200"  Grid.Column="1" Grid.Row="2" Margin="5"/>
                 <Label Content="Host: " FontSize="16" FontWeight="DemiBold" Grid.Column="0" Grid.Row="3"/>
-                <TextBox Text="{Binding Path=Host, Mode=TwoWay}" Background="Beige" Width="200"  Grid.Column="1" Grid.Row="3" Margin="5"/>
+                <TextBox Text="{Binding Path=Host, Mode=TwoWay}" Background="OldLace" Width="200"  Grid.Column="1" Grid.Row="3" Margin="5"/>
             </Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Register" x:Name="Register" Click="Register_Click" Height="25" Margin="0,0,10,0" FontSize="16" Width="100"/>
+                <Button Content="Register" x:Name="Register" Click="Register_Click" IsDefault="True" Height="25" Margin="0,0,10,0" FontSize="16" Width="100"/>
                 <Button Content="Back" x:Name="Back" Click="Back_Click" Height="25" Margin="0,0,10,0" FontSize="16" Width="100"/>
             </StackPanel>
             <Label Content="{Binding Path=Message, Mode=OneWay}" Foreground="Red" HorizontalAlignment="Center" Height="40"/>

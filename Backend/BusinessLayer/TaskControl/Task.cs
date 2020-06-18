@@ -12,7 +12,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const int Tmax = 50;
         private const int Dmax = 300;
-        private const int Orange = 75;
         private int ID;
         private string Cname;
         private string title;
@@ -25,12 +24,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public Task(int ID, int hostID, string Cname, string title, string desc, DateTime due, string email)
         {
             log.Info("creating new task: #" + ID + " title: " + title + " for " + email);
-            if(title==null || title.Equals(""))
+            if (title == null || title.Equals(""))
             {
                 log.Error("title is invalid.");
                 throw new Exception("title is invalid.");
             }
-            if (due==null || due < DateTime.Now)
+            if (due == null || due < DateTime.Now)
             {
                 log.Error("due is invalid.");
                 throw new Exception("due is invalid.");
@@ -40,7 +39,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Warn("Title too long");
                 throw new Exception("Title too long.");
             }
-            if (desc!=null && desc.Length > Dmax)
+            if (desc != null && desc.Length > Dmax)
             {
                 log.Warn("Description too long");
                 throw new Exception("Description too long.");
@@ -60,10 +59,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             Dtask.Add();
         }
         public string getEmail() { return email; }
-        public string getTitle() { return title;}
-        public string getDesc() { return desc;}
-        public DateTime getCreation() { return creation;}
-        public int getID() { return ID;}
+        public string getTitle() { return title; }
+        public string getDesc() { return desc; }
+        public DateTime getCreation() { return creation; }
+        public int getID() { return ID; }
         public DateTime GetDue() { return due; }
 
         public void checkAssig(string assig)
@@ -72,7 +71,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         }
         public void assignEmail(string assig)
         {
-            log.Info("task #" + ID + "asignee changing from " + email + " to " + assig+".");
+            log.Info("task #" + ID + "asignee changing from " + email + " to " + assig + ".");
             email = assig;
             DAL.Task Dtask = ToDalObject();
             Dtask.UpdateAssignee(assig);
@@ -84,11 +83,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Task Dtask = ToDalObject();
             Dtask.UpdateColumn(Cname);
         }
-        public void editTitle(string assig,string title) // update title of this task
+        public void editTitle(string assig, string title) // update title of this task
         {
             checkAssig(assig);
             log.Info("task #" + ID + "title changing from " + this.title + " to " + title + " for " + email + ".");
-            if (title == null || title.Length > Tmax |title.Equals(""))
+            if (title == null || title.Length > Tmax | title.Equals(""))
             {
                 log.Warn("Title too long.");
                 throw new Exception("Title too long.");
@@ -114,7 +113,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             checkAssig(assig);
             log.Info("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email + ".");
-            if (due==null || due < DateTime.Now)
+            if (due == null || due < DateTime.Now)
             {
                 log.Warn("new due is earlier then now.");
                 throw new Exception("new due is earlier then now.");
@@ -127,7 +126,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public DAL.Task ToDalObject() // convert this task to a DataAccessLayer object
         {
             log.Debug("task #" + ID + "converting to DAL obj in " + email + ".");
-            return new DAL.Task(hostID,ID,email,Cname,title,desc,due.Ticks,creation.Ticks);
+            return new DAL.Task(hostID, ID, email, Cname, title, desc, due.Ticks, creation.Ticks);
         }
 
         public void FromDalObject(DAL.Task DalObj)// convert a DataAccessLayer object to a BuisnessLayer task and set this to corresponding values
@@ -149,23 +148,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Error("issue converting task Dal object to task BL object due to " + e.Message);
                 throw e;
             }
-        }
-
-        public Boolean isOrange()
-        {
-            return (DateTime.Now.Subtract(creation).Ticks / due.Subtract(creation).Ticks) > 75;
-        }
-        public Boolean isRed()
-        {
-            return DateTime.Now>due;
-        }
-        public Boolean isBlue(string email)
-        {
-            return email.Equals(this.email);
-        }
-        public Boolean match(string filter)
-        {
-            return title.Contains(filter) || desc.Contains(filter);
         }
     }
 }

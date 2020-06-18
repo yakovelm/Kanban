@@ -211,23 +211,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             log.Debug("in column with " + host + " and " + this.host);
             if (host != this.host | newName.Length>maxname) throw new Exception("non host user tried to change column name.");
-            
+            foreach (Task task in tasks) task.editColumn(newName);
             DAL.Column t= ToDalObject();
             t.UpdateName(newName);
             name = newName;
-        }
-        public void sortByDue()
-        {
-            tasks.Sort((x, y) =>x.GetDue().CompareTo(y.GetDue()));
-        }
-        public List<Task> filter(string filter)
-        {
-            List<Task> output = new List<Task>();
-            foreach(Task t in tasks)
-            {
-                if (t.match(filter)) output.Add(t);
-            }
-            return output;
         }
     }
 }

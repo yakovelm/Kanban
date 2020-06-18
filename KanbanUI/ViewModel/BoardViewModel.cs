@@ -40,33 +40,16 @@ namespace KanbanUI.ViewModel
             throw new NotImplementedException();
         }
 
-        public TaskModel SelectedTask { get => _selectedTask;
-            set { 
-                _selectedTask = value;
-                RaisePropertyChanged("SelectedTask");
-            }
-        }
-        private TaskModel _selectedTask;
-
         internal void Reload()
         {
             BM.ReLoad();
         }
-
-        public ColumnModel SelectedColumn { get=>_selectedColumn; 
-            set { _selectedColumn = value;
-                LeftClick.RaiseCanExecuteChanged();
-                RightClick.RaiseCanExecuteChanged();
-                DeleteClick.RaiseCanExecuteChanged();
-            }
-        }
-
         internal void logout()
         {
             UM.logout();
         }
 
-        private ColumnModel _selectedColumn;
+        //private ColumnModel _selectedColumn;
         public ColumnCommand LeftClick { get; set; }
         public ColumnCommand RightClick { get; set; }
         public ColumnCommand DeleteClick { get; set; }

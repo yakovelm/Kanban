@@ -51,6 +51,7 @@ namespace KanbanUI.View
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             RegisterWindow reg = new RegisterWindow(LM.Controller);
+            reg.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             reg.ShowDialog();
             //this.Close();
         }

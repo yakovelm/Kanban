@@ -45,7 +45,6 @@ namespace KanbanUI.Model
         {
             if (isSorted)
             {
-                ObservableCollection<TaskModel> temp = new ObservableCollection<TaskModel>();
                 for (int i = 0; i < tasks.Count; i++)
                 {
                     var a = tasks[i];
@@ -100,7 +99,7 @@ namespace KanbanUI.Model
             }
         }
 
-        private Boolean changename(string newname) 
+        private bool changename(string newname) 
         {
             try
             {
@@ -115,11 +114,11 @@ namespace KanbanUI.Model
             throw new NotImplementedException();
         }
 
-        private Boolean changeLimit(string newLimit)
+        private bool changeLimit(string newLimit)
         {
             try
             {
-                Controller.changeColumnLimit(Index,Int32.Parse(newLimit), email);
+                Controller.changeColumnLimit(Index, int.Parse(newLimit), email);
                 return true;
             }
             catch { return false; }
