@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
@@ -13,12 +9,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private String email;
         private String password;
         private String nickname;
-        private int emailHost=0;
+        private int emailHost = 0;
         private int UID;
         private DAL.User DU;
 
         public User() { }
-        public User(string email, string password, string nickname,int emailHost) // new user creation (register) constructor
+        public User(string email, string password, string nickname, int emailHost) // new user creation (register) constructor
         {
             this.email = email;
             this.password = password;
@@ -45,7 +41,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         public DAL.User ToDalObject() // converts this object to a DataAccessLayer object
         {
             log.Debug("converting user to DAL obj for " + email + ".");
-            return new DAL.User(UID,email, password, nickname,emailHost);
+            return new DAL.User(UID, email, password, nickname, emailHost);
         }
 
         public void FromDalObject(DAL.User DalObj) // converts a DataAccessLayer object to an object of this type and sets this to the corresponding values
@@ -57,7 +53,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 this.password = DalObj.password;
                 this.nickname = DalObj.nickname;
                 this.emailHost = (int)DalObj.emailHost;
-                this.UID =(int) DalObj.UID;
+                this.UID = (int)DalObj.UID;
             }
             catch (Exception e)
             {
@@ -65,7 +61,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw e;
             }
         }
-        public void Insert() 
+        public void Insert()
         {
             DU = ToDalObject();
             DU.Insert();

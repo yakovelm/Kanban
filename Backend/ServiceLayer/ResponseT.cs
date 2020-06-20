@@ -19,8 +19,8 @@
         public string toString()
         {
             if (ErrorOccured) { return ErrorMessage; }
-            else { return "no error:\n"+Value.ToString(); }
-            
+            else { return "no error:\n" + Value.ToString(); }
+
         }
     }
 }

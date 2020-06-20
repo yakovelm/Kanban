@@ -67,8 +67,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="RemoveColumn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AdvenceTask.cs" />
+    <Compile Include="MoveColumnLeft.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
-     class TaskCtrl : DALCtrl<Task>
+    class TaskCtrl : DALCtrl<Task>
     {
         private const string TaskTableName = DAL.DB._tasktbalename;
-        public TaskCtrl(): base(TaskTableName) { }
+        public TaskCtrl() : base(TaskTableName) { }
         public override bool Insert(Task obj) // insert given DAL task into DB
         {
             using (var connection = new SQLiteConnection(connectionString))
@@ -62,7 +58,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         protected override Task ConvertReaderToObject(SQLiteDataReader reader)
         {
             //log.Debug("in reader with task: "+reader.GetString(0)+" "+ reader.GetInt64(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetValue(4));
-            Task result = new Task(reader.GetInt64(0), reader.GetInt64(1), reader.GetString(2), reader.GetString(3),reader.GetString(4), reader.IsDBNull(5) ? null : reader.GetString(5), reader.GetInt64(6), reader.GetInt64(7));
+            Task result = new Task(reader.GetInt64(0), reader.GetInt64(1), reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.IsDBNull(5) ? null : reader.GetString(5), reader.GetInt64(6), reader.GetInt64(7));
             return result;
         }
     }

@@ -1,9 +1,7 @@
-﻿using System;
-using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
-using UC = IntroSE.Kanban.Backend.BusinessLayer.UserControl;
-using SS = IntroSE.Kanban.Backend.ServiceLayer.SubService;
-using IntroSE.Kanban.Backend.BusinessLayer;
+﻿using IntroSE.Kanban.Backend.BusinessLayer;
+using System;
 using System.Runtime.CompilerServices;
+using SS = IntroSE.Kanban.Backend.ServiceLayer.SubService;
 
 [assembly: InternalsVisibleTo("UnitTests"), InternalsVisibleTo("Tests")]
 namespace IntroSE.Kanban.Backend.ServiceLayer
@@ -37,7 +35,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             DataBase = new DB();
             LoadData();
         }
-               
+
         /// <summary>        
         /// Loads the data. Intended be invoked only when the program starts
         /// </summary>
@@ -48,7 +46,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             {
                 DataBase.DBexist();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new Response(e.Message);
             }
@@ -79,51 +77,51 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-		/// <summary>
-		/// Registers a new user and creates a new board for him.
-		/// </summary>
-		/// <param name="email">The email address of the user to register</param>
-		/// <param name="password">The password of the user to register</param>
-		/// <param name="nickname">The nickname of the user to register</param>
-		/// <returns>A response object. The response should contain a error message in case of an error<returns>
-		public Response Register(string email, string password, string nickname)
+        /// <summary>
+        /// Registers a new user and creates a new board for him.
+        /// </summary>
+        /// <param name="email">The email address of the user to register</param>
+        /// <param name="password">The password of the user to register</param>
+        /// <param name="nickname">The nickname of the user to register</param>
+        /// <returns>A response object. The response should contain a error message in case of an error<returns>
+        public Response Register(string email, string password, string nickname)
         {
-            Response res= US.register(email, password, nickname);
+            Response res = US.register(email, password, nickname);
             return (res.ErrorOccured) ? res : BS.Register(email);
         }
-		
 
-		/// <summary>
-		/// Registers a new user and joins the user to an existing board.
-		/// </summary>
-		/// <param name="email">The email address of the user to register</param>
-		/// <param name="password">The password of the user to register</param>
-		/// <param name="nickname">The nickname of the user to register</param>
-		/// <param name="emailHost">The email address of the host user which owns the board</param>
-		/// <returns>A response object. The response should contain a error message in case of an error<returns>
-		public Response Register(string email, string password, string nickname, string emailHost)
+
+        /// <summary>
+        /// Registers a new user and joins the user to an existing board.
+        /// </summary>
+        /// <param name="email">The email address of the user to register</param>
+        /// <param name="password">The password of the user to register</param>
+        /// <param name="nickname">The nickname of the user to register</param>
+        /// <param name="emailHost">The email address of the host user which owns the board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error<returns>
+        public Response Register(string email, string password, string nickname, string emailHost)
         {
             Response res = US.register(email, password, nickname, emailHost);
-            return (res.ErrorOccured) ? res : BS.Register(email,emailHost);
+            return (res.ErrorOccured) ? res : BS.Register(email, emailHost);
         }
-				
 
-		
-		/// <summary>
+
+
+        /// <summary>
         /// Assigns a task to a user
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>        
-		/// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <param name="emailAssignee">Email of the user to assign to task to</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
         {
             Console.WriteLine("IN SERVICE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return BS.AssignTask(email, columnOrdinal, taskId, emailAssignee);
-        }		
-		
-		/// <summary>
+        }
+
+        /// <summary>
         /// Delete a task
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
@@ -133,8 +131,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response DeleteTask(string email, int columnOrdinal, int taskId)
         {
             return BS.DeleteTask(email, columnOrdinal, taskId);
-        }		
-		
+        }
+
 
 
         /// <summary>

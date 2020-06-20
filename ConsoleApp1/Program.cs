@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Text.Json;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UU=IntroSE.Kanban.Backend.ServiceLayer;
-using IntroSE.Kanban.Backend.BusinessLayer.UserControl;
-using SSL = IntroSE.Kanban.Backend.ServiceLayer.SubService;
+using UU = IntroSE.Kanban.Backend.ServiceLayer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     class test
     {
         static int count = 0;
-        static void Main(string[] args) 
-            //when using this tester make sure to run everything under the print function to keep counter in sync
+        static void Main(string[] args)
+        //when using this tester make sure to run everything under the print function to keep counter in sync
         {
 
             try
@@ -34,8 +27,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
                 //proper login tests - all should work
                 print(s.Register(te3, tp3, tn3));
-                print(s.Register(te2,tp2,tn2,te3));
-                print(s.Register(te,tp,tn));
+                print(s.Register(te2, tp2, tn2, te3));
+                print(s.Register(te, tp, tn));
                 print(s.Login(te3, tp3));
                 print(s.GetBoard(te3).toString());
                 for (int i = 4; i <= 20; i++) print(s.AddTask(te3, "title" + i, "desc" + i, new DateTime(2200, 06, 22)));
@@ -63,7 +56,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 print(s.Logout(te3));
                 print(s.Register("asd@asd.asd", "asd!12A", "asd", te3));
                 print(s.Login("asd@asd.asd", "asd!12A"));
-                print(s.DeleteTask("asd@asd.asd",0,1));
+                print(s.DeleteTask("asd@asd.asd", 0, 1));
 
 
                 //print(s.Logout(te));
@@ -117,7 +110,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 //print(s.AddColumn(te3, 4, "").toString());
                 //print(s.AddColumn(te3, 4, null).toString());
                 print(s.LimitColumnTasks(te3, 0, 3));
-                for (int i = 2; i < 8; i++) print(s.AddTask(te3, "title"+i, "desc"+i, new DateTime(2200, 06, 22)));
+                for (int i = 2; i < 8; i++) print(s.AddTask(te3, "title" + i, "desc" + i, new DateTime(2200, 06, 22)));
                 print(s.GetBoard(te3).toString());
                 print(s.GetColumn(te3, 1).toString());
                 print(s.Logout(te3));
@@ -231,7 +224,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         static void print(Response res) //i miss python T_T
         {
             count++;
-            if (res.ErrorOccured) { Console.WriteLine(count+":\n"+res.ErrorMessage); }
+            if (res.ErrorOccured) { Console.WriteLine(count + ":\n" + res.ErrorMessage); }
             else { Console.WriteLine(count + ":\n" + "no error."); }
             Console.Read();
             Console.Read();
@@ -244,7 +237,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Console.Read();
             Console.Read();
         }
-        static void print(string prt) 
+        static void print(string prt)
         {
             count++;
             Console.WriteLine(count + ":\n" + prt);
@@ -252,5 +245,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Console.Read();
         }
     }
-    
+
 }

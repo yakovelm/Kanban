@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IntroSE.Kanban.Backend.BusinessLayer
+﻿namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     public class UBlink
     {
@@ -15,7 +9,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public UBlink()
         {
             Lastemail = null;
-            LastId =-1;
+            LastId = -1;
             HostId = -1;
             Load = false;
         }

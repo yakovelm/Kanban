@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -22,10 +18,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public override string ToString()
         {
             string ret = "";
-            ret+="-COLUMN-\n";
-            ret+="name: " + Name+"\n";
-            ret += "limit: " + Limit+"\n";
-            foreach (Task t in Tasks) { ret +=t.ToString(); }
+            ret += "-COLUMN-\n";
+            ret += "name: " + Name + "\n";
+            ret += "limit: " + Limit + "\n";
+            foreach (Task t in Tasks) { ret += t.ToString(); }
             return ret;
         }
     }

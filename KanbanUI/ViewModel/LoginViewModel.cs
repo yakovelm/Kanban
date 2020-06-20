@@ -1,20 +1,15 @@
 ﻿using KanbanUI.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KanbanUI;
 
 namespace KanbanUI.ViewModel
 {
-     public class LoginViewModel : NotifiableObject
+    public class LoginViewModel : NotifiableObject
     {
         public BackendController Controller { get; private set; }
         private string _email;
         public string Email { get => _email; set { _email = value; RaisePropertyChanged("Email"); } }
         private string _password;
-        public string Password { get=> _password; set { _password = value; RaisePropertyChanged("Password"); } }
+        public string Password { get => _password; set { _password = value; RaisePropertyChanged("Password"); } }
         private string _massage;
         public string Message { get => _massage; set { _massage = value; RaisePropertyChanged("Message"); } }
 
@@ -33,7 +28,7 @@ namespace KanbanUI.ViewModel
             {
                 return Controller.Login(_email, _password);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Message = e.Message;
                 return null;
@@ -47,7 +42,7 @@ namespace KanbanUI.ViewModel
                 Controller.Reset();
                 Message = "all data successfully deleted.";
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Message = e.Message;
             }

@@ -1,10 +1,6 @@
 ﻿using KanbanUI.Utils;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KanbanUI.Model
 {
@@ -14,12 +10,18 @@ namespace KanbanUI.Model
         private int _index;
         private string _name;
         private string email;
-        public bool isSorted {get;set ;}
-        public string ColumnName { get=>_name; set {
-                if (changename(value)){
-                    _name = value; }
+        public bool isSorted { get; set; }
+        public string ColumnName
+        {
+            get => _name; set
+            {
+                if (changename(value))
+                {
+                    _name = value;
+                }
                 RaisePropertyChanged("ColumnName");
-            }  }
+            }
+        }
         private int _limit;
         public TaskCommand DeleteTaskClick { get; set; }
         public string ColumnLimit
@@ -36,8 +38,8 @@ namespace KanbanUI.Model
 
         internal void Reload()
         {
-            tasks=Controller.getColumn(email,ColumnName,Index).Item3;
-            Sort(); 
+            tasks = Controller.getColumn(email, ColumnName, Index).Item3;
+            Sort();
             RaisePropertyChanged("tasks");
         }
 
@@ -78,10 +80,10 @@ namespace KanbanUI.Model
 
         public ObservableCollection<TaskModel> tasks { get; set; }
 
-        
-        public ColumnModel(BackendController c,string Name,string email,int n): base(c)
+
+        public ColumnModel(BackendController c, string Name, string email, int n) : base(c)
         {
-            Tuple<string,int, ObservableCollection<TaskModel>> col = Controller.getColumn(email,Name,n);
+            Tuple<string, int, ObservableCollection<TaskModel>> col = Controller.getColumn(email, Name, n);
             _name = col.Item1;
             _limit = col.Item2;
             tasks = col.Item3;
@@ -99,7 +101,7 @@ namespace KanbanUI.Model
             }
         }
 
-        private bool changename(string newname) 
+        private bool changename(string newname)
         {
             try
             {

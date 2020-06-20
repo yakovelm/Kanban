@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KanbanUI.Model
+﻿namespace KanbanUI.Model
 {
 
     public class NotifiableModelObject : NotifiableObject
@@ -15,5 +9,5 @@ namespace KanbanUI.Model
             this.Controller = controller;
         }
     }
-    
+
 }

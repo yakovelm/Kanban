@@ -1,14 +1,9 @@
-﻿using KanbanUI.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace KanbanUI.ViewModel
 {
-    
-    class RegisterViewModel: NotifiableObject
+
+    class RegisterViewModel : NotifiableObject
     {
         BackendController controller;
         private string _email;
@@ -19,14 +14,14 @@ namespace KanbanUI.ViewModel
         public string Nickname { get => _nickname; set { _nickname = value; RaisePropertyChanged("Nickname"); } }
         private string _host;
         public string Host { get => _host; set { _host = value; RaisePropertyChanged("Host"); } }
-        
+
         private string _massage;
         public string Message { get => _massage; set { _massage = value; RaisePropertyChanged("Message"); } }
         public RegisterViewModel(BackendController controller)
         {
             this.controller = controller;
         }
-        
+
         public void register()
         {
             Message = "";
@@ -39,7 +34,7 @@ namespace KanbanUI.ViewModel
                 Nickname = null;
                 Host = null;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Message = e.Message;
             }

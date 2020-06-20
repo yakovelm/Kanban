@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using IntroSE.Kanban.Backend.BusinessLayer.BoardControl;
+﻿using IntroSE.Kanban.Backend.BusinessLayer.BoardControl;
 using IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 using Moq;
-using N = NUnit.Framework;
-using System.Collections.Generic;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using N = NUnit.Framework;
 
 namespace BoardTests
 {
@@ -50,12 +49,11 @@ namespace BoardTests
             Mockcolumns.Add(progress);
             Mockcolumns.Add(done);
 
-            foreach(Mock<Column> c in Mockcolumns)
+            foreach (Mock<Column> c in Mockcolumns)
             {
                 c.Setup(x => x.getAll()).Returns(new List<Task>());
                 c.Setup(x => x.delete(c.Object.ord));
                 c.Setup(x => x.addTasks(new List<Task>()));
-              
                 c.Object.host = 1;
 
             }
@@ -65,6 +63,8 @@ namespace BoardTests
         [TestCase("TEST")]
         [TestCase("test")]
         [TestCase("TeST")]
+        [TestCase("TesT")]
+        [TestCase("tEsT")]
         public void RemoveColumnTest1(string email)//valid email arguments
         {
             //arrange   
@@ -89,6 +89,8 @@ namespace BoardTests
         [TestCase(null)]
         [TestCase("")]
         [TestCase("Te St")]
+        [TestCase("dfdfg")]
+        [TestCase("op")]
         [TestCase("tes t")]
         public void RemoveColumnTest2(string email)//invalid email arguments
         {
@@ -130,24 +132,26 @@ namespace BoardTests
             }
 
             //assert
-            N.Assert.IsNull(e,e!=null? e.Message : "need to seccses");
+            N.Assert.IsNull(e, e != null ? e.Message : "need to seccses");
         }
-        
+
         [Test]
         [TestCase(-1)]
+        [TestCase(-20)]
         [TestCase(20)]
+        [TestCase(500)]
         [TestCase(18)]
         [TestCase(-58)]
         public void RemoveColumnTest4(int ord)//invalid column number arguments
         {
             //arrange
             //act
-            Exception e=null;
+            Exception e = null;
             try
             {
                 b.RemoveColumn(ord);
             }
-            catch(Exception e2)
+            catch (Exception e2)
             {
                 e = e2;
             }
@@ -175,12 +179,16 @@ namespace BoardTests
             N.Assert.IsNotNull(e, "need to fail: invalid email arguments");
         }
         [Test]
-        [TestCase(0)]
-        [TestCase(1)]
-        public void RemoveColumnTest5(int ord)//test when size for columns is minimum
+        [TestCase(0, 2)]
+        [TestCase(1, 2)]
+        [TestCase(0, 1)]
+        [TestCase(2, 1)]
+        [TestCase(1, 0)]
+        [TestCase(2, 0)]
+        public void RemoveColumnTest5(int ord,int del)//test when size for columns is minimum
         {
             //arrange   
-            columns.Remove(done.Object);
+            columns.Remove(Mockcolumns[del].Object);
             //act
             Exception e = null;
             try
@@ -213,7 +221,7 @@ namespace BoardTests
             b.RemoveColumn(1);
             //assert
             N.Assert.AreSame(columns[1], done.Object, "set Ordinal fail");
-            N.Assert.AreSame(columns[0],backlog.Object, "set Ordinal fail");
+            N.Assert.AreSame(columns[0], backlog.Object, "set Ordinal fail");
         }
         [Test]
         public void RemoveColumnTest8()//test set Ordinal

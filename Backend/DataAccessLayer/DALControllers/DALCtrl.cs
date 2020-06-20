@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
-using DAL= IntroSE.Kanban.Backend.DataAccessLayer;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
@@ -75,13 +72,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 {
                     log.Error("failed to Update in " + tableName);
                     ex = true;
-                    
+
                 }
                 finally
                 {
                     command.Dispose();
                     connection.Close();
-                    if(ex) throw new Exception("failed to Update in " + tableName);
+                    if (ex) throw new Exception("failed to Update in " + tableName);
                 }
 
             }
@@ -102,18 +99,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 {
                     command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
                     connection.Open();
-                    res=command.ExecuteNonQuery();
+                    res = command.ExecuteNonQuery();
                 }
-                catch (Exception){
+                catch (Exception)
+                {
                     log.Error("failed to Update in " + tableName);
                     ex = true;
-                    
+
                 }
                 finally
                 {
                     command.Dispose();
                     connection.Close();
-                    if(ex) throw new Exception("failed to Update in " + tableName);
+                    if (ex) throw new Exception("failed to Update in " + tableName);
                 }
             }
             return res > 0;
@@ -151,7 +149,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
                     command.Dispose();
                     connection.Close();
-                    if(ex) throw new Exception("failed to Select from " + tableName);
+                    if (ex) throw new Exception("failed to Select from " + tableName);
                 }
 
             }

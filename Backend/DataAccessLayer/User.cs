@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.IO;
-using System.Threading.Tasks;
-using IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
+using System;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
@@ -21,7 +15,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string nickname { get; }
         public long emailHost { get; }
         public long UID { get; }
-        public User(long UID,string email, string password, string nickname,long emailHost):base(new UserCtrl())
+        public User(long UID, string email, string password, string nickname, long emailHost) : base(new UserCtrl())
         {
             Email = email;
             this.password = password;
@@ -45,7 +39,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             if (!controller.Update(MakeFilter(), emailHostAtt, host))
             {
-                log.Error("failed to update user host " +host + " on email " + Email);
+                log.Error("failed to update user host " + host + " on email " + Email);
                 throw new Exception("failed to update the ordinal for column " + 8 + " on email " + Email);
             }
         }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Threading.Tasks;
 using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
@@ -12,14 +8,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private DAL.DB db;
-        public DB() 
+        public DB()
         {
             db = new DAL.DB();
         }
 
         public void DBexist() // make sure DB exists during startup
         {
-            
+
             try
             {
                 if (!sqlfilexist())
@@ -28,15 +24,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                     db.Build();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                log.Error("fail to create SQL file   "+ sqlfilexist());
-                throw new Exception("fail to create SQL file: " +e.Message);
+                log.Error("fail to create SQL file   " + sqlfilexist());
+                throw new Exception("fail to create SQL file: " + e.Message);
             }
         }
         private bool sqlfilexist()
         {
-            string check =Path.Combine( Directory.GetCurrentDirectory(),DAL.DB._databasename);
+            string check = Path.Combine(Directory.GetCurrentDirectory(), DAL.DB._databasename);
             return File.Exists(check);
         }
         public void DropAll()

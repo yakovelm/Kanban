@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL= IntroSE.Kanban.Backend.DataAccessLayer;
+using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 {
@@ -12,7 +8,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
     {
         private const string UserTableName = DAL.DB._usertbalename;
         private const string UserTableSQLite = DAL.DB._usertbalename;
-        public UserCtrl(): base (UserTableName) { }
+        public UserCtrl() : base(UserTableName) { }
         public override bool Insert(User obj) //insert a specific user object into the DB
         {
             bool fail = false;
@@ -26,7 +22,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     command.CommandText = $"INSERT INTO {UserTableName} ({User.EmailAtt},{User.passwordAtt}," +
                         $"{User.nicknameAtt},{User.emailHostAtt}) " +
                         $"VALUES (@emailVal,@passVal,@nickVal,@emailHostVal);";
-                    
+
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", obj.Email);
                     SQLiteParameter passParam = new SQLiteParameter(@"passVal", obj.password);
                     SQLiteParameter nickParam = new SQLiteParameter(@"nickVal", obj.nickname);
@@ -36,7 +32,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     command.Parameters.Add(passParam);
                     command.Parameters.Add(nickParam);
                     command.Parameters.Add(emailHostParam);
-                    
+
                     command.Prepare();
                     res = command.ExecuteNonQuery();
                 }
@@ -49,7 +45,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 {
                     command.Dispose();
                     connection.Close();
-                    if (fail) { log.Error("fail to insert a user in UserCtrl");
+                    if (fail)
+                    {
+                        log.Error("fail to insert a user in UserCtrl");
                         throw new Exception("fail to insert a user in UserCtrl");
                     }
                 }
@@ -58,7 +56,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
         }
         protected override User ConvertReaderToObject(SQLiteDataReader reader)
         {
-            User result = new User(reader.GetInt64(0), reader.GetString(1), reader.GetString(2),reader.GetString(3),reader.GetInt64(4));
+            User result = new User(reader.GetInt64(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt64(4));
             return result;
         }
 
@@ -75,10 +73,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                 {
                     connection.Open();
                     dataReader = command.ExecuteReader();
-                    if (dataReader.StepCount != 1 ) { ex = true; }
-                    if(!ex && dataReader.Read())
+                    if (dataReader.StepCount != 1) { ex = true; }
+                    if (!ex && dataReader.Read())
                     {
-                        result= dataReader.GetInt64(0);
+                        result = dataReader.GetInt64(0);
                     }
                 }
                 catch (Exception)
@@ -96,7 +94,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                     command.Dispose();
                     connection.Close();
                     if (ex) throw new Exception("failed to Select from " + tableName);
-                    
+
                 }
 
             }

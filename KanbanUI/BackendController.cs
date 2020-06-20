@@ -1,30 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IntroSE.Kanban.Backend.ServiceLayer;
+﻿using IntroSE.Kanban.Backend.ServiceLayer;
 using KanbanUI.Model;
+using System;
+using System.Collections.ObjectModel;
 
 namespace KanbanUI
 {
     public class BackendController
     {
-        private Service s; 
-        public BackendController() {
+        private Service s;
+        public BackendController()
+        {
             s = new Service();
         }
 
-        public Tuple<string,int, ObservableCollection<TaskModel>> getColumn(string email,string name, int n)
+        public Tuple<string, int, ObservableCollection<TaskModel>> getColumn(string email, string name, int n)
         {
-            Response<Column> res = s.GetColumn(email,name);
+            Response<Column> res = s.GetColumn(email, name);
             isErr(res);
-            ObservableCollection<TaskModel> tasks= new ObservableCollection<TaskModel>();
-            foreach(IntroSE.Kanban.Backend.ServiceLayer.Task t in res.Value.Tasks){
-                tasks.Add(taskToModel(t,email,n));
+            ObservableCollection<TaskModel> tasks = new ObservableCollection<TaskModel>();
+            foreach (IntroSE.Kanban.Backend.ServiceLayer.Task t in res.Value.Tasks)
+            {
+                tasks.Add(taskToModel(t, email, n));
             }
-            return Tuple.Create(res.Value.Name, res.Value.Limit,tasks);
+            return Tuple.Create(res.Value.Name, res.Value.Limit, tasks);
         }
 
         internal void DeleteColumn(string email, int index)
@@ -41,13 +39,13 @@ namespace KanbanUI
 
         internal void Logout(string email)
         {
-             Response res= s.Logout(email);
+            Response res = s.Logout(email);
             isErr(res);
         }
 
-        private TaskModel taskToModel(IntroSE.Kanban.Backend.ServiceLayer.Task t,string email, int n)
+        private TaskModel taskToModel(IntroSE.Kanban.Backend.ServiceLayer.Task t, string email, int n)
         {
-            return new TaskModel(this,t.Id,t.emailAssignee,t.Title,t.Description,t.DueDate,t.CreationTime,n,email);
+            return new TaskModel(this, t.Id, t.emailAssignee, t.Title, t.Description, t.DueDate, t.CreationTime, n, email);
         }
 
         internal void editDue(string email, int columnIndex, int ID, DateTime due)
@@ -100,31 +98,31 @@ namespace KanbanUI
             isErr(res);
             ObservableCollection<ColumnModel> temp = new ObservableCollection<ColumnModel>();
             int i = 0;
-            foreach (string s in res.Value.ColumnsNames) 
+            foreach (string s in res.Value.ColumnsNames)
             {
-                temp.Add(ColumnToModel(s,um.email,i));
+                temp.Add(ColumnToModel(s, um.email, i));
                 i++;
             }
             return Tuple.Create(res.Value.emailCreator, temp);
-        } 
-        private ColumnModel ColumnToModel(string s, string email,int n) 
+        }
+        private ColumnModel ColumnToModel(string s, string email, int n)
         {
-            return new ColumnModel(this,s, email,n);
+            return new ColumnModel(this, s, email, n);
         }
 
         public UserModel Login(string email, string password)
         {
-            Response<User> res = s.Login(email,password) ;
+            Response<User> res = s.Login(email, password);
             isErr(res);
             return new UserModel(this, res.Value.Email);
-            
+
         }
-        public void register(string email,string password,string nickname,string host)
+        public void register(string email, string password, string nickname, string host)
         {
             Response res;
-            if (host == null||host=="")
+            if (host == null || host == "")
             {
-                res=s.Register(email, password, nickname);
+                res = s.Register(email, password, nickname);
             }
             else
             {
@@ -144,9 +142,9 @@ namespace KanbanUI
                 throw new Exception(res.ErrorMessage);
             }
         }
-        public void changeColumnName (int index,string newname,string email) 
+        public void changeColumnName(int index, string newname, string email)
         {
-            Response res = s.ChangeColumnName(email,index,newname);
+            Response res = s.ChangeColumnName(email, index, newname);
             isErr(res);
         }
         public void changeColumnLimit(int index, int newLimit, string email)
@@ -154,7 +152,7 @@ namespace KanbanUI
             Response res = s.LimitColumnTasks(email, index, newLimit);
             isErr(res);
         }
-        public void MoveLeft(string email,int ind)
+        public void MoveLeft(string email, int ind)
         {
             Response res = s.MoveColumnLeft(email, ind);
             isErr(res);

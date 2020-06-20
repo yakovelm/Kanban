@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KanbanUI.Model;
+using KanbanUI.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using KanbanUI.Model;
-using KanbanUI.ViewModel;
 
 namespace KanbanUI.View
 {
@@ -49,7 +37,7 @@ namespace KanbanUI.View
         private void Edit_Task_Click(object sender, RoutedEventArgs e)
         {
             TaskModel T = (TaskModel)((Button)sender).DataContext;
-            TaskWindow TW = new TaskWindow(T,BVM.UM);
+            TaskWindow TW = new TaskWindow(T, BVM.UM);
             TW.ShowDialog();
             BVM.Reload();
         }

@@ -1,11 +1,8 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.BusinessLayer;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BL = IntroSE.Kanban.Backend.BusinessLayer.BoardControl;
 using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
-using IntroSE.Kanban.Backend.BusinessLayer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
@@ -37,7 +34,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 BC.Login(email);
                 return new Response();
             }
-            catch (Exception e) {return (new Response(e.Message));}
+            catch (Exception e) { return (new Response(e.Message)); }
         }
         public Response Logout(string email) // log out the current board holder
         {
@@ -65,7 +62,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 TC.Task task = BC.AddTask(email, title, desciption, dueTime);
-                return new Response<Task>(new Task(task.getID(), task.getCreation(), task.GetDue(), title, desciption,task.getEmail()));
+                return new Response<Task>(new Task(task.getID(), task.getCreation(), task.GetDue(), title, desciption, task.getEmail()));
             }
             catch (Exception e) { return (new Response<Task>(e.Message)); }
         }
@@ -138,7 +135,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 List<TC.Column> listColumnBL = temp.Item1;
                 List<string> listNames = new List<string>();
                 foreach (TC.Column a in listColumnBL) { listNames.Add(a.getName()); }
-                return new Response<Board>(new Board(listNames,temp.Item2));
+                return new Response<Board>(new Board(listNames, temp.Item2));
             }
             catch (Exception e) { return new Response<Board>(e.Message); }
         }
@@ -149,7 +146,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 BC.Drop();
                 return new Response();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new Response(e.Message);
             }
@@ -159,11 +156,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         {
             try
             {
-                log.Info(email + " attempting to remove column number #"+columnOrdinal);
+                log.Info(email + " attempting to remove column number #" + columnOrdinal);
                 BC.RemoveColumn(email, columnOrdinal);
                 return new Response();
             }
-            catch(Exception e) {    return new Response(e.Message);  }
+            catch (Exception e) { return new Response(e.Message); }
         }
 
         public Response<Column> AddColumn(string email, int columnOrdinal, string Name)
@@ -171,7 +168,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 log.Info(email + " attempting to Add column number #" + columnOrdinal);
-                Column ans= chengeType(BC.AddColumn(email, columnOrdinal, Name));
+                Column ans = chengeType(BC.AddColumn(email, columnOrdinal, Name));
                 return new Response<Column>(ans);
             }
             catch (Exception e) { return new Response<Column>(e.Message); }
@@ -201,7 +198,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 
         private Task chengeType(TC.Task taskBL) // convert a BuisnessLayer task to a ServiceLayer task
         {
-            return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.GetDue(), taskBL.getTitle(), taskBL.getDesc(),taskBL.getEmail());
+            return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.GetDue(), taskBL.getTitle(), taskBL.getDesc(), taskBL.getEmail());
         }
         private Column chengeType(TC.Column columnBL)// convert a BuisnessLayer column to a ServiceLayer column
         {
@@ -270,7 +267,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 BC.ChangeColumnName(email, columnOrdinal, newName);
                 return new Response();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new Response(e.Message);
             }

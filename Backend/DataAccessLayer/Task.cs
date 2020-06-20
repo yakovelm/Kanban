@@ -1,10 +1,6 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
-using IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
@@ -44,9 +40,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             log.Debug("creating DAL task");
         }
-        public List<Task> GetAllTasks(long host,string Cname)
+        public List<Task> GetAllTasks(long host, string Cname)
         {
-            List<Task> c= controller.Select($"WHERE {HostAtt}={host} AND {ColumnAtt}='{Cname}'");
+            List<Task> c = controller.Select($"WHERE {HostAtt}={host} AND {ColumnAtt}='{Cname}'");
             return c;
         }
         public void UpdateTitle(string t)

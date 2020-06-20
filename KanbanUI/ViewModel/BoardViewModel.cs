@@ -1,15 +1,10 @@
 ﻿using KanbanUI.Model;
 using KanbanUI.Utils;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KanbanUI.ViewModel
 {
-    public class BoardViewModel: NotifiableObject
+    public class BoardViewModel : NotifiableObject
     {
         public BoardModel BM { get; set; }
         public UserModel UM;
@@ -28,7 +23,7 @@ namespace KanbanUI.ViewModel
         private string _newColumnIndex;
         public string NewColumnIndex { get => _newColumnIndex; set { _newColumnIndex = value; RaisePropertyChanged("NewColumnIndex"); } }
         private string _name;
-        public string Name { get => _name;set {  _name = value; RaisePropertyChanged("Name"); } }
+        public string Name { get => _name; set { _name = value; RaisePropertyChanged("Name"); } }
         private string _host;
         public bool IsHost { get; set; }
         public string Host { get => _host; set { _host = value; RaisePropertyChanged("Host"); } }
@@ -64,8 +59,8 @@ namespace KanbanUI.ViewModel
         {
             UM = um;
             BM = new BoardModel(um);
-            Name = "Logged in as: "+UM.email;
-            Host = "Board hosted by: " + ((BM.host==UM.email) ? "you" : BM.host);
+            Name = "Logged in as: " + UM.email;
+            Host = "Board hosted by: " + ((BM.host == UM.email) ? "you" : BM.host);
             IsHost = UM.email == BM.host;
             LeftClick = new ColumnCommand(OnLeftClick);
             RightClick = new ColumnCommand(OnRightClick);
@@ -96,7 +91,7 @@ namespace KanbanUI.ViewModel
             try
             {
 
-                BM.AdvanceTask(p.ColumnIndex, p.ID,p);
+                BM.AdvanceTask(p.ColumnIndex, p.ID, p);
                 Message = "task: " + p.Title + " was advanced.";
             }
             catch (Exception e)
@@ -110,8 +105,8 @@ namespace KanbanUI.ViewModel
             Message = "";
             try
             {
-                BM.Add(NewColumnIndex,NewColumnName);
-                Message = "column: " + NewColumnName + " added at "+NewColumnIndex+".";
+                BM.Add(NewColumnIndex, NewColumnName);
+                Message = "column: " + NewColumnName + " added at " + NewColumnIndex + ".";
             }
             catch (Exception e)
             {

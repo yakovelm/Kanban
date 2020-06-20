@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KanbanUI.Model;
+﻿using KanbanUI.Model;
+using System;
 
 namespace KanbanUI.ViewModel
 {
     class TaskViewModel : NotifiableObject
     {
 
-        public string WindowTitle {get=>_windowTitle;set{ _windowTitle = value; RaisePropertyChanged("WindowTitle"); } }
+        public string WindowTitle { get => _windowTitle; set { _windowTitle = value; RaisePropertyChanged("WindowTitle"); } }
         private string _windowTitle;
         public bool isEdit { get; }
         public bool isAssignee { get; }
@@ -19,7 +15,10 @@ namespace KanbanUI.ViewModel
         string _assignee;
         public string Assignee { get => _assignee; set { _assignee = value; RaisePropertyChanged("Assignee"); } }
         string _title;
-        public string Title { get => _title; set {
+        public string Title
+        {
+            get => _title; set
+            {
                 if (!string.IsNullOrWhiteSpace(value))
                 {
                     _title = value;
@@ -30,20 +29,23 @@ namespace KanbanUI.ViewModel
         }
         string _desc;
         public string Desc { get => _desc; set { _desc = value; RaisePropertyChanged("Desc"); } }
-       
+
         DateTime _cre;
         public string Cre { get => _cre.ToString(); set { _cre = DateTime.Parse(value); RaisePropertyChanged("Cre"); } }
 
         int _dueDay;
-        public string DueDay { get => _dueDay.ToString(); set {
+        public string DueDay
+        {
+            get => _dueDay.ToString(); set
+            {
                 try
                 {
-                    if (Int32.Parse(value) > 31 || Int32.Parse(value)<1) throw new Exception("date format illegal.");
+                    if (Int32.Parse(value) > 31 || Int32.Parse(value) < 1) throw new Exception("date format illegal.");
                     _dueDay = Int32.Parse(value);
                     RaisePropertyChanged("DueDay");
                 }
-                catch { Message = "date format illegal.";  }
-            } 
+                catch { Message = "date format illegal."; }
+            }
         }
 
         internal Boolean apply()
@@ -65,7 +67,7 @@ namespace KanbanUI.ViewModel
                     TM.editTask(Title, Desc, parseDate(), Assignee, UM.email);
                     return true;
                 }
-                catch(Exception e) { Message = e.Message; }
+                catch (Exception e) { Message = e.Message; }
                 return false;
             }
         }
@@ -91,7 +93,7 @@ namespace KanbanUI.ViewModel
             {
                 try
                 {
-                    if (Int32.Parse(value)<DateTime.Now.Year ) throw new Exception("date format illegal.");
+                    if (Int32.Parse(value) < DateTime.Now.Year) throw new Exception("date format illegal.");
                     _dueYear = Int32.Parse(value);
                     RaisePropertyChanged("DueYear");
                 }
@@ -102,7 +104,7 @@ namespace KanbanUI.ViewModel
         TaskModel TM;
         public TaskViewModel(TaskModel tm, UserModel um)
         {
-            
+
             UM = um;
             TM = tm;
             Assignee = TM.Assignee;

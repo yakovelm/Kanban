@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
@@ -12,7 +9,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
     {
         protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected readonly string connectionString;
-        protected readonly string tableName= "boards";
+        protected readonly string tableName = "boards";
         public const string EmailAtt = DB._emailcolumn;
         public const string HostAtt = DB._hostcolumn;
         public const string UIDAtt = DB._uidcolumn;
@@ -135,7 +132,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                         results.Add(Tuple.Create(dataReader.GetInt64(0), dataReader.GetInt64(1), dataReader.GetString(2)));
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     fail = true;
                 }

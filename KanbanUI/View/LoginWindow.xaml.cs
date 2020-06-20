@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KanbanUI.Model;
+using KanbanUI.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using KanbanUI.Model;
-using KanbanUI.ViewModel;
 
 namespace KanbanUI.View
 {
@@ -39,7 +27,8 @@ namespace KanbanUI.View
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             UserModel u = LM.Login();
-            if (u != null) {
+            if (u != null)
+            {
                 BoardWindow boardView = new BoardWindow(u);
                 boardView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 boardView.WindowState = WindowState.Maximized;

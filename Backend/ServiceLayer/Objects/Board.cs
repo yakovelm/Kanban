@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -10,7 +6,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         public readonly IReadOnlyCollection<string> ColumnsNames;
         public readonly string emailCreator;
-        internal Board(IReadOnlyCollection<string> columnsNames, string emailCreator) 
+        internal Board(IReadOnlyCollection<string> columnsNames, string emailCreator)
         {
             this.ColumnsNames = columnsNames;
             this.emailCreator = emailCreator;
@@ -18,8 +14,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         // You can add code here
         public override string ToString()
         {
-            string ret= "";
-            foreach (string c in ColumnsNames) { ret=ret+c+"\n"; }
+            string ret = "";
+            foreach (string c in ColumnsNames) { ret = ret + c + "\n"; }
             return ret;
         }
     }

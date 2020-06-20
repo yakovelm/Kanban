@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
@@ -12,13 +8,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const int Tmax = 50;
         private const int Dmax = 300;
-        private int ID;
-        private string Cname;
-        private string title;
+        internal int ID;
+        internal string Cname;
+        internal string title;
         private string desc;
         private DateTime due;
         private DateTime creation;
-        private string email;
+        internal string email;
         private int hostID;
         public Task() { log.Debug("new empty task obj created for " + email); } // empty constructor for loading whole columns from json
         public Task(int ID, int hostID, string Cname, string title, string desc, DateTime due, string email)
@@ -62,7 +58,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         public string getTitle() { return title; }
         public string getDesc() { return desc; }
         public DateTime getCreation() { return creation; }
-        public int getID() { return ID; }
+        public virtual int getID() { return ID; }
         public DateTime GetDue() { return due; }
 
         public void checkAssig(string assig)

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using UC = IntroSE.Kanban.Backend.BusinessLayer.UserControl;
-using IntroSE.Kanban.Backend.BusinessLayer;
+﻿using IntroSE.Kanban.Backend.BusinessLayer;
+using System;
 namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
 {
     class UserService
@@ -13,7 +7,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BusinessLayer.UserControl.UserController uc;
 
-        public UserService(UBlink u) 
+        public UserService(UBlink u)
         {
             uc = new BusinessLayer.UserControl.UserController(u);
         }
@@ -44,12 +38,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
-        public Response register(string email, string password, string nickname,string emailHost) 
+        public Response register(string email, string password, string nickname, string emailHost)
         {
             try
             {
                 log.Info("registering user " + email + ".");
-                uc.register(email, password, nickname,emailHost);
+                uc.register(email, password, nickname, emailHost);
                 return new Response();
             }
             catch (Exception e)

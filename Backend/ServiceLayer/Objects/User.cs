@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IntroSE.Kanban.Backend.ServiceLayer
+﻿namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public struct User
     {
@@ -20,8 +14,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public override string ToString()
         {
             string ret = "";
-            ret += Email+"\n";
-            ret += Nickname+"\n";
+            ret += Email + "\n";
+            ret += Nickname + "\n";
             return ret;
         }
     }

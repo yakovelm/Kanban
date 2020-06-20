@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.IO;
 using System.Globalization;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using DC=IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
 using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
+using DC = IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 {
     class UserController
     {
-        private const int nothost=-1; 
+        private const int nothost = -1;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const int MaxLength = 25;
         private const int MinLength = 5;
         private User ActiveUser;
-       // private int emailHost;
+        // private int emailHost;
         private List<User> list;
         private UBlink lnk;
         private DC.UserCtrl Duc;
@@ -49,24 +44,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             UpdateHost(host);
         }
 
-        public void register(string email, string password, string nickname,string emailHost) 
+        public void register(string email, string password, string nickname, string emailHost)
         {
             log.Debug("Email: " + email + " Password: " + password + " nickname: " + nickname + " Host: " + emailHost);
             int check = FindID(emailHost);
-            NullCheck(email, password, nickname,emailHost);
+            NullCheck(email, password, nickname, emailHost);
             email = email.ToLower();
             emailHost = emailHost.ToLower();
             checkEmail(email);
             checkUser(email, nickname);
             checkPassword(password);
             //emailHostCheck(emailHost);
-            save(email, password, nickname,check);
+            save(email, password, nickname, check);
             lnk.Lastemail = email;
             lnk.LastId = FindID(email);
             lnk.HostId = FindID(emailHost);
             log.Debug("register values are legal.");
         }
-        private void UpdateHost(int i) 
+        private void UpdateHost(int i)
         {
             NU.updateHost(i);
         }
@@ -95,9 +90,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         //}
         private void NullCheck(params object[] s) // checks if any of the given parameters are null or empty
         {
-            foreach(object check in s)
+            foreach (object check in s)
             {
-                if(check==null)
+                if (check == null)
                 {
                     log.Warn("entered at least one null value.");
                     throw new Exception("must enter non null values.");
@@ -120,11 +115,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw new Exception("must include at least one uppercase letter, one lowercase letter and a number and be between 5 and 25 characters.");
             }
         }
-        private void save(string email, string password, string nickname,int IDHost) // saves newly registered user
+        private void save(string email, string password, string nickname, int IDHost) // saves newly registered user
         {
-            NU = new User(email, password, nickname,IDHost);
+            NU = new User(email, password, nickname, IDHost);
             NU.Insert();
-            log.Info("user created for "+ NU.getemail());
+            log.Info("user created for " + NU.getemail());
             list.Add(NU);
         }
         public void login(string email, string password) // login an existing user
@@ -208,7 +203,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             catch (Exception e)
             {
                 log.Error("faild to load data");
-                throw new Exception("faild to load data: "+e.Message);
+                throw new Exception("faild to load data: " + e.Message);
             }
         }
         private void checkEmail(string s) // check that email adress matches standard email format
@@ -218,7 +213,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
 
                 if (string.IsNullOrWhiteSpace(s)) // check that email is not null and contains no spaces
                     throw new Exception("email adress invalid.");
-                
+
                 string DomainMapper(Match match) // creates a regex map for replace function
                 {
                     var idn = new IdnMapping();

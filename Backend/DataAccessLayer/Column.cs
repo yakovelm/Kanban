@@ -1,11 +1,7 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.IO;
-using IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
@@ -28,7 +24,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this.Limit = Limit;
             tasks = new List<Task>();
         }
-        public Column(long Host, string Cname): base(new ColumnCtrl()) //filter only constructor for loading a single column
+        public Column(long Host, string Cname) : base(new ColumnCtrl()) //filter only constructor for loading a single column
         {
             this.Host = Host;
             this.Cname = Cname;
@@ -46,7 +42,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             foreach (Column c in output)
             {
                 c.LoadTasks();
-                log.Debug("loaded tasks for column: "+c.Cname+" "+c.getTasks().Count());
+                log.Debug("loaded tasks for column: " + c.Cname + " " + c.getTasks().Count());
             }
             log.Debug("columns loaded for " + Host + " with size: " + output.Count());
             return output;
@@ -54,15 +50,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void LoadTasks()
         {
             Task temp = new Task();
-            tasks = temp.GetAllTasks(Host,Cname);
+            tasks = temp.GetAllTasks(Host, Cname);
         }
         public List<Task> getTasks() { return tasks; }
         public void UpdateLimit(long limit)
         {
-           if(!controller.Update(MakeFilter(), LimitAtt, limit))
+            if (!controller.Update(MakeFilter(), LimitAtt, limit))
             {
                 log.Error("failed to update the limit for column " + Cname + " on email " + Email);
-                throw new Exception("failed to update the limit for column " + Cname + " on email "+Email);
+                throw new Exception("failed to update the limit for column " + Cname + " on email " + Email);
             }
         }
         public void UpdateName(string name)
@@ -83,7 +79,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
         public void Add()
         {
-            
+
             if (!controller.Insert(this))
             {
                 log.Error("failed to add new column for email " + Email);

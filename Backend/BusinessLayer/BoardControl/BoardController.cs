@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 using DC = IntroSE.Kanban.Backend.DataAccessLayer.DALControllers;
-using DAL = IntroSE.Kanban.Backend.DataAccessLayer;
+using TC = IntroSE.Kanban.Backend.BusinessLayer.TaskControl;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 {
@@ -90,7 +86,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 log.Warn($"for this id #{ID} already exist a Board.");
                 throw new Exception($"for this id #{ID} already exist a Board.");
             }
-            
+
             IdToEmail.Add(ID, email);
             if (email.Equals(emailhost))
             {
@@ -103,7 +99,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             {
                 int IDhost = CheckHost(HostID);
                 lnk.HostId = -1;
-                if (IDhost!= hosts[emailhost])
+                if (IDhost != hosts[emailhost])
                 {
                     log.Warn($"user with email #{emailhost} is not host Board so {email} can not to join him.");
                     throw new Exception($"user with email #{emailhost} is not host Board so {email} can not to join him.");
@@ -124,7 +120,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
 
         private bool ExistBoardForThisID(int id)
         {
-            if(!IdToEmail.ContainsKey(id)) { return false; }
+            if (!IdToEmail.ContainsKey(id)) { return false; }
             return true;
         }
         private int CheckHost(int Id)
@@ -180,7 +176,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception("you need to login to system.");
             }
             string s = email.ToLower();
-            if (Cur==null || !s.Equals(CurEmail))
+            if (Cur == null || !s.Equals(CurEmail))
             {
                 log.Warn(email + " does not match the email connected to the system.");
                 throw new Exception("The email you entered does not match the email connected to the system.");
@@ -282,7 +278,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         }
         public void ChangeColumnName(string email, int columnOrdinal, string newName)
         {
-            log.Debug("in BoardController with " + email+" and "+this.CurEmail);
+            log.Debug("in BoardController with " + email + " and " + this.CurEmail);
             CheckEmail(email);
             Cur.ChangeColumnName(columnOrdinal, newName);
         }
