@@ -12,15 +12,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string emailHostAtt = DB._hostcolumn;
 
         public string password;
-        public string nickname { get; }
-        public long emailHost { get; }
+        public string Nickname { get; }
+        public long EmailHost { get; }
         public long UID { get; }
         public User(long UID, string email, string password, string nickname, long emailHost) : base(new UserCtrl())
         {
             Email = email;
             this.password = password;
-            this.nickname = nickname;
-            this.emailHost = emailHost;
+            this.Nickname = nickname;
+            this.EmailHost = emailHost;
             this.UID = UID;
         }
         protected override string MakeFilter() //make a filter for specific user

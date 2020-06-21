@@ -7,7 +7,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
     class UserCtrl : DALCtrl<User>
     {
         private const string UserTableName = DAL.DB._usertbalename;
-        private const string UserTableSQLite = DAL.DB._usertbalename;
         public UserCtrl() : base(UserTableName) { }
         public override bool Insert(User obj) //insert a specific user object into the DB
         {
@@ -25,8 +24,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
 
                     SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", obj.Email);
                     SQLiteParameter passParam = new SQLiteParameter(@"passVal", obj.password);
-                    SQLiteParameter nickParam = new SQLiteParameter(@"nickVal", obj.nickname);
-                    SQLiteParameter emailHostParam = new SQLiteParameter(@"emailHostVal", obj.emailHost);
+                    SQLiteParameter nickParam = new SQLiteParameter(@"nickVal", obj.Nickname);
+                    SQLiteParameter emailHostParam = new SQLiteParameter(@"emailHostVal", obj.EmailHost);
 
                     command.Parameters.Add(emailParam);
                     command.Parameters.Add(passParam);
@@ -66,8 +65,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             long result = -1;
             using (var connection = new SQLiteConnection(connectionString))
             {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"SELECT UID FROM {tableName} WHERE email='{email}'";
+                SQLiteCommand command = new SQLiteCommand(null, connection)
+                {
+                    CommandText = $"SELECT UID FROM {tableName} WHERE email='{email}'"
+                };
                 SQLiteDataReader dataReader = null;
                 try
                 {

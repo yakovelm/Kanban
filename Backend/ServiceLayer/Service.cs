@@ -86,7 +86,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string email, string password, string nickname)
         {
-            Response res = US.register(email, password, nickname);
+            Response res = US.Register(email, password, nickname);
             return (res.ErrorOccured) ? res : BS.Register(email);
         }
 
@@ -101,7 +101,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string email, string password, string nickname, string emailHost)
         {
-            Response res = US.register(email, password, nickname, emailHost);
+            Response res = US.Register(email, password, nickname, emailHost);
             return (res.ErrorOccured) ? res : BS.Register(email, emailHost);
         }
 
@@ -143,7 +143,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-            Response<User> Ures = US.login(email, password);
+            Response<User> Ures = US.Login(email, password);
             if (Ures.ErrorOccured) { return Ures; }
             Response Bres = BS.Login(email);
             if (Bres.ErrorOccured) { return new Response<User>(Bres.ErrorMessage); }
@@ -157,7 +157,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
-            Response Ures = US.logout(email);
+            Response Ures = US.Logout(email);
             if (Ures.ErrorOccured) { return Ures; }
             Response Bres = BS.Logout(email);
             if (Bres.ErrorOccured) { return Bres; }

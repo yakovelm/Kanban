@@ -7,7 +7,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     class DB
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private DAL.DB db;
+        private readonly DAL.DB db;
         public DB()
         {
             db = new DAL.DB();
@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
             try
             {
-                if (!sqlfilexist())
+                if (!Sqlfilexist())
                 {
                     log.Debug("create SQL file");
                     db.Build();
@@ -26,11 +26,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             catch (Exception e)
             {
-                log.Error("fail to create SQL file   " + sqlfilexist());
+                log.Error("fail to create SQL file   " + Sqlfilexist());
                 throw new Exception("fail to create SQL file: " + e.Message);
             }
         }
-        private bool sqlfilexist()
+        private bool Sqlfilexist()
         {
             string check = Path.Combine(Directory.GetCurrentDirectory(), DAL.DB._databasename);
             return File.Exists(check);

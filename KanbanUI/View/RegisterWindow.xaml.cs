@@ -6,9 +6,9 @@ namespace KanbanUI.View
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class RegisterWindow : Window
+    public partial class RegisterWindow : Window 
     {
-        private RegisterViewModel RVM;
+        private readonly RegisterViewModel RVM;
 
         public RegisterWindow(BackendController controller)
         {
@@ -19,7 +19,7 @@ namespace KanbanUI.View
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            RVM.register();
+            RVM.Register();
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

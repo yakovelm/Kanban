@@ -5,31 +5,31 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
     class UserService
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private BusinessLayer.UserControl.UserController uc;
+        private readonly BusinessLayer.UserControl.UserController uc;
 
         public UserService(UBlink u)
         {
             uc = new BusinessLayer.UserControl.UserController(u);
         }
-        public Response<User> login(string email, string password) // login an existing user
+        public Response<User> Login(string email, string password) // login an existing user
         {
             try
             {
                 log.Info("logging in to user " + email + ".");
-                uc.login(email, password);
-                return new Response<User>(new User(uc.get_active().getemail(), uc.get_active().getnickname()));
+                uc.Login(email, password);
+                return new Response<User>(new User(uc.Get_active().Getemail(), uc.Get_active().Getnickname()));
             }
             catch (Exception e)
             {
                 return new Response<User>(e.Message);
             }
         }
-        public Response register(string email, string password, string nickname) // register a new user
+        public Response Register(string email, string password, string nickname) // register a new user
         {
             try
             {
                 log.Info("registering user " + email + ".");
-                uc.register(email, password, nickname);
+                uc.Register(email, password, nickname);
                 return new Response();
             }
             catch (Exception e)
@@ -38,12 +38,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
-        public Response register(string email, string password, string nickname, string emailHost)
+        public Response Register(string email, string password, string nickname, string emailHost)
         {
             try
             {
                 log.Info("registering user " + email + ".");
-                uc.register(email, password, nickname, emailHost);
+                uc.Register(email, password, nickname, emailHost);
                 return new Response();
             }
             catch (Exception e)
@@ -65,12 +65,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 return new Response(e.Message);
             }
         }
-        public Response logout(string email) // logout active user
+        public Response Logout(string email) // logout active user
         {
             try
             {
                 log.Info("logging out user " + email + ".");
-                uc.logout(email);
+                uc.Logout(email);
                 return new Response();
             }
             catch (Exception e)

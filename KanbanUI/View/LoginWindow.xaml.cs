@@ -8,16 +8,16 @@ namespace KanbanUI.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class LoginWindow : Window  
     {
-        private LoginViewModel LM;
-        public LoginWindow()
+        private readonly LoginViewModel LM;
+        public LoginWindow() // empty constructor to run at startup
         {
             InitializeComponent();
             LM = new LoginViewModel();
             DataContext = LM;
         }
-        public LoginWindow(BackendController controller)
+        public LoginWindow(BackendController controller) // post logout constructor to recycle controller
         {
             InitializeComponent();
             LM = new LoginViewModel(controller);
@@ -29,35 +29,29 @@ namespace KanbanUI.View
             UserModel u = LM.Login();
             if (u != null)
             {
-                BoardWindow boardView = new BoardWindow(u);
-                boardView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                boardView.WindowState = WindowState.Maximized;
+                BoardWindow boardView = new BoardWindow(u)
+                {
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                    WindowState = WindowState.Maximized
+                };
                 boardView.Show();
-                //boardView.BVM.LoadColumns();
                 this.Close();
             }
         }
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            RegisterWindow reg = new RegisterWindow(LM.Controller);
-            reg.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            RegisterWindow reg = new RegisterWindow(LM.Controller)
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
             reg.ShowDialog();
-            //this.Close();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        // reset button to delete all data. not part of final build but in code for testing
 
-        }
-
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Reset_click(object sender, RoutedEventArgs e)
-        {
-            LM.Reset();
-        }
+        //private void Reset_click(object sender, RoutedEventArgs e)
+        //{
+        //    LM.Reset();
+        //}
     }
 }

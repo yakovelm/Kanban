@@ -21,22 +21,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             this.nickname = nickname;
             this.emailHost = emailHost;
         }
-        public string getemail()
+        public string Getemail()
         {
-            return this.email;
+            return email;
         }
-        public Boolean isMatchEmailHost() { return UID.Equals(emailHost); }
-        public Boolean isMatchPassword(string password)
+        public bool IsMatchEmailHost() { return UID.Equals(emailHost); }
+        public bool IsMatchPassword(string password)
         {
             return this.password.Equals(password);
         }
-        public Boolean isMatchEmail(string email)
+        public bool IsMatchEmail(string email)
         {
             return this.email.Equals(email);
         }
-        public string getnickname()
+        public string Getnickname()
         {
-            return this.nickname;
+            return nickname;
         }
         public DAL.User ToDalObject() // converts this object to a DataAccessLayer object
         {
@@ -51,8 +51,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 log.Debug("converting user from DAL obj for " + DalObj.Email + ".");
                 this.email = DalObj.Email;
                 this.password = DalObj.password;
-                this.nickname = DalObj.nickname;
-                this.emailHost = (int)DalObj.emailHost;
+                this.nickname = DalObj.Nickname;
+                this.emailHost = (int)DalObj.EmailHost;
                 this.UID = (int)DalObj.UID;
             }
             catch (Exception e)
@@ -67,7 +67,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             DU.Insert();
         }
 
-        internal void updateHost(int i)
+        internal void UpdateHost(int i)
         {
             DU.UpdateHost(i);
         }

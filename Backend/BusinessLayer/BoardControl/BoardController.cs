@@ -14,8 +14,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
         private Dictionary<int, string> IdToEmail;
         private Board Cur;
         private string CurEmail;
-        private DC.BoardCtrl DBC;
-        private UBlink lnk;
+        private readonly DC.BoardCtrl DBC;
+        private readonly UBlink lnk;
 
         public BoardController(UBlink lnk)
         {
@@ -28,7 +28,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             DBC = new DC.BoardCtrl();
             log.Debug("BoardController created.");
         }
-        public string getHost() { return Cur.GetEmail(); }
+        public string GetHost() { return Cur.GetEmail(); }
 
         public void LoadData() // load board dictionary (boards keyd by email) of all saved boards
         {
@@ -56,10 +56,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             hosts.Add(email, ID);
             BC.Add(email, new Board(email, ID));
             BC[email].Register();
-            checkSave(DBC.Save(ID, ID, email));
+            CheckSave(DBC.Save(ID, ID, email));
             log.Debug($"the Board of {email} is ready.");
         }
-        private void checkSave(bool b)
+        private void CheckSave(bool b)
         {
             if (!b)
             {
@@ -113,7 +113,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 BC.Add(email, BC[emailhost]);
                 BC[emailhost].Join(email);
             }
-            checkSave(DBC.Save(ID, HostID, email));
+            CheckSave(DBC.Save(ID, HostID, email));
             log.Debug($"the Board of {email} is ready and his Host is {emailhost}.");
         }
 
@@ -131,10 +131,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
                 throw new Exception($"the User try to join to userID {Id} board but is email is illegal.");
             }
             return Id;
-        }
-        private int EmailToId(string email)
-        {
-            return IdToEmail.FirstOrDefault(x => x.Value.Equals(email)).Key;
         }
 
         public void Login(string email) // log in currend board holder
@@ -217,10 +213,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.BoardControl
             CheckEmail(email);
             return Cur.GetColumn(columnOrdinal);
         }
-        public List<TC.Column> getColumns(string email) // get all columns of current board holder
+        public List<TC.Column> GetColumns(string email) // get all columns of current board holder
         {
             CheckEmail(email);
-            return Cur.getColumns();
+            return Cur.GetColumns();
         }
         public Tuple<List<TC.Column>, string> GetBoard(string email)
         {

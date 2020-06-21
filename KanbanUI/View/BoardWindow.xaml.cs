@@ -8,7 +8,7 @@ namespace KanbanUI.View
     /// <summary>
     /// Interaction logic for BoardWindow.xaml
     /// </summary>
-    public partial class BoardWindow : Window
+    public partial class BoardWindow : Window 
     {
         public BoardViewModel BVM;
         public BoardWindow(UserModel u)
@@ -18,9 +18,9 @@ namespace KanbanUI.View
             DataContext = BVM;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Logout_Click(object sender, RoutedEventArgs e)
         {
-            BVM.logout();
+            BVM.Logout();
             LoginWindow l = new LoginWindow();
             l.Show();
             this.Close();

@@ -62,7 +62,7 @@ namespace BoardTests
                     t.Object.ID = i;
                     t.Object.email = b.email;
                     l.Add(t.Object);
-                    t.Setup(x => x.getID()).Returns(t.Object.ID);
+                    t.Setup(x => x.GetID()).Returns(t.Object.ID);
                     i++;
                 }
                 
@@ -94,8 +94,8 @@ namespace BoardTests
         [TestCase(1, 18)]
         public void AdvenceTask1(int col, int task)//valid value
         {
-            Mockcolumns[col+1].Setup(x => x.addTask(new Task()));
-            Mockcolumns[col].Setup(x => x.deleteTask("test", new Task()));
+            Mockcolumns[col+1].Setup(x => x.AddTask(new Task()));
+            Mockcolumns[col].Setup(x => x.DeleteTask("test", new Task()));
             //act
             Exception e = null;
             try
@@ -244,8 +244,8 @@ namespace BoardTests
         public void AdvenceTask6(int col, int task)//number task does not exist in this column
         {
             //arrange
-            Mockcolumns[col + 1].Setup(x => x.addTask(columns[col].getTask(task))).Callback(()=> columns[col+1].tasks.Add(new Task()));
-            Mockcolumns[col].Setup(x => x.deleteTask("test", columns[col].getTask(task))).Callback(() => Mockcolumns[col].Object.size = 9) ;
+            Mockcolumns[col + 1].Setup(x => x.AddTask(columns[col].GetTask(task))).Callback(()=> columns[col+1].tasks.Add(new Task()));
+            Mockcolumns[col].Setup(x => x.DeleteTask("test", columns[col].GetTask(task))).Callback(() => Mockcolumns[col].Object.size = 9) ;
             //act
             b.AdvanceTask(col, task);
 

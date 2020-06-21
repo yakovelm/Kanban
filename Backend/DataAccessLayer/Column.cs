@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             foreach (Column c in output)
             {
                 c.LoadTasks();
-                log.Debug("loaded tasks for column: " + c.Cname + " " + c.getTasks().Count());
+                log.Debug("loaded tasks for column: " + c.Cname + " " + c.GetTasks().Count());
             }
             log.Debug("columns loaded for " + Host + " with size: " + output.Count());
             return output;
@@ -52,7 +52,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             Task temp = new Task();
             tasks = temp.GetAllTasks(Host, Cname);
         }
-        public List<Task> getTasks() { return tasks; }
+        public List<Task> GetTasks() { return tasks; }
         public void UpdateLimit(long limit)
         {
             if (!controller.Update(MakeFilter(), LimitAtt, limit))

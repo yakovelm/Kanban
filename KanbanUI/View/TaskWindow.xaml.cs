@@ -9,14 +9,14 @@ namespace KanbanUI.View
     /// </summary>
     public partial class TaskWindow : Window
     {
-        TaskViewModel TVM;
-        public TaskWindow(UserModel um)
+        readonly TaskViewModel TVM;
+        public TaskWindow(UserModel um) // constructor for new task creation
         {
             InitializeComponent();
             TVM = new TaskViewModel(um);
             DataContext = TVM;
         }
-        public TaskWindow(TaskModel tm, UserModel um)
+        public TaskWindow(TaskModel tm, UserModel um) // constructor to load new task for editing
         {
             InitializeComponent();
             TVM = new TaskViewModel(tm, um);
@@ -30,7 +30,7 @@ namespace KanbanUI.View
 
         private void Apply_Click(object sender, RoutedEventArgs e)
         {
-            if (TVM.apply())
+            if (TVM.Apply())
             {
                 Close();
             }

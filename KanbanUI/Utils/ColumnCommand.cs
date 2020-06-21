@@ -4,10 +4,10 @@ using System.Windows.Input;
 
 namespace KanbanUI.Utils
 {
-    public class ColumnCommand : ICommand
+    public class ColumnCommand : ICommand // command binding that takes ColumnModel parameter
     {
-        Action<ColumnModel> _TargetExecuteMethod;
-        Func<bool> _TargetCanExecuteMethod;
+        readonly Action<ColumnModel> _TargetExecuteMethod;
+        readonly Func<bool> _TargetCanExecuteMethod;
 
         public ColumnCommand(Action<ColumnModel> executeMethod)
         {
@@ -45,10 +45,7 @@ namespace KanbanUI.Utils
 
         void ICommand.Execute(object parameter)
         {
-            if (_TargetExecuteMethod != null)
-            {
-                _TargetExecuteMethod((ColumnModel)parameter);
-            }
+            _TargetExecuteMethod?.Invoke((ColumnModel)parameter);
         }
     }
 }

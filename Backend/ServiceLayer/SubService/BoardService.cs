@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
     class BoardService
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private BL.BoardController BC;
+        private readonly BL.BoardController BC;
         public BoardService(UBlink lnk)
         {
             BC = new BL.BoardController(lnk);
@@ -62,7 +62,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 TC.Task task = BC.AddTask(email, title, desciption, dueTime);
-                return new Response<Task>(new Task(task.getID(), task.getCreation(), task.GetDue(), title, desciption, task.getEmail()));
+                return new Response<Task>(new Task(task.GetID(), task.GetCreation(), task.GetDue(), title, desciption, task.GetEmail()));
             }
             catch (Exception e) { return (new Response<Task>(e.Message)); }
         }
@@ -112,7 +112,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 TC.Column columnBL = BC.GetColumn(email, columnName);
-                return new Response<Column>(chengeType(columnBL));
+                return new Response<Column>(ChengeType(columnBL));
             }
             catch (Exception e) { return (new Response<Column>(e.Message)); }
         }
@@ -122,7 +122,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 TC.Column columnBL = BC.GetColumn(email, columnOrdinal);
-                return new Response<Column>(chengeType(columnBL));
+                return new Response<Column>(ChengeType(columnBL));
             }
             catch (Exception e) { return (new Response<Column>(e.Message)); }
         }
@@ -134,7 +134,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
                 var temp = BC.GetBoard(email);
                 List<TC.Column> listColumnBL = temp.Item1;
                 List<string> listNames = new List<string>();
-                foreach (TC.Column a in listColumnBL) { listNames.Add(a.getName()); }
+                foreach (TC.Column a in listColumnBL) { listNames.Add(a.GetName()); }
                 return new Response<Board>(new Board(listNames, temp.Item2));
             }
             catch (Exception e) { return new Response<Board>(e.Message); }
@@ -168,7 +168,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 log.Info(email + " attempting to Add column number #" + columnOrdinal);
-                Column ans = chengeType(BC.AddColumn(email, columnOrdinal, Name));
+                Column ans = ChengeType(BC.AddColumn(email, columnOrdinal, Name));
                 return new Response<Column>(ans);
             }
             catch (Exception e) { return new Response<Column>(e.Message); }
@@ -179,7 +179,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 log.Info(email + " attempting to move to right, column number #" + columnOrdinal);
-                Column ans = chengeType(BC.MoveColumnRight(email, columnOrdinal));
+                Column ans = ChengeType(BC.MoveColumnRight(email, columnOrdinal));
                 return new Response<Column>(ans);
             }
             catch (Exception e) { return new Response<Column>(e.Message); }
@@ -190,22 +190,22 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.SubService
             try
             {
                 log.Info(email + " attempting to move to left, column number #" + columnOrdinal);
-                Column ans = chengeType(BC.MoveColumnLeft(email, columnOrdinal));
+                Column ans = ChengeType(BC.MoveColumnLeft(email, columnOrdinal));
                 return new Response<Column>(ans);
             }
             catch (Exception e) { return new Response<Column>(e.Message); }
         }
 
-        private Task chengeType(TC.Task taskBL) // convert a BuisnessLayer task to a ServiceLayer task
+        private Task ChengeType(TC.Task taskBL) // convert a BuisnessLayer task to a ServiceLayer task
         {
-            return new Task(taskBL.getID(), taskBL.getCreation(), taskBL.GetDue(), taskBL.getTitle(), taskBL.getDesc(), taskBL.getEmail());
+            return new Task(taskBL.GetID(), taskBL.GetCreation(), taskBL.GetDue(), taskBL.GetTitle(), taskBL.GetDesc(), taskBL.GetEmail());
         }
-        private Column chengeType(TC.Column columnBL)// convert a BuisnessLayer column to a ServiceLayer column
+        private Column ChengeType(TC.Column columnBL)// convert a BuisnessLayer column to a ServiceLayer column
         {
             List<Task> TaskListSL = new List<Task>();
-            foreach (TC.Task taskBL in columnBL.getAll())
-            { TaskListSL.Add(chengeType(taskBL)); }
-            return new Column(TaskListSL, columnBL.getName(), columnBL.getLimit());
+            foreach (TC.Task taskBL in columnBL.GetAll())
+            { TaskListSL.Add(ChengeType(taskBL)); }
+            return new Column(TaskListSL, columnBL.GetName(), columnBL.GetLimit());
         }
         public Response AssignTask(string email, int columnOrdinal, int taskId, string emailAssignee)
         {

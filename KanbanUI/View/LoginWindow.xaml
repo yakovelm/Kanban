@@ -19,9 +19,9 @@
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
                 <Label Content="Email: " FontSize="16" FontWeight="DemiBold" Grid.Column="0" Grid.Row="0"/>
-                <TextBox Text="{Binding Path=Email, Mode=TwoWay}" Background="OldLace" Width="200"  Grid.Column="1" Grid.Row="0" Margin="5" TextChanged="TextBox_TextChanged"/>
+                <TextBox Text="{Binding Path=Email, Mode=TwoWay}" Background="OldLace" Width="200"  Grid.Column="1" Grid.Row="0" Margin="5" />
                 <Label Content="Password: " FontSize="16" FontWeight="DemiBold" Grid.Column="0" Grid.Row="1"/>
-                <TextBox Text="{Binding Path=Password, Mode=TwoWay}" Background="OldLace" Width="200"  Grid.Column="1" Grid.Row="1" Margin="5" TextChanged="TextBox_TextChanged_1"/>
+                <TextBox Text="{Binding Path=Password, Mode=TwoWay}" Background="OldLace" Width="200"  Grid.Column="1" Grid.Row="1" Margin="5" />
             </Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                 <Button Content="Login" Name="Login" Click="Login_Click"  FontSize="16" Margin="10" Width="100" IsDefault="True"/>

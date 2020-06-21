@@ -8,8 +8,8 @@ namespace KanbanUI.ViewModel
 
         public string WindowTitle { get => _windowTitle; set { _windowTitle = value; RaisePropertyChanged("WindowTitle"); } }
         private string _windowTitle;
-        public bool isEdit { get; }
-        public bool isAssignee { get; }
+        public bool IsEdit { get; }
+        public bool IsAssignee { get; }
         string _message;
         public string Message { get => _message; set { _message = value; RaisePropertyChanged("Message"); } }
         string _assignee;
@@ -33,6 +33,8 @@ namespace KanbanUI.ViewModel
         DateTime _cre;
         public string Cre { get => _cre.ToString(); set { _cre = DateTime.Parse(value); RaisePropertyChanged("Cre"); } }
 
+        // the date fields have some minimal input checking logic
+
         int _dueDay;
         public string DueDay
         {
@@ -40,35 +42,11 @@ namespace KanbanUI.ViewModel
             {
                 try
                 {
-                    if (Int32.Parse(value) > 31 || Int32.Parse(value) < 1) throw new Exception("date format illegal.");
-                    _dueDay = Int32.Parse(value);
+                    if (int.Parse(value) > 31 || Int32.Parse(value) < 1) throw new Exception("date format illegal.");
+                    _dueDay = int.Parse(value);
                     RaisePropertyChanged("DueDay");
                 }
                 catch { Message = "date format illegal."; }
-            }
-        }
-
-        internal Boolean apply()
-        {
-            if (!isEdit)
-            {
-                try
-                {
-                    TM.addTask(Title, Desc, parseDate(), UM.email);
-                    return true;
-                }
-                catch (Exception e) { Message = e.Message; }
-                return false;
-            }
-            else
-            {
-                try
-                {
-                    TM.editTask(Title, Desc, parseDate(), Assignee, UM.email);
-                    return true;
-                }
-                catch (Exception e) { Message = e.Message; }
-                return false;
             }
         }
 
@@ -79,8 +57,8 @@ namespace KanbanUI.ViewModel
             {
                 try
                 {
-                    if (Int32.Parse(value) > 12 || Int32.Parse(value) < 1) throw new Exception("date format illegal.");
-                    _dueMonth = Int32.Parse(value);
+                    if (int.Parse(value) > 12 || int.Parse(value) < 1) throw new Exception("date format illegal.");
+                    _dueMonth = int.Parse(value);
                     RaisePropertyChanged("DueMonth");
                 }
                 catch { Message = "date format illegal."; }
@@ -93,40 +71,66 @@ namespace KanbanUI.ViewModel
             {
                 try
                 {
-                    if (Int32.Parse(value) < DateTime.Now.Year) throw new Exception("date format illegal.");
-                    _dueYear = Int32.Parse(value);
+                    if (int.Parse(value) < DateTime.Now.Year) throw new Exception("date format illegal.");
+                    _dueYear = int.Parse(value);
                     RaisePropertyChanged("DueYear");
                 }
                 catch { Message = "date format illegal."; }
             }
         }
-        UserModel UM;
-        TaskModel TM;
-        public TaskViewModel(TaskModel tm, UserModel um)
+        internal bool Apply()
+        {
+            if (!IsEdit)
+            {
+                try
+                {
+                    TM.AddTask(Title, Desc, ParseDate(), UM.Email);
+                    return true;
+                }
+                catch (Exception e) { Message = e.Message; }
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    TM.EditTask(Title, Desc, ParseDate(), Assignee, UM.Email);
+                    return true;
+                }
+                catch (Exception e) { Message = e.Message; }
+                return false;
+            }
+        }
+
+
+        readonly UserModel UM;
+        readonly TaskModel TM;
+        public TaskViewModel(TaskModel tm, UserModel um) // constructor that loads an existing task for editing
         {
 
             UM = um;
             TM = tm;
             Assignee = TM.Assignee;
             Title = TM.Title;
-            Desc = TM.Desc;
+            Desc = TM.Desc;          
             DueDay = DateTime.Parse(TM.Due).Day.ToString();
             DueMonth = DateTime.Parse(TM.Due).Month.ToString();
             DueYear = DateTime.Parse(TM.Due).Year.ToString();
             Cre = TM.Cre.ToString();
             WindowTitle = "Edit Task";
-            isAssignee = (UM.email == Assignee);
-            isEdit = isAssignee;
-            Console.WriteLine(Assignee + "   " + UM.email);
+            IsAssignee = (UM.Email == Assignee);
+            IsEdit = IsAssignee;
+            Console.WriteLine(Assignee + "   " + UM.Email);
         }
-        public TaskViewModel(UserModel um)
+        public TaskViewModel(UserModel um) // constructor that creates a new task
         {
-            isEdit = false;
-            isAssignee = true;
+            IsEdit = false;
+            IsAssignee = true;
             UM = um;
             TM = new TaskModel(um.Controller);
-            Assignee = UM.email;
+            Assignee = UM.Email;
             Cre = DateTime.Now.ToString();
+            // initial due date is today
             DueDay = DateTime.Today.AddDays(1).Day.ToString();
             DueMonth = DateTime.Today.Month.ToString();
             DueYear = DateTime.Today.Year.ToString();
@@ -135,7 +139,7 @@ namespace KanbanUI.ViewModel
 
         }
 
-        private DateTime parseDate()
+        private DateTime ParseDate() // parse a year, month, day format into a proper datetinme
         {
             try
             {

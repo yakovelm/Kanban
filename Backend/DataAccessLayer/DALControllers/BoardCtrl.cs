@@ -119,8 +119,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             List<Tuple<long, long, string>> results = new List<Tuple<long, long, string>>();
             using (var connection = new SQLiteConnection(connectionString))
             {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"SELECT {need} FROM {tableName}";
+                SQLiteCommand command = new SQLiteCommand(null, connection)
+                {
+                    CommandText = $"SELECT {need} FROM {tableName}"
+                };
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -132,7 +134,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
                         results.Add(Tuple.Create(dataReader.GetInt64(0), dataReader.GetInt64(1), dataReader.GetString(2)));
                     }
                 }
-                catch (Exception e)
+                catch
                 {
                     fail = true;
                 }

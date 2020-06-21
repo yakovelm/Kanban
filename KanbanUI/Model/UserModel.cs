@@ -2,20 +2,20 @@
 
 namespace KanbanUI.Model
 {
-    public class UserModel : NotifiableModelObject
+    public class UserModel : NotifiableModelObject //basically a user data placeholder
     {
-        public string email { get; set; }
+        public string Email { get; set; }
 
         public UserModel(BackendController controller, string email) : base(controller)
         {
-            this.email = email;
+            this.Email = email;
         }
 
-        internal string logout()
+        internal string Logout()
         {
             try
             {
-                Controller.Logout(email);
+                Controller.Logout(Email);
                 return null;
             }
             catch (Exception e)

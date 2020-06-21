@@ -14,9 +14,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         private const int MaxLength = 25;
         private const int MinLength = 5;
         private User ActiveUser;
-        // private int emailHost;
         private List<User> list;
-        private UBlink lnk;
+        private readonly UBlink lnk;
         private DC.UserCtrl Duc;
         private User NU;
 
@@ -27,16 +26,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             this.ActiveUser = null;
             Duc = new DC.UserCtrl();
         }
-        public User get_active() { return ActiveUser; }
-        public void register(string email, string password, string nickname) // register a new user
+        public User Get_active() { return ActiveUser; }
+        public void Register(string email, string password, string nickname) // register a new user
         {
             log.Debug("Email: " + email + " Password: " + password + " nickname: " + nickname);
             NullCheck(email, password, nickname);
             email = email.ToLower();
-            checkEmail(email);
-            checkUser(email, nickname);
-            checkPassword(password);
-            save(email, password, nickname, nothost);
+            CheckEmail(email);
+            CheckUser(email);
+            CheckPassword(password);
+            Save(email, password, nickname, nothost);
             int host = FindID(email);
             log.Debug("register values are legal.");
             lnk.Lastemail = email;
@@ -44,18 +43,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             UpdateHost(host);
         }
 
-        public void register(string email, string password, string nickname, string emailHost)
+        public void Register(string email, string password, string nickname, string emailHost)
         {
             log.Debug("Email: " + email + " Password: " + password + " nickname: " + nickname + " Host: " + emailHost);
             int check = FindID(emailHost);
             NullCheck(email, password, nickname, emailHost);
             email = email.ToLower();
             emailHost = emailHost.ToLower();
-            checkEmail(email);
-            checkUser(email, nickname);
-            checkPassword(password);
-            //emailHostCheck(emailHost);
-            save(email, password, nickname, check);
+            CheckEmail(email);
+            CheckUser(email);
+            CheckPassword(password);
+            Save(email, password, nickname, check);
             lnk.Lastemail = email;
             lnk.LastId = FindID(email);
             lnk.HostId = FindID(emailHost);
@@ -63,7 +61,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
         }
         private void UpdateHost(int i)
         {
-            NU.updateHost(i);
+            NU.UpdateHost(i);
         }
         private int FindID(string email)
         {
@@ -71,23 +69,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             return Duc.FindLastID(email);
         }
 
-        //private void emailHostCheck(string emailHost)
-        //{
-        //    for (int i = 0; i < list.Count() & check == 0; i++)
-        //    {
-        //        if (list[i].isMatchEmail(emailHost) & list[i].isMatchEmailHost()) check = i + 1;
-        //        else
-        //        {
-        //            log.Warn("emailHost given invaule");
-        //            throw new Exception("emailHost given invaule");
-        //        }
-        //    }
-        //    if (this.FindID(emailHost) == 0)
-        //    {
-        //        log.Warn("emailHost given not exist");
-        //        throw new Exception("emailHost given not exist");
-        //    }
-        //}
         private void NullCheck(params object[] s) // checks if any of the given parameters are null or empty
         {
             foreach (object check in s)
@@ -104,7 +85,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 }
             }
         }
-        private void checkPassword(string password) // check if a password matches the requirements given
+        private void CheckPassword(string password) // check if a password matches the requirements given
         {
             var hasNumber = new Regex(@"[0-9]+");
             var hasUpperChar = new Regex(@"[A-Z]+");
@@ -115,14 +96,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw new Exception("must include at least one uppercase letter, one lowercase letter and a number and be between 5 and 25 characters.");
             }
         }
-        private void save(string email, string password, string nickname, int IDHost) // saves newly registered user
+        private void Save(string email, string password, string nickname, int IDHost) // saves newly registered user
         {
             NU = new User(email, password, nickname, IDHost);
             NU.Insert();
-            log.Info("user created for " + NU.getemail());
+            log.Info("user created for " + NU.Getemail());
             list.Add(NU);
         }
-        public void login(string email, string password) // login an existing user
+        public void Login(string email, string password) // login an existing user
         {
             if (ActiveUser != null)
             { // cant log in if a user is already logged in
@@ -131,21 +112,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
             }
             NullCheck(email, password);
             email = email.ToLower();
-            checkEmail(email);
+            CheckEmail(email);
             foreach (User u in list) // run on user list to find correct user to login
             {
-                if (u.isMatchEmail(email))
+                if (u.IsMatchEmail(email))
                 {
                     log.Debug("email " + email + " exists in the system.");
-                    if (u.isMatchPassword(password))
+                    if (u.IsMatchPassword(password))
                     {
                         log.Debug("given password matches.");
                         ActiveUser = u;
-                        log.Info(ActiveUser.getemail() + " has successfully logged in.");
+                        log.Info(ActiveUser.Getemail() + " has successfully logged in.");
                     }
                     else
                     {
-                        log.Warn(u.getemail() + " tried to login with incorrect password.");
+                        log.Warn(u.Getemail() + " tried to login with incorrect password.");
                         throw new Exception("invaild password.");
                     }
                 }
@@ -156,7 +137,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw new Exception(email + " user not yet registered.");
             }
         }
-        public void logout(string email) // log out active user
+        public void Logout(string email) // log out active user
         {
             if (ActiveUser == null) // if no active user no one can log out
             {
@@ -164,22 +145,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw new Exception("no user logged in.");
             }
             email = email.ToLower();
-            if (!email.Equals(ActiveUser.getemail()))
+            if (!email.Equals(ActiveUser.Getemail()))
             {
                 log.Warn("a user that is not logged in attempted to log out. logout failed.");
                 throw new Exception("given email is invalid.");
             }
             else
             {
-                log.Debug(ActiveUser.getemail() + " logged out.");
+                log.Debug(ActiveUser.Getemail() + " logged out.");
                 ActiveUser = null;
             }
         }
-        private void checkUser(string email, string nickname) // checks that an email is not taken upon registration
+        private void CheckUser(string email) // checks that an email is not taken upon registration
         {
             foreach (User u in list)
             {
-                if (u.getemail().Equals(email))
+                if (u.Getemail().Equals(email))
                 {
                     log.Warn("attempted to register with a taken email.");
                     throw new Exception("this email is already taken.");
@@ -206,7 +187,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.UserControl
                 throw new Exception("faild to load data: " + e.Message);
             }
         }
-        private void checkEmail(string s) // check that email adress matches standard email format
+        private void CheckEmail(string s) // check that email adress matches standard email format
         {
             try
             {

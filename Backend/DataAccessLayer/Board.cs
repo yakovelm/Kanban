@@ -2,9 +2,9 @@
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class Board // mainly just a small transitional class to load the tasks an columns
+    class Board // mainly just a small transitional class to load the tasks and columns
     {
-        public List<Column> columns { get; set; }
+        public List<Column> Columns { get; set; }
         public int Host { get; set; }
         public Board(int Host)
         {
@@ -14,7 +14,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public void LoadData()
         {
             Column temp = new Column();
-            columns = temp.GetAllColumns(Host);
+            Columns = temp.GetAllColumns(Host);
         }
 
     }

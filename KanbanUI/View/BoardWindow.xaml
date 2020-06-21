@@ -42,7 +42,7 @@
                                         </StackPanel>
                                     </StackPanel>
                                     <Grid Height="510">
-                                        <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" Background="Beige" ItemsSource="{Binding Path=tasks, Mode=TwoWay}" >
+                                        <ListBox ScrollViewer.VerticalScrollBarVisibility="Visible" Background="Beige" ItemsSource="{Binding Path=Tasks, Mode=TwoWay}" >
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <Border BorderThickness="2" BorderBrush="{Binding BorderBrush}" >
@@ -107,7 +107,7 @@
                     <TextBox Text="{Binding Filter}" Background="OldLace" Width="120" Margin="10"/>
                 </StackPanel>
                 <Button Content="Add Task" Click="Add_Task_Click" HorizontalAlignment="Left" FontSize="12" Width="80" Grid.Column="0" Grid.Row="1" IsDefault="True" Margin="10,10,0,10" />
-                <Button Content="Logout" FontSize="16" Width="70" Margin="0,10,10,10" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right"   IsDefault="True" Click="Button_Click"/>
+                <Button Content="Logout" FontSize="16" Width="70" Margin="0,10,10,10" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right"   IsDefault="True" Click="Logout_Click"/>
             </Grid>
         </StackPanel>
     </Grid>

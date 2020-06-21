@@ -1,6 +1,6 @@
 ﻿namespace IntroSE.Kanban.Backend.BusinessLayer
 {
-    public class UBlink
+    public class UBlink // simple User-Board data link to prevent parameter passing in service layer
     {
         public bool Load { get; set; }
         public string Lastemail { get; set; }

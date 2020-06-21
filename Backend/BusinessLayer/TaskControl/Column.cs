@@ -35,35 +35,35 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             tasks = new List<Task>();
         }
-        public int getSize()
+        public int GetSize()
         {
             return size;
         }
-        public int getOrd()
+        public int GetOrd()
         {
             return ord;
         }
-        public int getLimit()
+        public int GetLimit()
         {
             return limit;
         }
-        public string getName()
+        public string GetName()
         {
             return name;
         }
-        public virtual List<Task> getAll()
+        public virtual List<Task> GetAll()
         {
             log.Debug("returning all tasks");
             return tasks;
         }
-        public virtual void setOrd(int ord)
+        public virtual void SetOrd(int ord)
         {
             if (ord < 0) throw new Exception("ordinal illegal.");
             this.ord = ord;
             DAL.Column Dcol = ToDalObject();
             Dcol.UpdateOrd(ord);
         }
-        public void setLimit(int host, int limit) // set the limit of this column
+        public void SetLimit(int host, int limit) // set the limit of this column
         {
             if (host != this.host) throw new Exception("non host user tried to change column limit.");
             log.Info("changing task limit for column: " + name + " in " + host + " from: " + this.limit + " to: " + limit + ".");
@@ -76,7 +76,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Column Dcol = ToDalObject();
             Dcol.UpdateLimit(limit);
         }
-        public virtual void addTasks(List<Task> ts) // append a list of tasks to the end of this column
+        public virtual void AddTasks(List<Task> ts) // append a list of tasks to the end of this column
         {
             fortests = true;
             if (size + ts.Count() > limit)
@@ -84,27 +84,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 log.Warn("task limit reached, tasks not added.");
                 throw new Exception("task limit reached, tasks not added.");
             }
-            foreach (Task t in ts) t.editColumn(name);
+            foreach (Task t in ts) t.EditColumn(name);
             tasks.AddRange(ts);
-            size = size + ts.Count;
+            size += ts.Count;
         }
-        public virtual void addTask(Task task) // add a new task to this column
+        public virtual void AddTask(Task task) // add a new task to this column
         {
-            log.Debug("adding task: #" + task.getID() + " title: " + task.getTitle() + " to column: " + name + " in " + host + ".");
+            log.Debug("adding task: #" + task.GetID() + " title: " + task.GetTitle() + " to column: " + name + " in " + host + ".");
             if (limit <= size)
             {
                 log.Warn("task limit reached, task not added.");
                 throw new Exception("task limit reached, task not added.");
             }
-            if (ord == 0) task.insert();
-            task.editColumn(name);
+            if (ord == 0) task.Insert();
+            task.EditColumn(name);
             tasks.Add(task);
             size++;
         }
-        public virtual Task deleteTask(string email, Task task) // delete a task from this column (if exists) and return it
+        public virtual Task DeleteTask(string email, Task task) // delete a task from this column (if exists) and return it
         {
-            task.checkAssig(email);
-            log.Debug("removing task: #" + task.getID() + " title: " + task.getTitle() + " from column: " + name + " in " + host + ".");
+            task.CheckAssig(email);
+            log.Debug("removing task: #" + task.GetID() + " title: " + task.GetTitle() + " from column: " + name + " in " + host + ".");
             if (tasks.Remove(task))
             {
                 size--;
@@ -113,12 +113,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             log.Info("task does not exist in " + name + " column.");
             return null;
         }
-        public Task getTask(int ID) // get a task from this column by ID
+        public Task GetTask(int ID) // get a task from this column by ID
         {
             log.Debug("retrieving task with ID: " + ID + " from column: " + name + " in " + host + ".");
             foreach (Task task in tasks)
             {
-                if (task.getID() == ID)
+                if (task.GetID() == ID)
                 {
                     return task;
                 }
@@ -156,15 +156,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 limit = (int)DalObj.Limit;
                 log.Debug(host + " " + name + " " + ord + " " + limit);
                 DalObj.LoadTasks();
-                foreach (DAL.Task t in DalObj.getTasks()) // convert each task in column individually
+                foreach (DAL.Task t in DalObj.GetTasks()) // convert each task in column individually
                 {
                     Task BT = new Task();
                     BT.FromDalObject(t);
-                    log.Debug("made task: " + BT.getID() + " with title: " + BT.getTitle());
+                    log.Debug("made task: " + BT.GetID() + " with title: " + BT.GetTitle());
                     tasks.Add(BT);
                 }
                 size = tasks.Count();
-                //log.Debug("column: " + getName() + " size: " + getSize());
             }
             catch (Exception e)
             {
@@ -172,34 +171,34 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
                 throw e;
             }
         }
-        public void editTitle(int ID, string title, string assig) // update title of this task
+        public void EditTitle(int ID, string title, string assig) // update title of this task
         {
-            Task t = getTask(ID);
+            Task t = GetTask(ID);
             if (t == null)
             {
                 throw new Exception("task does not exist in this columm.");
             }
-            t.editTitle(assig, title);
+            t.EditTitle(assig, title);
         }
-        public void editDesc(int ID, string desc, string assig)// update description of this task
+        public void EditDesc(int ID, string desc, string assig)// update description of this task
         {
-            Task t = getTask(ID);
+            Task t = GetTask(ID);
             if (t == null)
             {
                 throw new Exception("task does not exist in this columm.");
             }
-            t.editDesc(assig, desc);
+            t.EditDesc(assig, desc);
         }
-        public void editDue(int ID, DateTime due, string assig)// update due date of this task
+        public void EditDue(int ID, DateTime due, string assig)// update due date of this task
         {
-            Task t = getTask(ID);
+            Task t = GetTask(ID);
             if (t == null)
             {
                 throw new Exception("task does not exist in this columm.");
             }
-            t.editDue(assig, due);
+            t.EditDue(assig, due);
         }
-        public virtual void delete(int host)
+        public virtual void Delete(int host)
         {
             if (host != this.host) throw new Exception("non host user tried to delete a column.");
             DAL.Column c = new DAL.Column(host, name);
@@ -209,7 +208,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
         {
             log.Debug("in column with " + host + " and " + this.host);
             if (host != this.host | newName.Length > maxname) throw new Exception("non host user tried to change column name.");
-            foreach (Task task in tasks) task.editColumn(newName);
+            foreach (Task task in tasks) task.EditColumn(newName);
             DAL.Column t = ToDalObject();
             t.UpdateName(newName);
             name = newName;

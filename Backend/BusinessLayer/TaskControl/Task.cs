@@ -49,39 +49,39 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             this.email = email;
             creation = DateTime.Now;
         }
-        public void insert()
+        public void Insert()
         {
             DAL.Task Dtask = ToDalObject();
             Dtask.Add();
         }
-        public string getEmail() { return email; }
-        public string getTitle() { return title; }
-        public string getDesc() { return desc; }
-        public DateTime getCreation() { return creation; }
-        public virtual int getID() { return ID; }
+        public string GetEmail() { return email; }
+        public string GetTitle() { return title; }
+        public string GetDesc() { return desc; }
+        public DateTime GetCreation() { return creation; }
+        public virtual int GetID() { return ID; }
         public DateTime GetDue() { return due; }
 
-        public void checkAssig(string assig)
+        public void CheckAssig(string assig)
         {
             if (assig != email) throw new Exception("non assigned user tried to chane task.");
         }
-        public void assignEmail(string assig)
+        public void AssignEmail(string assig)
         {
             log.Info("task #" + ID + "asignee changing from " + email + " to " + assig + ".");
             email = assig;
             DAL.Task Dtask = ToDalObject();
             Dtask.UpdateAssignee(assig);
         }
-        public void editColumn(string Cname) // update title of this task
+        public void EditColumn(string Cname) // update title of this task
         {
             log.Info("task #" + ID + "column changing from " + this.Cname + " to " + Cname + " for " + email + ".");
             this.Cname = Cname;
             DAL.Task Dtask = ToDalObject();
             Dtask.UpdateColumn(Cname);
         }
-        public void editTitle(string assig, string title) // update title of this task
+        public void EditTitle(string assig, string title) // update title of this task
         {
-            checkAssig(assig);
+            CheckAssig(assig);
             log.Info("task #" + ID + "title changing from " + this.title + " to " + title + " for " + email + ".");
             if (title == null || title.Length > Tmax | title.Equals(""))
             {
@@ -92,9 +92,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Task Dtask = ToDalObject();
             Dtask.UpdateTitle(title);
         }
-        public void editDesc(string assig, string desc) // update description of this task
+        public void EditDesc(string assig, string desc) // update description of this task
         {
-            checkAssig(assig);
+            CheckAssig(assig);
             log.Info("task #" + ID + "description changing from " + this.desc + " to " + desc + " for " + email + ".");
             if (desc != null && desc.Length > Dmax)
             {
@@ -105,9 +105,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.TaskControl
             DAL.Task Dtask = ToDalObject();
             Dtask.UpdateDesc(desc);
         }
-        public void editDue(string assig, DateTime due) // update due date of this task
+        public void EditDue(string assig, DateTime due) // update due date of this task
         {
-            checkAssig(assig);
+            CheckAssig(assig);
             log.Info("task #" + ID + "due date changing from " + this.due + " to " + due + " for " + email + ".");
             if (due == null || due < DateTime.Now)
             {

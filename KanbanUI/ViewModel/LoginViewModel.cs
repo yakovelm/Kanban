@@ -13,11 +13,11 @@ namespace KanbanUI.ViewModel
         private string _massage;
         public string Message { get => _massage; set { _massage = value; RaisePropertyChanged("Message"); } }
 
-        public LoginViewModel()
+        public LoginViewModel() // empty constructor to run at statup
         {
             Controller = new BackendController();
         }
-        public LoginViewModel(BackendController b)
+        public LoginViewModel(BackendController b) // constructor to recycle controller at logout
         {
             Controller = b;
         }
@@ -34,18 +34,21 @@ namespace KanbanUI.ViewModel
                 return null;
             }
         }
-        public void Reset()
-        {
-            Message = "";
-            try
-            {
-                Controller.Reset();
-                Message = "all data successfully deleted.";
-            }
-            catch (Exception e)
-            {
-                Message = e.Message;
-            }
-        }
+
+        // reset button to delete all data. not part of final build but in code for testing
+
+        //public void Reset()
+        //{
+        //    Message = "";
+        //    try
+        //    {
+        //        Controller.Reset();
+        //        Message = "all data successfully deleted.";
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Message = e.Message;
+        //    }
+        //}
     }
 }

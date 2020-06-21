@@ -51,9 +51,9 @@ namespace BoardTests
 
             foreach (Mock<Column> c in Mockcolumns)
             {
-                c.Setup(x => x.getAll()).Returns(new List<Task>());
-                c.Setup(x => x.delete(c.Object.ord));
-                c.Setup(x => x.addTasks(new List<Task>()));
+                c.Setup(x => x.GetAll()).Returns(new List<Task>());
+                c.Setup(x => x.Delete(c.Object.ord));
+                c.Setup(x => x.AddTasks(new List<Task>()));
                 c.Object.host = 1;
 
             }

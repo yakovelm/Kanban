@@ -3,10 +3,10 @@ using System.Windows.Input;
 
 namespace KanbanUI.Utils
 {
-    public class EmptyCommand : ICommand
+    public class EmptyCommand : ICommand // command binding that takes no parameters
     {
-        Action _TargetExecuteMethod;
-        Func<bool> _TargetCanExecuteMethod;
+        readonly Action _TargetExecuteMethod;
+        readonly Func<bool> _TargetCanExecuteMethod;
 
         public EmptyCommand(Action executeMethod)
         {
@@ -44,10 +44,7 @@ namespace KanbanUI.Utils
 
         void ICommand.Execute(object parameter)
         {
-            if (_TargetExecuteMethod != null)
-            {
-                _TargetExecuteMethod();
-            }
+            _TargetExecuteMethod?.Invoke();
         }
     }
 }

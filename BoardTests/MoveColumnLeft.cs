@@ -179,7 +179,7 @@ namespace BoardTests
         {
             //arrange 
             bool check=false;
-            Mockcolumns[col].Setup(x => x.setOrd(Mockcolumns[col].Object.ord-1)).Callback(()=> check=true);
+            Mockcolumns[col].Setup(x => x.SetOrd(Mockcolumns[col].Object.ord-1)).Callback(()=> check=true);
             //act
             b.MoveColumnLeft(col);
 
@@ -193,7 +193,7 @@ namespace BoardTests
         {
             //arrange 
             bool check = false;
-            Mockcolumns[col-1].Setup(x => x.setOrd(Mockcolumns[col-1].Object.ord + 1)).Callback(() => check = true);
+            Mockcolumns[col-1].Setup(x => x.SetOrd(Mockcolumns[col-1].Object.ord + 1)).Callback(() => check = true);
             //act
             b.MoveColumnLeft(col);
 

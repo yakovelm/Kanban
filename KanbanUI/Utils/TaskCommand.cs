@@ -4,10 +4,10 @@ using System.Windows.Input;
 
 namespace KanbanUI.Utils
 {
-    public class TaskCommand : ICommand
+    public class TaskCommand : ICommand // command binding that takes TaskModel parameter
     {
-        Action<TaskModel> _TargetExecuteMethod;
-        Func<bool> _TargetCanExecuteMethod;
+        readonly Action<TaskModel> _TargetExecuteMethod;
+        readonly Func<bool> _TargetCanExecuteMethod;
 
         public TaskCommand(Action<TaskModel> executeMethod)
         {
@@ -45,10 +45,7 @@ namespace KanbanUI.Utils
 
         void ICommand.Execute(object parameter)
         {
-            if (_TargetExecuteMethod != null)
-            {
-                _TargetExecuteMethod((TaskModel)parameter);
-            }
+            _TargetExecuteMethod?.Invoke((TaskModel)parameter);
         }
     }
 }

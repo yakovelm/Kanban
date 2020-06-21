@@ -122,8 +122,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DALControllers
             List<T> results = new List<T>();
             using (var connection = new SQLiteConnection(connectionString))
             {
-                SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"SELECT * FROM {tableName} {Filter}";
+                SQLiteCommand command = new SQLiteCommand(null, connection)
+                {
+                    CommandText = $"SELECT * FROM {tableName} {Filter}"
+                };
                 //log.Debug(command.CommandText);
                 SQLiteDataReader dataReader = null;
                 try

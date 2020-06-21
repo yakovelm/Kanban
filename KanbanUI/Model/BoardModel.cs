@@ -5,58 +5,58 @@ namespace KanbanUI.Model
 {
     public class BoardModel : NotifiableModelObject
     {
-        public bool isSorted { get; set; }
-        public UserModel UM;
+        public bool IsSorted { get; set; }
+        public UserModel UM; 
         public string host;
         public ObservableCollection<ColumnModel> Columns { get; set; }
         public BoardModel(UserModel um) : base(um.Controller)
         {
             UM = um;
-            Tuple<string, ObservableCollection<ColumnModel>> board = Controller.getBoard(um);
+            Tuple<string, ObservableCollection<ColumnModel>> board = Controller.GetBoard(um);
             host = board.Item1;
             Columns = board.Item2;
-            isSorted = false;
+            IsSorted = false;
         }
 
-        internal void ReLoad()
+        internal void ReLoad() // reload all board data for functions that change too much in one go to replicate in presentation
         {
-            Columns = Controller.getBoard(UM).Item2;
+            Columns = Controller.GetBoard(UM).Item2;
             Sort();
             RaisePropertyChanged("columns");
         }
-        internal void Sort()
+        internal void Sort() // sort tasks by due date
         {
-            if (isSorted)
+            if (IsSorted)
             {
                 foreach (ColumnModel cm in Columns)
                 {
-                    cm.isSorted = true;
+                    cm.IsSorted = true;
                     cm.Sort();
                 }
                 RaisePropertyChanged("columns");
-                isSorted = true;
+                IsSorted = true;
             }
         }
         internal void Delete(ColumnModel p)
         {
-            Controller.DeleteColumn(UM.email, p.Index);
+            Controller.DeleteColumn(UM.Email, p.Index);
             ReLoad();
         }
 
         internal void MoveRight(ColumnModel p)
         {
-            Controller.MoveRight(UM.email, p.Index);
+            Controller.MoveRight(UM.Email, p.Index);
             ReLoad();
         }
         internal void MoveLeft(ColumnModel p)
         {
-            Controller.MoveLeft(UM.email, p.Index);
+            Controller.MoveLeft(UM.Email, p.Index);
             ReLoad();
         }
 
-        internal void Add(string Index, string Name)
+        internal void Add(string Index, string Name) // add ned column
         {
-            ColumnModel col = Controller.AddColumn(UM.email, Int32.Parse(Index), Name);
+            ColumnModel col = Controller.AddColumn(UM.Email, Int32.Parse(Index), Name);
             Columns.Insert(col.Index, col);
             int i = 0;
             foreach (ColumnModel cm in Columns)
@@ -70,16 +70,16 @@ namespace KanbanUI.Model
 
         internal void AdvanceTask(int columnIndex, int ID, TaskModel T)
         {
-            Controller.AdvanceTask(UM.email, columnIndex, ID);
-            Columns[columnIndex].tasks.Remove(T);
+            Controller.AdvanceTask(UM.Email, columnIndex, ID);
+            Columns[columnIndex].Tasks.Remove(T);
             Columns[columnIndex].Reload();
-            Columns[columnIndex + 1].tasks.Add(T);
+            Columns[columnIndex + 1].Tasks.Add(T);
             Columns[columnIndex + 1].Reload();
             Sort();
             RaisePropertyChanged("columns");
         }
 
-        internal void Filter(string filter)
+        internal void Filter(string filter) // filter tasks by given string
         {
             foreach (ColumnModel c in Columns)
             {
@@ -87,11 +87,11 @@ namespace KanbanUI.Model
             }
         }
 
-        internal void Unsort()
+        internal void Unsort() // undo sorting
         {
             foreach (ColumnModel c in Columns)
             {
-                c.isSorted = false;
+                c.IsSorted = false;
             }
             ReLoad();
         }

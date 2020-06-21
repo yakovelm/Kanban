@@ -3,9 +3,9 @@
 namespace KanbanUI.ViewModel
 {
 
-    class RegisterViewModel : NotifiableObject
+    class RegisterViewModel : NotifiableObject // register has only one method so a full model seemed like overkill
     {
-        BackendController controller;
+        readonly BackendController controller;
         private string _email;
         public string Email { get => _email; set { _email = value; RaisePropertyChanged("Email"); } }
         private string _password;
@@ -22,12 +22,12 @@ namespace KanbanUI.ViewModel
             this.controller = controller;
         }
 
-        public void register()
+        public void Register()
         {
             Message = "";
             try
             {
-                controller.register(Email, Password, Nickname, Host);
+                controller.Register(Email, Password, Nickname, Host);
                 Message = "Register successful.";
                 Email = null;
                 Password = null;

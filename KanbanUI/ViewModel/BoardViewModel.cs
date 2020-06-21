@@ -39,12 +39,13 @@ namespace KanbanUI.ViewModel
         {
             BM.ReLoad();
         }
-        internal void logout()
+        internal void Logout()
         {
-            UM.logout();
+            UM.Logout();
         }
 
-        //private ColumnModel _selectedColumn;
+        // all command bingings for internal logic buttons
+
         public ColumnCommand LeftClick { get; set; }
         public ColumnCommand RightClick { get; set; }
         public ColumnCommand DeleteClick { get; set; }
@@ -59,33 +60,33 @@ namespace KanbanUI.ViewModel
         {
             UM = um;
             BM = new BoardModel(um);
-            Name = "Logged in as: " + UM.email;
-            Host = "Board hosted by: " + ((BM.host == UM.email) ? "you" : BM.host);
-            IsHost = UM.email == BM.host;
+            Name = "Logged in as: " + UM.Email;
+            Host = "Board hosted by: " + ((BM.host == UM.Email) ? "you" : BM.host);
+            IsHost = UM.Email == BM.host;
             LeftClick = new ColumnCommand(OnLeftClick);
             RightClick = new ColumnCommand(OnRightClick);
             DeleteClick = new ColumnCommand(OnDeleteClick);
             AddColumn = new EmptyCommand(OnAddClick);
-            AdvanceClick = new TaskCommand(onAdvanceClick);
-            SortClick = new EmptyCommand(onSortClick);
-            UnSortClick = new EmptyCommand(onUnSortClick);
-            FilterClick = new EmptyCommand(onFilterClick);
+            AdvanceClick = new TaskCommand(OnAdvanceClick);
+            SortClick = new EmptyCommand(OnSortClick);
+            UnSortClick = new EmptyCommand(OnUnSortClick);
+            FilterClick = new EmptyCommand(OnFilterClick);
         }
-        private void onFilterClick()
+        private void OnFilterClick()
         {
             BM.Filter(Filter);
         }
-        private void onUnSortClick()
+        private void OnUnSortClick()
         {
-            BM.isSorted = false;
+            BM.IsSorted = false;
             BM.Unsort();
         }
-        private void onSortClick()
+        private void OnSortClick()
         {
-            BM.isSorted = true;
+            BM.IsSorted = true;
             BM.Sort();
         }
-        private void onAdvanceClick(TaskModel p)
+        private void OnAdvanceClick(TaskModel p)
         {
             Message = "";
             try
