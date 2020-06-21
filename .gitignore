@@ -495,7 +495,7 @@ coverage*[.json, .xml, .info]
 
 # Visual Studio code coverage results
 *.coverage
-*.coveragexml
+
 
 # NCrunch
 _NCrunch_*
